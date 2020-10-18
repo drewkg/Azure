@@ -16,7 +16,7 @@
         "mode": "All",
         "parameters": {
           "profileName": {
-            "type": "String",
+            "type": "string",
             "metadata": {
               "displayName": "Profile name",
               "description": "The diagnostic settings profile name"
@@ -79,7 +79,7 @@
                     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
-                      "resourceName": {
+                      "profileName": {
                         "type": "string"
                       },
                       "logAnalytics": {
@@ -87,13 +87,16 @@
                       },
                       "location": {
                         "type": "string"
+                      },
+                      "resourceName": {
+                        "type": "string"
                       }
                     },
                     "resources": [
                       {
                         "type": "Microsoft.ContainerService/managedClusters/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
-                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/', parameters('profileName'))]",
+                        "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",

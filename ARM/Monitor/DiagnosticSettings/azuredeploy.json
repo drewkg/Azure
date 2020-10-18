@@ -100,6 +100,14 @@
           "version": "1.0.0"
         },
         "parameters": {
+          "profileName": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Profile name",
+              "description": "The diagnostic settings profile name"
+            },
+            "defaultValue": "setbypolicy_logAnalytics"
+          },
           "logAnalytics": {
             "type": "string",
             "metadata": {
@@ -118,6 +126,9 @@
               "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
               "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
               "parameters": {
+                "profileName": {
+                  "value":  "[[[parameters('profileName')]"
+                },
                 "logAnalytics": {
                   "value": "[[[parameters('logAnalytics')]"
                 }
