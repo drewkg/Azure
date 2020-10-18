@@ -42,7 +42,7 @@
         "diagnostics-networkinterfaces-deploy",
         "diagnostics-nsg-deploy",
         "diagnostics-postgresql-deploy",
-        "diagnostics-powerbiembedded-deploy",
+        "diagnostics-pbi-deploy",
         "diagnostics-publicip-deploy",
         "diagnostics-recoveryvault-deploy",
         "diagnostics-redis-deploy",

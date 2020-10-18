@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-powerbiembedded-deploy",
+      "name": "diagnostics-pbi-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Power BI Embedded to a Log Analytics workspace",

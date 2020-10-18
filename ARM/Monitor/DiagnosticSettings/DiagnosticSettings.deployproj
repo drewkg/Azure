@@ -65,7 +65,7 @@
     <Content Include="diagnostics-networkinterfaces-deploy.json" />
     <Content Include="diagnostics-nsg-deploy.json" />
     <Content Include="diagnostics-postgresql-deploy.json" />
-    <Content Include="diagnostics-powerbiembedded-deploy.json" />
+    <Content Include="diagnostics-pbi-deploy.json" />
     <Content Include="diagnostics-publicip-deploy.json" />
     <Content Include="diagnostics-recoveryvault-deploy.json" />
     <Content Include="diagnostics-redis-deploy.json" />
