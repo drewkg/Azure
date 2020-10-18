@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-vmscaleset-deploy",
+      "name": "diagnostics-vnet-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Virtual Machine Scale Sets to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Virtual Machine Scale Sets to stream data to a Log Analytics workspace when any Virtual Machine Scale Sets which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Virtual Networks to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Virtual Networks to stream data to a Log Analytics workspace when any Virtual Networks which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Compute/virtualMachineScaleSets"
+            "equals": "Microsoft.Network/virtualNetworks"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -49,8 +49,12 @@
               "existenceCondition": {
                 "allOf": [
                   {
+                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                    "equals": "true"
+                  },
+                  {
                     "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
-                    "equals": "True"
+                    "equals": "true"
                   },
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
@@ -80,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Compute/virtualMachineScaleSets/providers/diagnosticSettings",
+                        "type": "Microsoft.Network/virtualNetworks/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -89,11 +93,13 @@
                           "metrics": [
                             {
                               "category": "AllMetrics",
-                              "enabled": true,
-                              "retentionPolicy": {
-                                "enabled": false,
-                                "days": 0
-                              }
+                              "enabled": true
+                            }
+                          ],
+                          "logs": [
+                            {
+                              "category": "VMProtectionAlerts",
+                              "enabled": true
                             }
                           ]
                         }

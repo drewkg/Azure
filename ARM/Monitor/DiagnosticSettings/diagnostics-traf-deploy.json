@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-vms-deploy",
+      "name": "diagnostics-traf-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Virtual Machines to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Virtual Machines to stream data to a Log Analytics workspace when any Virtual Machines which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Traffic Manager to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Traffic Manager to stream data to a Log Analytics workspace when any Traffic Manager which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Compute/virtualMachines"
+            "equals": "Microsoft.Network/trafficManagerProfiles"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -48,6 +48,10 @@
               ],
               "existenceCondition": {
                 "allOf": [
+                  {
+                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                    "equals": "True"
+                  },
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
@@ -80,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Compute/virtualMachines/providers/diagnosticSettings",
+                        "type": "Microsoft.Network/trafficManagerProfiles/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -91,9 +95,16 @@
                               "category": "AllMetrics",
                               "enabled": true,
                               "retentionPolicy": {
-                                "enabled": false,
-                                "days": 0
-                              }
+                                "days": 0,
+                                "enabled": false
+                              },
+                              "timeGrain": null
+                            }
+                          ],
+                          "logs": [
+                            {
+                              "category": "ProbeHealthStatusEvents",
+                              "enabled": true
                             }
                           ]
                         }

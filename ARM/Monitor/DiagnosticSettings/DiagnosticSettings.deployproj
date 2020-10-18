@@ -58,7 +58,7 @@
     <Content Include="diagnostics-hdinsight-deploy.json" />
     <Content Include="diagnostics-iothub-deploy.json" />
     <Content Include="diagnostics-keyvaults-deploy.json" />
-    <Content Include="diagnostics-loadbalancers-deploy.json" />
+    <Content Include="diagnostics-lb-deploy.json" />
     <Content Include="diagnostics-logicappintegrationaccs-deploy.json" />
     <Content Include="diagnostics-logicappworkflows-deploy.json" />
     <Content Include="diagnostics-mysqldb-deploy.json" />
@@ -79,11 +79,11 @@
     <Content Include="diagnostics-sqlmidb-deploy.json" />
     <Content Include="diagnostics-streamanalytic-deploy.json" />
     <Content Include="diagnostics-timeseries-deploy.json" />
-    <Content Include="diagnostics-trafficmgr-deploy.json" />
-    <Content Include="diagnostics-vms-deploy.json" />
-    <Content Include="diagnostics-vmscaleset-deploy.json" />
-    <Content Include="diagnostics-vnetgw-deploy.json" />
-    <Content Include="diagnostics-vnets-deploy.json" />
+    <Content Include="diagnostics-traf-deploy.json" />
+    <Content Include="diagnostics-vm-deploy.json" />
+    <Content Include="diagnostics-vmss-deploy.json" />
+    <Content Include="diagnostics-vgw-deploy.json" />
+    <Content Include="diagnostics-vnet-deploy.json" />
     <Content Include="diagnostics-wvdappgroup-deploy.json" />
     <Content Include="diagnostics-wvdhostpool-deploy.json" />
     <Content Include="diagnostics-wvdworkspace-deploy.json" />
