@@ -45,7 +45,7 @@
     <Content Include="diagnostics-containerinstance-deploy.json" />
     <Content Include="diagnostics-containerregistry-deploy.json" />
     <Content Include="diagnostics-cosmosdb-deploy.json" />
-    <Content Include="diagnostics-datafactory-deploy.json" />
+    <Content Include="diagnostics-adf-deploy.json" />
     <Content Include="diagnostics-datalakeanalytics-deploy.json" />
     <Content Include="diagnostics-datalakestore-deploy.json" />
     <Content Include="diagnostics-eventgridsub-deploy.json" />
@@ -64,9 +64,9 @@
     <Content Include="diagnostics-mysqldb-deploy.json" />
     <Content Include="diagnostics-networkinterfaces-deploy.json" />
     <Content Include="diagnostics-nsg-deploy.json" />
-    <Content Include="diagnostics-postgresql-deploy.json" />
+    <Content Include="diagnostics-psql-deploy.json" />
     <Content Include="diagnostics-pbi-deploy.json" />
-    <Content Include="diagnostics-publicip-deploy.json" />
+    <Content Include="diagnostics-pip-deploy.json" />
     <Content Include="diagnostics-recoveryvault-deploy.json" />
     <Content Include="diagnostics-redis-deploy.json" />
     <Content Include="diagnostics-relay-deploy.json" />

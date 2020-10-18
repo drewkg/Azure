@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-postgresql-deploy",
+      "name": "diagnostics-pip-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for PostgreSQL to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for PostgreSQL to stream data to a Log Analytics workspace when any PostgreSQL which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Public IP Addresse to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Public IP Addresse to stream data to a Log Analytics workspace when any Public IP Addresse which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.DBforPostgreSQL/servers"
+            "equals": "Microsoft.Network/publicIPAddresses"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.DBforPostgreSQL/servers/providers/diagnosticSettings",
+                        "type": "Microsoft.Network/publicIPAddresses/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -93,17 +93,25 @@
                           "metrics": [
                             {
                               "category": "AllMetrics",
+                              "timeGrain": null,
                               "enabled": true,
                               "retentionPolicy": {
-                                "days": 0,
-                                "enabled": false
-                              },
-                              "timeGrain": null
+                                "enabled": false,
+                                "days": 0
+                              }
                             }
                           ],
                           "logs": [
                             {
-                              "category": "PostgreSQLLogs",
+                              "category": "DDoSProtectionNotifications",
+                              "enabled": true
+                            },
+                            {
+                              "category": "DDoSMitigationFlowLogs",
+                              "enabled": true
+                            },
+                            {
+                              "category": "DDoSMitigationReports",
                               "enabled": true
                             }
                           ]

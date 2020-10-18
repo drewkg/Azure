@@ -11,6 +11,7 @@
     "diagnosticPolicies": {
       "type": "array",
       "defaultValue": [
+        "diagnostics-adf-deploy",
         "diagnostics-aks-deploy",
         "diagnostics-analysisservices-deploy",
         "diagnostics-apim-deploy",
@@ -24,7 +25,6 @@
         "diagnostics-containerinstance-deploy",
         "diagnostics-containerregistry-deploy",
         "diagnostics-cosmosdb-deploy",
-        "diagnostics-datafactory-deploy",
         "diagnostics-datalakeanalytics-deploy",
         "diagnostics-datalakestore-deploy",
         "diagnostics-eventgridsub-deploy",
@@ -41,9 +41,9 @@
         "diagnostics-mysqldb-deploy",
         "diagnostics-networkinterfaces-deploy",
         "diagnostics-nsg-deploy",
-        "diagnostics-postgresql-deploy",
         "diagnostics-pbi-deploy",
-        "diagnostics-publicip-deploy",
+        "diagnostics-pip-deploy",
+        "diagnostics-psql-deploy",
         "diagnostics-recoveryvault-deploy",
         "diagnostics-redis-deploy",
         "diagnostics-relay-deploy",

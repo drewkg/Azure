@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-publicip-deploy",
+      "name": "diagnostics-adf-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Public IP Addresse to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Public IP Addresse to stream data to a Log Analytics workspace when any Public IP Addresse which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Azure Data Factory to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Azure Data Factory to stream data to a Log Analytics workspace when any Azure Data Factory which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Network/publicIPAddresses"
+            "equals": "Microsoft.DataFactory/factories"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Network/publicIPAddresses/providers/diagnosticSettings",
+                        "type": "Microsoft.DataFactory/factories/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -93,25 +93,49 @@
                           "metrics": [
                             {
                               "category": "AllMetrics",
-                              "timeGrain": null,
                               "enabled": true,
                               "retentionPolicy": {
-                                "enabled": false,
-                                "days": 0
-                              }
+                                "days": 0,
+                                "enabled": false
+                              },
+                              "timeGrain": null
                             }
                           ],
                           "logs": [
                             {
-                              "category": "DDoSProtectionNotifications",
+                              "category": "ActivityRuns",
                               "enabled": true
                             },
                             {
-                              "category": "DDoSMitigationFlowLogs",
+                              "category": "PipelineRuns",
                               "enabled": true
                             },
                             {
-                              "category": "DDoSMitigationReports",
+                              "category": "TriggerRuns",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageEventMessages",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageExecutableStatistics",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageEventMessageContext",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageExecutionComponentPhases",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageExecutionDataStatistics",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISIntegrationRuntimeLogs",
                               "enabled": true
                             }
                           ]
