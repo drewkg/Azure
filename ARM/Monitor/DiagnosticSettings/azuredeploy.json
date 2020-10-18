@@ -1,0 +1,130 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "string"
+    },
+    "diagnosticPolicies": {
+      "type": "array",
+      "defaultValue": [
+        "diagnostics-aks-deploy",
+        "diagnostics-analysisservices-deploy",
+        "diagnostics-apim-deploy",
+        "diagnostics-appgw-deploy",
+        "diagnostics-appservice-deploy",
+        "diagnostics-appserviceplan-deploy",
+        "diagnostics-automationaccounts-deploy",
+        "diagnostics-batchaccounts-deploy",
+        "diagnostics-cdnendpoints-deploy",
+        "diagnostics-cognitiveservices-deploy",
+        "diagnostics-containerinstance-deploy",
+        "diagnostics-containerregistry-deploy",
+        "diagnostics-cosmosdb-deploy",
+        "diagnostics-datafactory-deploy",
+        "diagnostics-datalakeanalytics-deploy",
+        "diagnostics-datalakestore-deploy",
+        "diagnostics-eventgridsub-deploy",
+        "diagnostics-eventgridtopic-deploy",
+        "diagnostics-eventhub-deploy",
+        "diagnostics-expressroute-deploy",
+        "diagnostics-fd-deploy",
+        "diagnostics-hdinsight-deploy",
+        "diagnostics-iothub-deploy",
+        "diagnostics-keyvaults-deploy",
+        "diagnostics-loadbalancers-deploy",
+        "diagnostics-logicappintegrationaccs-deploy",
+        "diagnostics-logicappworkflows-deploy",
+        "diagnostics-mysqldb-deploy",
+        "diagnostics-networkinterfaces-deploy",
+        "diagnostics-nsg-deploy",
+        "diagnostics-postgresql-deploy",
+        "diagnostics-powerbiembedded-deploy",
+        "diagnostics-publicip-deploy",
+        "diagnostics-recoveryvault-deploy",
+        "diagnostics-redis-deploy",
+        "diagnostics-relay-deploy",
+        "diagnostics-search-deploy",
+        "diagnostics-servicebus-deploy",
+        "diagnostics-signalr-deploy",
+        "diagnostics-sqldb-deploy",
+        "diagnostics-sqlelasticpool-deploy",
+        "diagnostics-sqlmidb-deploy",
+        "diagnostics-sqlmi-deploy",
+        "diagnostics-streamanalytic-deploy",
+        "diagnostics-timeseries-deploy",
+        "diagnostics-trafficmgr-deploy",
+        "diagnostics-vmscaleset-deploy",
+        "diagnostics-vms-deploy",
+        "diagnostics-vnetgw-deploy",
+        "diagnostics-vnets-deploy",
+        "diagnostics-wvdappgroup-deploy",
+        "diagnostics-wvdhostpool-deploy",
+        "diagnostics-wvdworkspace-deploy"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-08-01",
+      "location": "uksouth",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json', parameters('_artifactsLocationSasToken'))]"
+        }
+      },
+      "copy": {
+        "name": "diagnosticPolicies",
+        "count": "[length(parameters('diagnosticPolicies'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2019-09-01",
+      "name": "diagnostics-loganalytics-deploy",
+      "dependsOn": [
+        "diagnosticPolicies"
+      ],
+      "properties": {
+        "displayName": "Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.",
+        "policyType": "Custom",
+        "metadata": {
+          "category": "Monitoring",
+          "version": "1.0.0"
+        },
+        "parameters": {
+          "logAnalytics": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Log Analytics workspace",
+              "description": "Log Analytics workspace ID.",
+              "strongType": "omsWorkspace"
+            }
+          }
+        },
+        "copy": [
+          {
+            "name": "policyDefinitions",
+            "count": "[length(parameters('diagnosticPolicies'))]",
+            "input": {
+              "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
+              "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
+              "parameters": {
+                "logAnalytics": {
+                  "value": "[[[parameters('logAnalytics')]"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "properties": {
+    "type": "Microsoft.Authorization/policyDefinitions",
+    "name": "diagnostics-windows-loganalyticsextension-deploy",
+    "displayName": "Deploy default Log Analytics VM Extension for Windows VMs.",
+    "description": "This policy deploys Log Analytics VM Extensions on Windows VMs, and connects to the selected Log Analytics workspace.",
+    "mode": "Indexed",
+    "metadata": {
+      "category": "Compute",
+      "product": "New Signature DriveTrain"
+    },
+    "parameters": {
+      "logAnalytics": {
+        "type": "string",
+        "metadata": {
+          "displayName": "Log Analytics workspace",
+          "description": "Log Analytics workspace ID",
+          "strongType": "omsWorkspace"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Compute/virtualMachines"
+          },
+          {
+            "field": "Microsoft.Compute/virtualMachines/storageProfile.osDisk.osType",
+            "equals": "Windows"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.Compute/virtualMachines/extensions",
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Compute/virtualMachines/extensions/type",
+                "equals": "MicrosoftMonitoringAgent"
+              },
+              {
+                "field": "Microsoft.Compute/virtualMachines/extensions/publisher",
+                "equals": "Microsoft.EnterpriseCloud.Monitoring"
+              }
+            ]
+          },
+          "roleDefinitionIds": [
+            "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "vmName": {
+                    "type": "string"
+                  },
+                  "location": {
+                    "type": "string"
+                  },
+                  "logAnalytics": {
+                    "type": "string"
+                  }
+                },
+                "resources": [
+                  {
+                    "name": "[concat(parameters('vmName'),'/omsPolicy')]",
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "location": "[parameters('location')]",
+                    "apiVersion": "2017-12-01",
+                    "properties": {
+                      "publisher": "Microsoft.EnterpriseCloud.Monitoring",
+                      "type": "MicrosoftMonitoringAgent",
+                      "typeHandlerVersion": "1.0",
+                      "autoUpgradeMinorVersion": true,
+                      "settings": {
+                        "workspaceId": "[reference(parameters('logAnalytics'), '2015-03-20').customerId]"
+                      },
+                      "protectedSettings": {
+                        "workspaceKey": "[listKeys(parameters('logAnalytics'), '2015-03-20').primarySharedKey]"
+                      }
+                    }
+                  }
+                ]
+              },
+              "parameters": {
+                "vmName": {
+                  "value": "[field('name')]"
+                },
+                "location": {
+                  "value": "[field('location')]"
+                },
+                "logAnalytics": {
+                  "value": "[parameters('logAnalytics')]"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

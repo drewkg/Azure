@@ -1,0 +1,117 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "diagnostics-wvdworkspace-deploy",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "displayName": "Deploy Diagnostics & Metrics for Windows Virtual Desktop Workspaces to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Windows Virtual Desktop Workspaces to stream data to a Log Analytics workspace when any Windows Virtual Desktop Workspaces which is missing this diagnostic settings is created or updated.",
+        "metadata": {
+          "category": "Monitoring",
+          "version": "1.0.0.0"
+        },
+        "mode": "All",
+        "parameters": {
+          "logAnalytics": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Log Analytics workspace",
+              "description": "Log Analytics workspace ID",
+              "strongType": "omsWorkspace"
+            }
+          }
+        },
+        "policyRule": {
+          "if": {
+            "field": "type",
+            "equals": "Microsoft.DesktopVirtualization/workspaces"
+          },
+          "then": {
+            "effect": "deployIfNotExists",
+            "details": {
+              "type": "Microsoft.Insights/diagnosticSettings",
+              "roleDefinitionIds": [
+                "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+              ],
+              "existenceCondition": {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                    "equals": "True"
+                  },
+                  {
+                    "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
+                    "matchInsensitively": "[[parameters('logAnalytics')]"
+                  }
+                ]
+              },
+              "deployment": {
+                "properties": {
+                  "mode": "incremental",
+                  "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                      "resourceName": {
+                        "type": "string"
+                      },
+                      "logAnalytics": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      }
+                    },
+                    "resources": [
+                      {
+                        "type": "Microsoft.DesktopVirtualization/workspaces/providers/diagnosticSettings",
+                        "apiVersion": "2017-05-01-preview",
+                        "name": "[[concat(parameters('resourceName'), '/', 'Microsoft.Insights/setByPolicy')]",
+                        "location": "[[parameters('location')]",
+                        "properties": {
+                          "workspaceId": "[[parameters('logAnalytics')]",
+                          "logs": [
+                            {
+                              "category": "Checkpoint",
+                              "enabled": true
+                            },
+                            {
+                              "category": "Error",
+                              "enabled": true
+                            },
+                            {
+                              "category": "Management",
+                              "enabled": true
+                            },
+                            {
+                              "category": "Feed",
+                              "enabled": true
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "logAnalytics": {
+                      "value": "[[parameters('logAnalytics')]"
+                    },
+                    "location": {
+                      "value": "[[field('location')]"
+                    },
+                    "resourceName": {
+                      "value": "[[field('name')]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
