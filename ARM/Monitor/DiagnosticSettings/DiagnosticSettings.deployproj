@@ -43,12 +43,12 @@
     <Content Include="diagnostics-batchaccounts-deploy.json" />
     <Content Include="diagnostics-cdnendpoints-deploy.json" />
     <Content Include="diagnostics-cognitiveservices-deploy.json" />
-    <Content Include="diagnostics-containerinstance-deploy.json" />
-    <Content Include="diagnostics-containerregistry-deploy.json" />
+    <Content Include="diagnostics-ci-deploy.json" />
+    <Content Include="diagnostics-cr-deploy.json" />
     <Content Include="diagnostics-cosmosdb-deploy.json" />
     <Content Include="diagnostics-adf-deploy.json" />
-    <Content Include="diagnostics-datalakeanalytics-deploy.json" />
-    <Content Include="diagnostics-datalakestore-deploy.json" />
+    <Content Include="diagnostics-dla-deploy.json" />
+    <Content Include="diagnostics-dls-deploy.json" />
     <Content Include="diagnostics-eventgridsub-deploy.json" />
     <Content Include="diagnostics-eventgridtopic-deploy.json" />
     <Content Include="diagnostics-evh-deploy.json" />
@@ -68,7 +68,7 @@
     <Content Include="diagnostics-psql-deploy.json" />
     <Content Include="diagnostics-pbi-deploy.json" />
     <Content Include="diagnostics-pip-deploy.json" />
-    <Content Include="diagnostics-recoveryvault-deploy.json" />
+    <Content Include="diagnostics-rsv-deploy.json" />
     <Content Include="diagnostics-redis-deploy.json" />
     <Content Include="diagnostics-relay-deploy.json" />
     <Content Include="diagnostics-search-deploy.json" />
