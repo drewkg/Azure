@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-servicebus-deploy",
+      "name": "diagnostics-cr-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Service Bus to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Service Bus to stream data to a Log Analytics workspace when any Service Bus which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Container Registry to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Container Registry to stream data to a Log Analytics workspace when any Container Registry which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.ServiceBus/namespaces"
+            "equals": "Microsoft.ContainerRegistry/registries"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.ServiceBus/namespaces/providers/diagnosticSettings",
+                        "type": "Microsoft.ContainerRegistry/registries/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -103,7 +103,11 @@
                           ],
                           "logs": [
                             {
-                              "category": "OperationalLogs",
+                              "category": "ContainerRegistryRepositoryEvents",
+                              "enabled": true
+                            },
+                            {
+                              "category": "ContainerRegistryLoginEvents",
                               "enabled": true
                             }
                           ]

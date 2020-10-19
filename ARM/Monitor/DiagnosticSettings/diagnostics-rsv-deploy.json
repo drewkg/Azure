@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-keyvaults-deploy",
+      "name": "diagnostics-rsv-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Key Vault to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Key Vault to stream data to a Log Analytics workspace when any Key Vault which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Recovery Services Vault to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Recovery Services Vault to stream data to a Log Analytics workspace when any Recovery Services Vault which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.KeyVault/vaults"
+            "equals": "Microsoft.RecoveryServices/vaults"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,28 +84,70 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
+                        "type": "Microsoft.RecoveryServices/vaults/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
-                          "metrics": [
-                            {
-                              "category": "AllMetrics",
-                              "enabled": true,
-                              "retentionPolicy": {
-                                "days": 0,
-                                "enabled": false
-                              },
-                              "timeGrain": null
-                            }
-                          ],
                           "logs": [
                             {
-                              "category": "AuditEvent",
+                              "category": "AzureBackupReport",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryJobs",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryEvents",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryReplicatedItems",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryReplicationStats",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryRecoveryPoints",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryReplicationDataUploadRate",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AzureSiteRecoveryProtectedDiskDataChurn",
+                              "enabled": true
+                            },
+                            {
+                              "category": "CoreAzureBackup",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AddonAzureBackupJobs",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AddonAzureBackupAlerts",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AddonAzureBackupPolicy",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AddonAzureBackupStorage",
+                              "enabled": true
+                            },
+                            {
+                              "category": "AddonAzureBackupProtectedInstance",
                               "enabled": true
                             }
+
                           ]
                         }
                       }

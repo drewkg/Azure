@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-streamanalytic-deploy",
+      "name": "diagnostics-dls-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Stream Analytic to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Stream Analytic to stream data to a Log Analytics workspace when any Stream Analytic which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Data Lake Store to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Data Lake Store to stream data to a Log Analytics workspace when any Data Lake Store which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.StreamAnalytics/streamingjobs"
+            "equals": "Microsoft.DataLakeStore/accounts"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.StreamAnalytics/streamingjobs/providers/diagnosticSettings",
+                        "type": "Microsoft.DataLakeStore/accounts/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -103,11 +103,11 @@
                           ],
                           "logs": [
                             {
-                              "category": "Execution",
+                              "category": "Audit",
                               "enabled": true
                             },
                             {
-                              "category": "Authoring",
+                              "category": "Requests",
                               "enabled": true
                             }
                           ]

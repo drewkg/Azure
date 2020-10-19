@@ -8,7 +8,7 @@
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Front Door to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Front Door to stream data to a Log Analytics workspacewhen any Front Door which is missing this diagnostic settings is created or updated.",
+        "description": "Apply diagnostic & metric settings for Front Door to stream data to a Log Analytics workspace when any Front Door which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
