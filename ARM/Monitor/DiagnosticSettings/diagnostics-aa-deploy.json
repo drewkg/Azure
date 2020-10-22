@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-automationaccounts-deploy",
+      "name": "diagnostics-aa-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Automation Accounts to a Log Analytics workspace",
