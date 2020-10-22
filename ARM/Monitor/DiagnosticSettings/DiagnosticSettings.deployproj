@@ -45,7 +45,7 @@
     <Content Include="diagnostics-cog-deploy.json" />
     <Content Include="diagnostics-ci-deploy.json" />
     <Content Include="diagnostics-cr-deploy.json" />
-    <Content Include="diagnostics-cosmosdb-deploy.json" />
+    <Content Include="diagnostics-cosmos-deploy.json" />
     <Content Include="diagnostics-adf-deploy.json" />
     <Content Include="diagnostics-dla-deploy.json" />
     <Content Include="diagnostics-dls-deploy.json" />
