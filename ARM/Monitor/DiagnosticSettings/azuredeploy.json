@@ -24,7 +24,7 @@
         "diagnostics-cdnendpoints-deploy",
         "diagnostics-ci-deploy",
         "diagnostics-cog-deploy",
-        "diagnostics-cosmosdb-deploy",
+        "diagnostics-cosmos-deploy",
         "diagnostics-cr-deploy",
         "diagnostics-dla-deploy",
         "diagnostics-dls-deploy",

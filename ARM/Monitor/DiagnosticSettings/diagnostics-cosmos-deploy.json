@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-cosmosdb-deploy",
+      "name": "diagnostics-cosmos-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for CosmosDB to a Log Analytics workspace",
