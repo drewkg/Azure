@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-cognitiveservices-deploy",
+      "name": "diagnostics-cog-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Cognitive Services to a Log Analytics workspace",

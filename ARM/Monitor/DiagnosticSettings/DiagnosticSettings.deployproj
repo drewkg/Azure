@@ -41,7 +41,7 @@
     <Content Include="diagnostics-automationaccounts-deploy.json" />
     <Content Include="diagnostics-batchaccounts-deploy.json" />
     <Content Include="diagnostics-cdnendpoints-deploy.json" />
-    <Content Include="diagnostics-cognitiveservices-deploy.json" />
+    <Content Include="diagnostics-cog-deploy.json" />
     <Content Include="diagnostics-ci-deploy.json" />
     <Content Include="diagnostics-cr-deploy.json" />
     <Content Include="diagnostics-cosmosdb-deploy.json" />
