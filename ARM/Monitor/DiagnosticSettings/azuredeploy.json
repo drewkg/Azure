@@ -17,6 +17,7 @@
     "diagnosticPolicies": {
       "type": "array",
       "defaultValue": [
+        "diagnostics-aa-deploy",
         "diagnostics-adf-deploy",
         "diagnostics-agw-deploy",
         "diagnostics-aks-deploy",
@@ -25,7 +26,6 @@
         "diagnostics-appserviceplan-deploy",
         "diagnostics-asa-deploy",
         "diagnostics-as-deploy",
-        "diagnostics-automationaccounts-deploy",
         "diagnostics-batchaccounts-deploy",
         "diagnostics-cdnendpoints-deploy",
         "diagnostics-ci-deploy",
