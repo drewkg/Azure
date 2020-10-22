@@ -29,7 +29,7 @@
         "diagnostics-batchaccounts-deploy",
         "diagnostics-cdnendpoints-deploy",
         "diagnostics-ci-deploy",
-        "diagnostics-cognitiveservices-deploy",
+        "diagnostics-cog-deploy",
         "diagnostics-cosmosdb-deploy",
         "diagnostics-cr-deploy",
         "diagnostics-dla-deploy",
