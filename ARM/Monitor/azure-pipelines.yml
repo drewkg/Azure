@@ -12,7 +12,7 @@ pool:
 steps:
 - task: RunARMTTKTests@1
   inputs:
-    templatelocation: '$(System.DefaultWorkingDirectory)\ARM\Monitor\DiagnosticSettings\*'
+    templatelocation: '$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\*'
     resultLocation: '$(System.DefaultWorkingDirectory)'
     #includeTests: 'bob'
     #skipTests: 'bob'
