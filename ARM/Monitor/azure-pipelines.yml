@@ -62,6 +62,6 @@ stages:
           Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
           Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
           Import-Module -Name Pester -MaximumVersion 4.10.1
-          Set-Location "$(Build.SourcesDirectory)\ManagementGroups\"
-          Invoke-Pester -Script "$(Build.SourcesDirectory)\DiagnsoticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
+          Set-Location "$(Build.SourcesDirectory)\ARM\Monitor\DiagnsoticSettings\"
+          Invoke-Pester -Script "$(Build.SourcesDirectory)\ARM\Monitor\DiagnsoticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
 
