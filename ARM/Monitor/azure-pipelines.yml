@@ -2,6 +2,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
+- feature/*
 
 resources:
 - repo: self
@@ -65,3 +66,10 @@ stages:
           Set-Location "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\"
           Invoke-Pester -Script "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
 
+    - task: PublishTestResults@2
+      displayName: 'Publich Test Results: Diagnostic Policies ARM TTK'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(Common.TestResultsDirectory)\armtkk.nunit'
+        failTaskOnFailedTests: true
+        testRunTitle: 'Management Groups ARM TTK'
