@@ -8,6 +8,10 @@
     "_artifactsLocationSasToken": {
       "type": "securestring"
     },
+    "location": {
+      "type": "string",
+      "defaultValue": "uksouth"
+    },
     "diagnosticPolicies": {
       "type": "array",
       "defaultValue": [
@@ -72,7 +76,7 @@
       "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-08-01",
-      "location": "uksouth",
+      "location": "[parameters('location')",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
