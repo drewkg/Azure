@@ -3,10 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "[deployment().properties.templateLink.uri]"
     },
     "_artifactsLocationSasToken": {
-      "type": "string"
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "uksouth"
     },
     "diagnosticPolicies": {
       "type": "array",
@@ -72,7 +78,7 @@
       "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-08-01",
-      "location": "uksouth",
+      "location": "[parameters('location')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
