@@ -76,7 +76,7 @@
       "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-08-01",
-      "location": "[parameters('location')",
+      "location": "[parameters('location')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
