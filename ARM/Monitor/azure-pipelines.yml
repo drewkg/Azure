@@ -1,0 +1,74 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+
+stages:
+- stage: 'CI'
+  displayName: 'Continous Integration'
+  jobs:
+  - job: 'Init'
+    displayName: 'Initialization'
+    continueOnError: false
+    pool:
+      vmImage: 'windows-latest'
+    workspace:
+      clean: all
+    steps:
+    - checkout: none
+
+    - task: PowerShell@1
+      displayName: 'Set Build Version'
+      condition: and(succeeded(), ne(variables.isMain, true))
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
+          Write-Output $env:BUILD_SOURCEBRANCHNAME
+
+          If ($env:BUILD_SOURCEBRANCHNAME -ne "master"){
+            Write-Output ("##vso[build.updatebuildnumber]" + $env:BUILD_BUILDNUMBER+"-alpha")
+            Write-Output "setting version as -alpha"
+          }
+
+  - job: 'Validation'
+    displayName: 'Validate & Package Templates'
+    continueOnError: false
+    dependsOn: 'Init'
+    pool:
+      vmImage: 'windows-latest'
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+
+    - script: echo Hello, world!
+      displayName: 'Run a one-line script'
+
+    - task: PowerShell@1
+      displayName: 'Install & Run ARM-TTK'
+      inputs:
+        scriptType: inlineScript
+        inlineScript: |
+          Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip"
+          Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
+          Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
+          Import-Module -Name Pester -MaximumVersion 4.10.1
+          Set-Location "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\"
+          Invoke-Pester -Script "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(Common.TestResultsDirectory)\armtkk.nunit'
+        failTaskOnFailedTests: true
+        testRunTitle: 'Management Groups ARM TTK'
