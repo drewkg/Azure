@@ -3,10 +3,12 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "_artifactsLocationSasToken": {
-      "type": "securestring"
+      "type": "securestring",
+      "defaultValue": ""
     },
     "location": {
       "type": "string",
