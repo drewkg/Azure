@@ -67,7 +67,7 @@ stages:
           Invoke-Pester -Script "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
 
     - task: PublishTestResults@2
-      displayName: 'Publich Test Results: Diagnostic Policies ARM TTK'
+      displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
       inputs:
         testResultsFormat: 'NUnit'
         testResultsFiles: '$(Common.TestResultsDirectory)\armtkk.nunit'
