@@ -38,6 +38,8 @@
         "diagnostics-eventhub-deploy",
         "diagnostics-expressroute-deploy",
         "diagnostics-fd-deploy",
+        "diagnostics-functionapp-deploy",
+        "diagnostics-fw-deploy",
         "diagnostics-hdinsight-deploy",
         "diagnostics-iothub-deploy",
         "diagnostics-keyvaults-deploy",
@@ -47,8 +49,8 @@
         "diagnostics-mysqldb-deploy",
         "diagnostics-networkinterfaces-deploy",
         "diagnostics-nsg-deploy",
-        "diagnostics-postgresql-deploy",
         "diagnostics-pbi-deploy",
+        "diagnostics-postgresql-deploy",
         "diagnostics-publicip-deploy",
         "diagnostics-recoveryvault-deploy",
         "diagnostics-redis-deploy",
@@ -58,13 +60,13 @@
         "diagnostics-signalr-deploy",
         "diagnostics-sqldb-deploy",
         "diagnostics-sqlelasticpool-deploy",
-        "diagnostics-sqlmidb-deploy",
         "diagnostics-sqlmi-deploy",
+        "diagnostics-sqlmidb-deploy",
         "diagnostics-streamanalytic-deploy",
         "diagnostics-timeseries-deploy",
         "diagnostics-traf-deploy",
         "diagnostics-vgw-deploy",
-        "diagnostics-vms-deploy",
+        "diagnostics-vm-deploy",
         "diagnostics-vmss-deploy",
         "diagnostics-vnet-deploy",
         "diagnostics-wvdappgroup-deploy",
@@ -82,7 +84,8 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json', parameters('_artifactsLocationSasToken'))]"
+          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json')]",
+          "queryString": "[parameters('_artifactsLocationSasToken')]"
         }
       },
       "copy": {
