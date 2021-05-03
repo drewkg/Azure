@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-analysisservices-deploy",
+      "name": "diagnostics-kv-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Analysis Services to a Log Analytics workspace",
-        "description": "Apply diagnostic settings for Analysis Services to send data to a Log Analytics workspace which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Key Vault to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Key Vault to stream data to a Log Analytics workspace when any Key Vault which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.AnalysisServices/servers"
+            "equals": "Microsoft.KeyVault/vaults"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.AnalysisServices/servers/providers/diagnosticSettings",
+                        "type": "Microsoft.KeyVault/vaults/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -103,11 +103,7 @@
                           ],
                           "logs": [
                             {
-                              "category": "Engine",
-                              "enabled": true
-                            },
-                            {
-                              "category": "Service",
+                              "category": "AuditEvent",
                               "enabled": true
                             }
                           ]
