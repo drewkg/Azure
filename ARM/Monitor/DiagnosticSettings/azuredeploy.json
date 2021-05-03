@@ -17,7 +17,8 @@
     "diagnosticPolicies": {
       "type": "array",
       "defaultValue": [
-        "diagnostics-aks-deploy",
+        "diagnostics-adf-deploy-policy",
+        "diagnostics-aks-deploy-policy",
         "diagnostics-analysisservices-deploy",
         "diagnostics-apim-deploy",
         "diagnostics-appgw-deploy",
@@ -30,7 +31,6 @@
         "diagnostics-containerinstance-deploy",
         "diagnostics-containerregistry-deploy",
         "diagnostics-cosmosdb-deploy",
-        "diagnostics-datafactory-deploy",
         "diagnostics-datalakeanalytics-deploy",
         "diagnostics-datalakestore-deploy",
         "diagnostics-eventgridsub-deploy",
