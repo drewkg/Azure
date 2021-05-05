@@ -1,0 +1,252 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"environment": {
+			"type": "string",
+			"defaultValue": "ObjInt",
+			"metadata": {
+				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
+			}
+		},
+		"resourceLocation": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().location]",
+			"metadata": {
+				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
+			}
+		}
+	},
+	"variables": {
+		"environment": "[parameters('environment')]",
+		"applicationInsightsName": "[concat(variables('environment'), '-appi')]",
+		"appServiceName": "[concat(variables('environment'), '-as')]",
+		"appServicePlanName": "[concat(variables('environment'), '-asp')]",
+		"dashboardName": "[concat(variables('environment'), '-dash')]"
+	},
+	"resources": [
+		{
+			"name": "[variables('applicationInsightsName')]",
+			"type": "microsoft.insights/components",
+			"apiVersion": "2018-05-01-preview",
+			"location": "[parameters('resourceLocation')]",
+			"kind": "web",
+			"properties": {
+				"Application_Type": "web",
+				"Flow_Type": "Bluefield",
+				"Request_Source": "rest",
+				"RetentionInDays": 90,
+				"publicNetworkAccessForIngestion": "Enabled",
+				"publicNetworkAccessForQuery": "Enabled"
+			}
+		},
+		{
+			"name": "string",
+			"type": "Microsoft.Portal/dashboards",
+			"apiVersion": "2020-09-01-preview",
+			"location": "[parameters('resourceLocation')]",
+			"properties": {
+				"lenses": [
+					{
+						"order": 0,
+						"parts": [
+							{
+								"0": {
+									"position": {
+									"x": 0,
+									"y": 0,
+									"rowSpan": 1,
+									"colSpan": 2
+									},
+									"metadata": {
+									"inputs": [
+										{
+										"name": "id",
+										"value": "/subscriptions/43afc783-3e3a-45b3-b3bb-5a0ea1886fde/resourceGroups/KeithDrew.NET/providers/microsoft.insights/components/keithdrewnet-appi"
+										},
+										{
+										"name": "Version",
+										"value": "1.0"
+										}
+									],
+									"type": "Extension/AppInsightsExtension/PartType/AspNetOverviewPinnedPart",
+									"asset": {
+										"idInputName": "id",
+										"type": "ApplicationInsights"
+									},
+									"defaultMenuItemId": "overview"
+									}
+								}
+							}
+						]
+					}
+				],
+				"metadata": {}
+			}
+		},
+		{
+			"type": "Microsoft.Web/serverfarms",
+			"apiVersion": "2018-02-01",
+			"name": "[variables('appServicePlanName')]",
+			"location": "[parameters('resourceLocation')]",
+			"sku": {
+				"name": "B1",
+				"tier": "Basic",
+				"size": "B1",
+				"family": "B",
+				"capacity": 1
+			},
+			"kind": "app",
+			"properties": {
+				"perSiteScaling": false,
+				"maximumElasticWorkerCount": 1,
+				"isSpot": false,
+				"reserved": false,
+				"isXenon": false,
+				"hyperV": false,
+				"targetWorkerCount": 0,
+				"targetWorkerSizeId": 0
+			}
+		},
+		{
+			"type": "Microsoft.Web/sites",
+			"apiVersion": "2018-11-01",
+			"name": "[variables('appServiceName')]",
+			"location": "[parameters('resourceLocation')]",
+			"dependsOn": [
+				"[variables('appServicePlanName')]"
+			],
+			"kind": "app",
+			"properties": {
+				"enabled": true,
+				"hostNameSslStates": [
+					{
+						"name": "[concat(variables('appServiceName'), '.azurewebsites.net')]",
+						"sslState": "Disabled",
+						"hostType": "Standard"
+					},
+					{
+						"name": "[concat(variables('appServiceName'), '.scm.azurewebsites.net')]",
+						"sslState": "Disabled",
+						"hostType": "Repository"
+					}
+				],
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+				"reserved": false,
+				"isXenon": false,
+				"hyperV": false,
+				"siteConfig": {},
+				"scmSiteAlsoStopped": false,
+				"clientAffinityEnabled": true,
+				"clientCertEnabled": false,
+				"hostNamesDisabled": false,
+				"containerSize": 0,
+				"dailyMemoryTimeQuota": 0,
+				"httpsOnly": true,
+				"redundancyMode": "None"
+			},
+			"identity": {
+				"type": "SystemAssigned"
+			},
+			"resources": [
+				{
+					"type": "Microsoft.Web/sites/config",
+					"apiVersion": "2018-11-01",
+					"name": "[concat(variables('appServiceName'), '/web')]",
+					"location": "[parameters('resourceLocation')]",
+					"dependsOn": [
+						"[variables('appServiceName')]"
+					],
+					"properties": {
+						"numberOfWorkers": 1,
+						"defaultDocuments": [
+							"Default.htm",
+							"Default.html",
+							"Default.asp",
+							"index.htm",
+							"index.html",
+							"iisstart.htm",
+							"default.aspx",
+							"index.php",
+							"hostingstart.html"
+						],
+						"netFrameworkVersion": "v4.0",
+						"requestTracingEnabled": false,
+						"remoteDebuggingEnabled": false,
+						"remoteDebuggingVersion": "VS2019",
+						"httpLoggingEnabled": false,
+						"logsDirectorySizeLimit": 35,
+						"detailedErrorLoggingEnabled": false,
+						"publishingUsername": "$KeithDrewNet",
+						"azureStorageAccounts": {},
+						"scmType": "VSTSRM",
+						"use32BitWorkerProcess": true,
+						"webSocketsEnabled": false,
+						"alwaysOn": true,
+						"managedPipelineMode": "Integrated",
+						"virtualApplications": [
+							{
+								"virtualPath": "/",
+								"physicalPath": "site\\wwwroot",
+								"preloadEnabled": true
+							}
+						],
+						"loadBalancing": "LeastRequests",
+						"experiments": {
+							"rampUpRules": []
+						},
+						"autoHealEnabled": false,
+						"localMySqlEnabled": false,
+						"ipSecurityRestrictions": [
+							{
+								"ipAddress": "Any",
+								"action": "Allow",
+								"priority": 1,
+								"name": "Allow all",
+								"description": "Allow all access"
+							}
+						],
+						"scmIpSecurityRestrictions": [
+							{
+								"ipAddress": "Any",
+								"action": "Allow",
+								"priority": 1,
+								"name": "Allow all",
+								"description": "Allow all access"
+							}
+						],
+						"scmIpSecurityRestrictionsUseMain": false,
+						"http20Enabled": false,
+						"minTlsVersion": "1.2",
+						"ftpsState": "Disabled"
+					}
+				},
+				{
+					"name": "[concat(variables('appServiceName'), '/appsettings')]",
+					"type": "Microsoft.Web/sites/config",
+					"apiVersion": "2020-09-01",
+					"dependsOn": [
+						"[variables('appServiceName')]"
+					],
+					"properties": {
+						"APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
+					}
+				},
+				{
+					"type": "Microsoft.Web/sites/hostNameBindings",
+					"apiVersion": "2018-11-01",
+					"name": "[concat(variables('appServiceName'), '/', variables('appServiceName'), '.azurewebsites.net')]",
+					"location": "[parameters('resourceLocation')]",
+					"dependsOn": [
+						"[variables('appServiceName')]"
+					],
+					"properties": {
+						"siteName": "[variables('appServiceName')]",
+						"hostNameType": "Verified"
+					}
+				}
+			]
+		}
+	],
+	"outputs": { }
+}
