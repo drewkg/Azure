@@ -22,22 +22,68 @@
 		"applicationInsightsName": "[concat(variables('environment'), '-appi')]",
 		"appServiceName": "[concat(variables('environment'), '-as')]",
 		"appServicePlanName": "[concat(variables('environment'), '-asp')]",
-		"dashboardName": "[concat(variables('environment'), '-dash')]"
+		"dashboardName": "[concat(variables('environment'), '-dashboard')]"
 	},
 	"resources": [
 		{
-			"name": "[variables('applicationInsightsName')]",
-			"type": "microsoft.insights/components",
-			"apiVersion": "2018-05-01-preview",
+			"name": "ApplicationInsights",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2021-04-01",
 			"location": "[parameters('resourceLocation')]",
-			"kind": "web",
 			"properties": {
-				"Application_Type": "web",
-				"Flow_Type": "Bluefield",
-				"Request_Source": "rest",
-				"RetentionInDays": 90,
-				"publicNetworkAccessForIngestion": "Enabled",
-				"publicNetworkAccessForQuery": "Enabled"
+				"template": {
+					"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+					"contentVersion": "1.0.0.0",
+					"parameters": {
+						"applicationInsightsName": {
+							"type": "string",
+							"metadata": {
+								"description": "The resource name for the Application Insights instance."
+							}
+						},
+						"resourceLocation": {
+							"type": "string",
+							"metadata": {
+								"description": "The location of the resources created, excluding 'Global'."
+							}
+						}
+					},
+					"resources": [
+						{
+							"name": "[parameters('applicationInsightsName')]",
+							"type": "microsoft.insights/components",
+							"apiVersion": "2018-05-01-preview",
+							"location": "[parameters('resourceLocation')]",
+							"kind": "web",
+							"properties": {
+								"Application_Type": "web",
+								"Flow_Type": "Bluefield",
+								"Request_Source": "rest",
+								"RetentionInDays": 90,
+								"publicNetworkAccessForIngestion": "Enabled",
+								"publicNetworkAccessForQuery": "Enabled"
+							}
+						}
+					],
+					"outputs": {
+						"applicationInsightsInstrumentationKey": {
+							"type": "string",
+							"value": "[reference(resourceId('Microsoft.Insights/components', parameters('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
+						}
+					}
+				},
+				"parameters": {
+					"applicationInsightsName": {
+						"value": "[variables('applicationInsightsName')]"
+					},
+					"resourceLocation": {
+						"value": "[parameters('resourceLocation')]"
+					}
+				},
+				"mode": "Incremental",
+				"expressionEvaluationOptions": {
+					"scope": "Inner"
+				}
 			}
 		},
 		{
