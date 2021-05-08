@@ -30,8 +30,8 @@
         "diagnostics-cog-deploy",
         "diagnostics-cosmos-deploy",
         "diagnostics-cr-deploy",
-        "diagnostics-datalakeanalytics-deploy",
-        "diagnostics-datalakestore-deploy",
+        "diagnostics-dla-deploy",
+        "diagnostics-dls-deploy",
         "diagnostics-eventgridsub-deploy",
         "diagnostics-eventgridtopic-deploy",
         "diagnostics-eventhub-deploy",
@@ -84,8 +84,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json')]",
-          "queryString": "[parameters('_artifactsLocationSasToken')]"
+          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json')]"
         }
       },
       "copy": {
