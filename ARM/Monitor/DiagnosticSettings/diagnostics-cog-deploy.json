@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-cdnendpoints-deploy",
+      "name": "diagnostics-cog-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Content Delivery Network Endpoint to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Content Delivery Network Endpoint to stream data to a Log Analytics workspace when any Content Delivery Network Endpoint which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Cognitive Services to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Cognitive Services to stream data to a Log Analytics workspace when any Cognitive Services which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Cdn/profiles/endpoints"
+            "equals": "Microsoft.CognitiveServices/accounts"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -50,6 +50,10 @@
                 "allOf": [
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                    "equals": "True"
+                  },
+                  {
+                    "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
                   },
                   {
@@ -80,15 +84,30 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Cdn/profiles/endpoints/providers/diagnosticSettings",
+                        "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
+                          "metrics": [
+                            {
+                              "category": "AllMetrics",
+                              "enabled": true,
+                              "retentionPolicy": {
+                                "days": 0,
+                                "enabled": false
+                              },
+                              "timeGrain": null
+                            }
+                          ],
                           "logs": [
                             {
-                              "category": "CoreAnalytics",
+                              "category": "Audit",
+                              "enabled": true
+                            },
+                            {
+                              "category": "RequestResponse",
                               "enabled": true
                             }
                           ]
@@ -107,7 +126,7 @@
                       "value": "[[field('location')]"
                     },
                     "resourceName": {
-                      "value": "[[field('fullName')]"
+                      "value": "[[field('name')]"
                     }
                   }
                 }

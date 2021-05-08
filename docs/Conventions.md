@@ -62,6 +62,7 @@ App Service plan | Microsoft.Web/serverFarms | plan
 Availability set | Microsoft.Compute/availabilitySets | avail
 Azure Arc enabled server | Microsoft.HybridCompute/machines | arcs
 Azure Arc enabled Kubernetes cluster | Microsoft.Kubernetes/connectedClusters | arck
+Batch Account | Microsoft.Batch/batchAccounts | batch
 Cloud service | Microsoft.Compute/cloudServices | cld
 Disk encryption set | Microsoft.Compute/diskEncryptionSets | des
 Function app | Microsoft.Web/sites | func
