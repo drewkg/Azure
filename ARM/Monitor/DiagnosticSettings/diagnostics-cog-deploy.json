@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-datafactory-deploy",
+      "name": "diagnostics-cog-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Data Factory to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Data Factory to stream data to a Log Analytics workspace when any Data Factory which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Cognitive Services to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Cognitive Services to stream data to a Log Analytics workspace when any Cognitive Services which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.DataFactory/factories"
+            "equals": "Microsoft.CognitiveServices/accounts"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.DataFactory/factories/providers/diagnosticSettings",
+                        "type": "Microsoft.CognitiveServices/accounts/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -103,39 +103,11 @@
                           ],
                           "logs": [
                             {
-                              "category": "ActivityRuns",
+                              "category": "Audit",
                               "enabled": true
                             },
                             {
-                              "category": "PipelineRuns",
-                              "enabled": true
-                            },
-                            {
-                              "category": "TriggerRuns",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISPackageEventMessages",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISPackageExecutableStatistics",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISPackageEventMessageContext",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISPackageExecutionComponentPhases",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISPackageExecutionDataStatistics",
-                              "enabled": true
-                            },
-                            {
-                              "category": "SSISIntegrationRuntimeLogs",
+                              "category": "RequestResponse",
                               "enabled": true
                             }
                           ]

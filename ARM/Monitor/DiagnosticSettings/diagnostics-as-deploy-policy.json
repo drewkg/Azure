@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-appservice-deploy",
+      "name": "diagnostics-as-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for App Service to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for App Service to stream data to a Log Analytics workspace when any App Service which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Analysis Services to a Log Analytics workspace",
+        "description": "Apply diagnostic settings for Analysis Services to send data to a Log Analytics workspace which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -36,16 +36,8 @@
         "policyType": "Custom",
         "policyRule": {
           "if": {
-            "allOf": [
-              {
-                "field": "type",
-                "equals": "Microsoft.Web/sites"
-              },
-              {
-                "field": "kind",
-                "matchInsensitively": "app"
-              }
-            ]
+            "field": "type",
+            "equals": "Microsoft.AnalysisServices/servers"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -57,11 +49,11 @@
               "existenceCondition": {
                 "allOf": [
                   {
-                    "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
+                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
                     "equals": "True"
                   },
                   {
-                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
+                    "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
                   },
                   {
@@ -92,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Web/sites/providers/diagnosticSettings",
+                        "type": "Microsoft.AnalysisServices/servers/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -111,31 +103,11 @@
                           ],
                           "logs": [
                             {
-                              "category": "AppServiceHTTPLogs",
+                              "category": "Engine",
                               "enabled": true
                             },
                             {
-                              "category": "AppServiceConsoleLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "AppServiceAppLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "AppServiceFileAuditLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "AppServiceAuditLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "AppServiceIPSecAuditLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "AppServicePlatformLogs",
+                              "category": "Service",
                               "enabled": true
                             }
                           ]

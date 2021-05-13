@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-aks-deploy",
+      "name": "diagnostics-adf-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Kubernetes Service to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Kubernetes Service to stream data to a Log Analytics workspace when any Kubernetes Serice which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Data Factory to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Data Factory to stream data to a Log Analytics workspace when any Data Factory which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.ContainerService/managedClusters"
+            "equals": "Microsoft.DataFactory/factories"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -49,21 +49,11 @@
               "existenceCondition": {
                 "allOf": [
                   {
-                    "field": "Microsoft.Insights/diagnosticSettings/logs[*].Category",
-                    "in": [
-                      "guard",
-                      "kube-apiserver",
-                      "kube-controller-manager",
-                      "kube-scheduler",
-                      "cluster-autoscaler"
-                    ]
-                  },
-                  {
-                    "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
+                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
                     "equals": "True"
                   },
                   {
-                    "field": "Microsoft.Insights/diagnosticSettings/metrics[*].enabled",
+                    "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
                   },
                   {
@@ -94,13 +84,12 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.ContainerService/managedClusters/providers/diagnosticSettings",
+                        "type": "Microsoft.DataFactory/factories/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
-                          "logAnalyticsDestinationType": "Dedicated",
                           "metrics": [
                             {
                               "category": "AllMetrics",
@@ -114,23 +103,39 @@
                           ],
                           "logs": [
                             {
-                              "category": "guard",
+                              "category": "ActivityRuns",
                               "enabled": true
                             },
                             {
-                              "category": "kube-apiserver",
+                              "category": "PipelineRuns",
                               "enabled": true
                             },
                             {
-                              "category": "kube-controller-manager",
+                              "category": "TriggerRuns",
                               "enabled": true
                             },
                             {
-                              "category": "kube-scheduler",
+                              "category": "SSISPackageEventMessages",
                               "enabled": true
                             },
                             {
-                              "category": "cluster-autoscaler",
+                              "category": "SSISPackageExecutableStatistics",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageEventMessageContext",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageExecutionComponentPhases",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISPackageExecutionDataStatistics",
+                              "enabled": true
+                            },
+                            {
+                              "category": "SSISIntegrationRuntimeLogs",
                               "enabled": true
                             }
                           ]

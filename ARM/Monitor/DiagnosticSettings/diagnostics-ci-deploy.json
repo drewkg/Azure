@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-automationaccounts-deploy",
+      "name": "diagnostics-ci-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Automation Accounts to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Automation Accounts to stream data to a Log Analytics workspace when any Automation Account which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Container Instance to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Container Instance to stream data to a Log Analytics workspace when any Container Instance which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Automation/automationAccounts"
+            "equals": "Microsoft.ContainerInstance/containerGroups"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -48,10 +48,6 @@
               ],
               "existenceCondition": {
                 "allOf": [
-                  {
-                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                    "equals": "True"
-                  },
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
@@ -84,7 +80,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Automation/automationAccounts/providers/diagnosticSettings",
+                        "type": "Microsoft.ContainerInstance/containerGroups/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -93,26 +89,12 @@
                           "metrics": [
                             {
                               "category": "AllMetrics",
-                              "timeGrain": null,
                               "enabled": true,
                               "retentionPolicy": {
-                                "enabled": false,
-                                "days": 0
-                              }
-                            }
-                          ],
-                          "logs": [
-                            {
-                              "category": "JobLogs",
-                              "enabled": true
-                            },
-                            {
-                              "category": "JobStreams",
-                              "enabled": true
-                            },
-                            {
-                              "category": "DscNodeStatus",
-                              "enabled": true
+                                "days": 0,
+                                "enabled": false
+                              },
+                              "timeGrain": null
                             }
                           ]
                         }

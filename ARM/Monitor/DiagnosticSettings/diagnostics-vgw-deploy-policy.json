@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-datalakeanalytics-deploy",
+      "name": "diagnostics-vgw-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Data Lake Analytics to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Data Lake Analytics to stream data to a Log Analytics workspace when any Data Lake Analytics which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Virtual Network Gateways to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Virtual Network Gateways to stream data to a Log Analytics workspace when any Virtual Network Gateways which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.DataLakeAnalytics/accounts"
+            "equals": "Microsoft.Network/virtualNetworkGateways"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -84,7 +84,7 @@
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.DataLakeAnalytics/accounts/providers/diagnosticSettings",
+                        "type": "Microsoft.Network/virtualNetworkGateways/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
@@ -103,11 +103,27 @@
                           ],
                           "logs": [
                             {
-                              "category": "Audit",
+                              "category": "GatewayDiagnosticLog",
                               "enabled": true
                             },
                             {
-                              "category": "Requests",
+                              "category": "IKEDiagnosticLog",
+                              "enabled": true
+                            },
+                            {
+                              "category": "P2SDiagnosticLog",
+                              "enabled": true
+                            },
+                            {
+                              "category": "RouteDiagnosticLog",
+                              "enabled": true
+                            },
+                            {
+                              "category": "RouteDiagnosticLog",
+                              "enabled": true
+                            },
+                            {
+                              "category": "TunnelDiagnosticLog",
                               "enabled": true
                             }
                           ]

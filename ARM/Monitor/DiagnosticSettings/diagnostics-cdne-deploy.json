@@ -4,11 +4,11 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-appgw-deploy",
+      "name": "diagnostics-cdne-deploy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Application Gateway to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Application Gateway to stream data to a Log Analytics workspace when any Application Gateway which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Content Delivery Network Endpoint to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Content Delivery Network Endpoint to stream data to a Log Analytics workspace when any Content Delivery Network Endpoint which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Network/applicationGateways"
+            "equals": "Microsoft.Cdn/profiles/endpoints"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -50,10 +50,6 @@
                 "allOf": [
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                    "equals": "True"
-                  },
-                  {
-                    "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
                   },
                   {
@@ -82,37 +78,17 @@
                         "type": "string"
                       }
                     },
-                    "variables": {},
                     "resources": [
                       {
-                        "type": "Microsoft.Network/applicationGateways/providers/diagnosticSettings",
+                        "type": "Microsoft.Cdn/profiles/endpoints/providers/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
-                          "metrics": [
-                            {
-                              "category": "AllMetrics",
-                              "enabled": true,
-                              "retentionPolicy": {
-                                "days": 0,
-                                "enabled": false
-                              },
-                              "timeGrain": null
-                            }
-                          ],
                           "logs": [
                             {
-                              "category": "ApplicationGatewayAccessLog",
-                              "enabled": true
-                            },
-                            {
-                              "category": "ApplicationGatewayPerformanceLog",
-                              "enabled": true
-                            },
-                            {
-                              "category": "ApplicationGatewayFirewallLog",
+                              "category": "CoreAnalytics",
                               "enabled": true
                             }
                           ]
@@ -131,7 +107,7 @@
                       "value": "[[field('location')]"
                     },
                     "resourceName": {
-                      "value": "[[field('name')]"
+                      "value": "[[field('fullName')]"
                     }
                   }
                 }
