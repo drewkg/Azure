@@ -84,7 +84,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json')]"
+          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json', parameters('_artifactsLocationSasToken'))]"
         }
       },
       "copy": {
