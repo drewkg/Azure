@@ -2,7 +2,9 @@
 
 ## Azure Resources
 
-All Azure resources need to have a unique name, at leats within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resources need to be unique globally, thing storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
+All Azure resources need to have a unique name, at leats within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
+
+Placing the resource extension at the end of the naming convention , which is different to the Mcirosoft best practice, meas resources are grouped by name when viewing a complete list and not by the extension.   I have found in practice this makes a big difference when viewing a large estate.
 
 ### General
 Asset type | Resource provider namespace/Entity | Abbreviation
