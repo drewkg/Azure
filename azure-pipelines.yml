@@ -60,7 +60,7 @@ stages:
           Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
           Import-Module -Name Pester -MaximumVersion 4.10.1
           Set-Location "$(Build.SourcesDirectory)\ARM\"
-          Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path . | ForEach { &  ("$(Build.SourcesDirectory)\ARM\" + $_) }
+          Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path . | ForEach { &  ("$(Build.SourcesDirectory)\ARM\" + $_ + " -OutputFile $(Common.TestResultsDirectory)\" + $_.Split('\')[$_[0].Split('\').Count - 2]  + ".nunit –OutputFormat NUnitXml") }
 
     - task: PublishTestResults@2
       displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
