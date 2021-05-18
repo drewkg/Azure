@@ -1,1 +1,1 @@
-﻿Test-AzTemplate . -Pester
+﻿Test-AzTemplate $PSScriptRoot -Pester
