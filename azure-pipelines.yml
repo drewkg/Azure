@@ -63,10 +63,10 @@ stages:
           Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path . | ForEach { Invoke-Expression ("$(Build.SourcesDirectory)\ARM\" + $_ + " -OutputFile $(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit –OutputFormat NUnitXml") }
 
     - task: PublishTestResults@2
-      displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
       inputs:
         testResultsFormat: 'NUnit'
         testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
-        failTaskOnFailedTests: true
+        searchFolder: '$(Common.TestResultsDirectory)'
         mergeTestResults: true
+        failTaskOnFailedTests: true
         testRunTitle: 'ARM TTK'
