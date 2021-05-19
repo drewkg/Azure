@@ -66,6 +66,7 @@ stages:
       displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(Common.TestResultsDirectory)\armtkk.nunit'
+        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
         failTaskOnFailedTests: true
-        testRunTitle: 'Management Groups ARM TTK'
+        mergeTestResults: true
+        testRunTitle: 'ARM TTK'
