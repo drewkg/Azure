@@ -9,7 +9,7 @@
 				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
 			}
 		},
-		"resourceLocation": {
+		"Location": {
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]",
 			"metadata": {
@@ -28,7 +28,7 @@
 			"name": "[variables('applicationInsightsName')]",
 			"type": "microsoft.insights/components",
 			"apiVersion": "2020-02-02-preview",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[parameters('Location')]",
 			"kind": "web",
 			"properties": {
 				"Application_Type": "web",
@@ -125,7 +125,7 @@
 						"value": "[variables('applicationInsightsName')]"
 					},
 					"resourceLocation": {
-						"value": "[parameters('resourceLocation')]"
+						"value": "[parameters('Location')]"
 					}
 				},
 				"mode": "Incremental",
@@ -138,7 +138,7 @@
 			"type": "Microsoft.Web/serverfarms",
 			"apiVersion": "2020-12-01",
 			"name": "[variables('appServicePlanName')]",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[parameters('Location')]",
 			"sku": {
 				"name": "B1",
 				"tier": "Basic",
@@ -160,7 +160,7 @@
 			"type": "Microsoft.Web/sites",
 			"apiVersion": "2020-12-01",
 			"name": "[variables('appServiceName')]",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[parameters('Location')]",
 			"dependsOn": [
 				"[variables('appServicePlanName')]"
 			],
@@ -200,7 +200,7 @@
 					"type": "Microsoft.Web/sites/config",
 					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/web')]",
-					"location": "[parameters('resourceLocation')]",
+					"location": "[parameters('Location')]",
 					"dependsOn": [
 						"[variables('appServiceName')]"
 					],
@@ -291,7 +291,7 @@
 					"type": "Microsoft.Web/sites/hostNameBindings",
 					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/', variables('appServiceName'), '.azurewebsites.net')]",
-					"location": "[parameters('resourceLocation')]",
+					"location": "[parameters('Location')]",
 					"dependsOn": [
 						"[variables('appServiceName')]"
 					],

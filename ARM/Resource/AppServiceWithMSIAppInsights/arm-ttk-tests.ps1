@@ -1,1 +1,1 @@
-﻿Test-AzTemplate $PSScriptRoot -Skip "Location Should Not Be Hardcoded","IDs Should Be Derived From ResourceIDs" -Pester
+﻿Test-AzTemplate $PSScriptRoot -Skip "IDs Should Be Derived From ResourceIDs" -Pester
