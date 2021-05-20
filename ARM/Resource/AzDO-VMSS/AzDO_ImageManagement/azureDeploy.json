@@ -1,0 +1,174 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location of the resources to be created, defaults to the resource group location."
+      }
+    },
+    "imageGalleryName": {
+      "type": "string",
+      "defaultValue": "sigDiveTrainAzDOAgentsQA"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "defaultValue": "sadrivetrainazdoagentsqa"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "uai-DevOps-ImageBuilder",
+      "apiVersion": "2018-11-30",
+      "location": "[parameters('Location')]"
+    },
+    {
+      "type": "Microsoft.Compute/galleries",
+      "apiVersion": "2019-12-01",
+      "name": "[parameters('imageGalleryName')]",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "uai-DevOps-ImageBuilder"
+      ]
+    },
+    {
+      "type": "Microsoft.Compute/galleries/images",
+      "apiVersion": "2019-12-01",
+      "name": "[concat(parameters('imageGalleryName'), '/DriveTrainWinPS01')]",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[parameters('imageGalleryName')]"
+      ],
+      "properties": {
+        "osType": "Windows",
+        "osState": "Generalized",
+        "identifier": {
+          "publisher": "MicrosoftWindowsServer",
+          "offer": "WindowsServer",
+          "sku": "2019-Datacenter"
+        },
+        "recommended": {
+          "vCPUs": {
+            "min": 2,
+            "max": 16
+          },
+          "memory": {
+            "min": 2048,
+            "max": 4096
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[parameters('storageAccountName')]",
+      "location": "[parameters('Location')]",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      },
+      "resources": [
+        {
+          "type": "blobServices",
+          "apiVersion": "2019-06-01",
+          "name": "default",
+          "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+          ],
+          "properties": {
+            "deleteRetentionPolicy": {
+              "enabled": false
+            }
+          },
+          "resources": [
+            {
+              "type": "containers",
+              "apiVersion": "2019-06-01",
+              "name": "drivetrainwinps",
+              "dependsOn": [
+                "default",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ],
+              "properties": {
+                "publicAccess": "None"
+              }
+            },
+            {
+              "type": "containers",
+              "apiVersion": "2019-06-01",
+              "name": "vmextensions",
+              "dependsOn": [
+                "default",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+              ],
+              "properties": {
+                "publicAccess": "None"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "[guid(concat(resourceGroup().name, '-uai-DevOps-ImageBuilderContributor'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "dependsOn": [
+        "uai-DevOps-ImageBuilder",
+        "[parameters('imageGalleryName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+        "principalId": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
+      "name": "[guid(concat(resourceGroup().name, '-uai-DevOps-ImageBuilderBlobReader'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-10-01-preview",
+      "dependsOn": [
+        "uai-DevOps-ImageBuilder",
+        "[parameters('imageGalleryName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+        "principalId": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]"
+      }
+    }
+  ],
+  "outputs": {
+    "DriveTrainImageBuilderIdentity": {
+      "type": "string",
+      "value": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]"
+    }
+  }
+}
