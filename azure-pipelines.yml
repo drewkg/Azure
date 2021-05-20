@@ -50,9 +50,6 @@ stages:
     steps:
     - checkout: self
 
-    - script: echo Hello, world!
-      displayName: 'Run a one-line script'
-
     - task: PowerShell@1
       displayName: 'Install & Run ARM-TTK'
       inputs:
@@ -62,13 +59,14 @@ stages:
           Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
           Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
           Import-Module -Name Pester -MaximumVersion 4.10.1
-          Set-Location "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\"
-          Invoke-Pester -Script "$(Build.SourcesDirectory)\ARM\Monitor\DiagnosticSettings\arm-ttk-tests.ps1" -OutputFile "$(Common.TestResultsDirectory)\armtkk.nunit" –OutputFormat NUnitXml
+          Set-Location "$(Build.SourcesDirectory)"
+          Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach { Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml }
 
     - task: PublishTestResults@2
-      displayName: 'Publish Test Results: Diagnostic Policies ARM TTK'
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(Common.TestResultsDirectory)\armtkk.nunit'
+        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
+        searchFolder: '$(Common.TestResultsDirectory)'
+        mergeTestResults: true
         failTaskOnFailedTests: true
-        testRunTitle: 'Management Groups ARM TTK'
+        testRunTitle: 'ARM TTK'

@@ -27,7 +27,7 @@
 		{
 			"name": "[variables('applicationInsightsName')]",
 			"type": "microsoft.insights/components",
-			"apiVersion": "2018-05-01-preview",
+			"apiVersion": "2020-02-02-preview",
 			"location": "[parameters('resourceLocation')]",
 			"kind": "web",
 			"properties": {
@@ -136,7 +136,7 @@
 		},
 		{
 			"type": "Microsoft.Web/serverfarms",
-			"apiVersion": "2018-02-01",
+			"apiVersion": "2020-12-01",
 			"name": "[variables('appServicePlanName')]",
 			"location": "[parameters('resourceLocation')]",
 			"sku": {
@@ -153,14 +153,12 @@
 				"isSpot": false,
 				"reserved": false,
 				"isXenon": false,
-				"hyperV": false,
-				"targetWorkerCount": 0,
-				"targetWorkerSizeId": 0
+				"hyperV": false
 			}
 		},
 		{
 			"type": "Microsoft.Web/sites",
-			"apiVersion": "2018-11-01",
+			"apiVersion": "2020-12-01",
 			"name": "[variables('appServiceName')]",
 			"location": "[parameters('resourceLocation')]",
 			"dependsOn": [
@@ -185,7 +183,6 @@
 				"reserved": false,
 				"isXenon": false,
 				"hyperV": false,
-				"siteConfig": {},
 				"scmSiteAlsoStopped": false,
 				"clientAffinityEnabled": true,
 				"clientCertEnabled": false,
@@ -201,7 +198,7 @@
 			"resources": [
 				{
 					"type": "Microsoft.Web/sites/config",
-					"apiVersion": "2018-11-01",
+					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/web')]",
 					"location": "[parameters('resourceLocation')]",
 					"dependsOn": [
@@ -228,7 +225,6 @@
 						"logsDirectorySizeLimit": 35,
 						"detailedErrorLoggingEnabled": false,
 						"publishingUsername": "$KeithDrewNet",
-						"azureStorageAccounts": {},
 						"scmType": "VSTSRM",
 						"use32BitWorkerProcess": true,
 						"webSocketsEnabled": false,
@@ -242,9 +238,6 @@
 							}
 						],
 						"loadBalancing": "LeastRequests",
-						"experiments": {
-							"rampUpRules": []
-						},
 						"autoHealEnabled": false,
 						"localMySqlEnabled": false,
 						"ipSecurityRestrictions": [
@@ -274,7 +267,7 @@
 				{
 					"name": "[concat(variables('appServiceName'), '/appsettings')]",
 					"type": "Microsoft.Web/sites/config",
-					"apiVersion": "2020-09-01",
+					"apiVersion": "2020-12-01",
 					"dependsOn": [
 						"[variables('appServiceName')]"
 					],
@@ -296,7 +289,7 @@
 				},
 				{
 					"type": "Microsoft.Web/sites/hostNameBindings",
-					"apiVersion": "2018-11-01",
+					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/', variables('appServiceName'), '.azurewebsites.net')]",
 					"location": "[parameters('resourceLocation')]",
 					"dependsOn": [
