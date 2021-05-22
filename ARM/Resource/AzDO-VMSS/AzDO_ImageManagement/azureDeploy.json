@@ -11,11 +11,13 @@
     },
     "imageGalleryName": {
       "type": "string",
-      "defaultValue": "sigDiveTrainAzDOAgentsQA"
+      "defaultValue": "AzDOAgentImagesgal"
     },
     "storageAccountName": {
       "type": "string",
-      "defaultValue": "sadrivetrainazdoagentsqa"
+      "defaultValue": "azdoimagemanagementuksst",
+      "minLength": 3,
+      "maxLength": 24
     }
   },
   "variables": {},
@@ -28,17 +30,18 @@
     },
     {
       "type": "Microsoft.Compute/galleries",
-      "apiVersion": "2019-12-01",
+      "apiVersion": "2020-09-30",
       "name": "[parameters('imageGalleryName')]",
       "location": "[parameters('Location')]",
       "dependsOn": [
         "uai-DevOps-ImageBuilder"
-      ]
+      ],
+      "properties": { }
     },
     {
       "type": "Microsoft.Compute/galleries/images",
-      "apiVersion": "2019-12-01",
-      "name": "[concat(parameters('imageGalleryName'), '/DriveTrainWinPS01')]",
+      "apiVersion": "2020-09-30",
+      "name": "[concat(parameters('imageGalleryName'), '/Windows-2019-Base')]",
       "location": "[parameters('Location')]",
       "dependsOn": [
         "[parameters('imageGalleryName')]"

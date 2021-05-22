@@ -43,6 +43,7 @@
     },
     "adminPassword": {
       "type": "securestring",
+      "defaultValue": "[newGuid()]",
       "metadata": {
         "description": "Admin password for all the scaleset VMs"
       }

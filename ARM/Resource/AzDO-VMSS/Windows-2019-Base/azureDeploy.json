@@ -10,32 +10,40 @@
       }
     },
     "imagetemplatename": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "Windows2019Base"
     },
     "publisher": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "Objects"
     },
     "offer": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "sku": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "version": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "galleryImageSubscription": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "galleryImageResourceGroup": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "galleryImageId": {
       "type": "string",
       "defaultValue": "/subscriptions/28fe843b-a2d0-4f2a-97b4-cbd2a52a968e/resourceGroups/RG-DevOps-QA-BuildAgent-Management/providers/Microsoft.Compute/galleries/sigDiveTrainAzDOAgentsQA/images/"
     },
     "sharedgalimagename": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": ""
     },
     "destinationregion": {
       "type": "array",
