@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Locations": {
+      "type": "array",
+      "minLength": 1,
+      "defaultValue": [
+        "uksouth"
+      ],
+      "allowedValues": [
+        "eastasia",
+        "southeastasia",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "westus",
+        "westcentralus",
+        "westus2",
+        "westus3",
+        "northcentralus",
+        "southcentralus",
+        "northeurope",
+        "westeurope",
+        "japanwest",
+        "japaneast",
+        "brazilsouth",
+        "australiaeast",
+        "australiasoutheast",
+        "southindia",
+        "centralindia",
+        "westindia",
+        "canadacentral",
+        "canadaeast",
+        "uksouth",
+        "ukwest",
+        "koreacentral",
+        "koreasouth",
+        "francecentral",
+        "francesouth",
+        "australiacentral",
+        "australiacentral2",
+        "uaecentral",
+        "uaenorth",
+        "southafricanorth",
+        "southafricawest",
+        "switzerlandnorth",
+        "switzerlandwest",
+        "germanynorth",
+        "germanywestcentral",
+        "norwaywest",
+        "norwayeast",
+        "brazilsoutheast"
+      ],
+      "metadata": {
+        "description": "Array of geographic locations to create a network watcher resource in."
+      }
+    }
+  },
+  "resources": [
+    {
+      "name": "[concat(parameters('Locations')[copyIndex()], '-nw')]",
+      "type": "Microsoft.Network/networkWatchers",
+      "apiVersion": "2020-11-01",
+      "location": "[parameters('Locations')[copyIndex()]]",
+      "properties": { },
+      "copy": {
+        "name": "locations",
+        "count": "[length(parameters('Locations'))]"
+      }
+    }
+  ]
+}
