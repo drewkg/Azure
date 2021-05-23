@@ -33,38 +33,37 @@
       "apiVersion": "2020-09-30",
       "name": "[parameters('imageGalleryName')]",
       "location": "[parameters('Location')]",
-      "dependsOn": [
-        "uai-DevOps-ImageBuilder"
-      ],
-      "properties": { }
-    },
-    {
-      "type": "Microsoft.Compute/galleries/images",
-      "apiVersion": "2020-09-30",
-      "name": "[concat(parameters('imageGalleryName'), '/Windows-2019-Base')]",
-      "location": "[parameters('Location')]",
-      "dependsOn": [
-        "[parameters('imageGalleryName')]"
-      ],
-      "properties": {
-        "osType": "Windows",
-        "osState": "Generalized",
-        "identifier": {
-          "publisher": "MicrosoftWindowsServer",
-          "offer": "WindowsServer",
-          "sku": "2019-Datacenter"
-        },
-        "recommended": {
-          "vCPUs": {
-            "min": 2,
-            "max": 16
-          },
-          "memory": {
-            "min": 2048,
-            "max": 4096
+      "properties": { },
+      "resources": [
+        {
+          "type": "images",
+          "apiVersion": "2020-09-30",
+          "name": "Windows-2019-Base'",
+          "location": "[parameters('Location')]",
+          "dependsOn": [
+            "[parameters('imageGalleryName')]"
+          ],
+          "properties": {
+            "osType": "Windows",
+            "osState": "Generalized",
+            "identifier": {
+              "publisher": "MicrosoftWindowsServer",
+              "offer": "WindowsServer",
+              "sku": "2019-Datacenter"
+            },
+            "recommended": {
+              "vCPUs": {
+                "min": 2,
+                "max": 16
+              },
+              "memory": {
+                "min": 2048,
+                "max": 4096
+              }
+            }
           }
         }
-      }
+      ]
     },
     {
       "type": "Microsoft.Storage/storageAccounts",
@@ -166,12 +165,23 @@
         "principalId": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]",
         "scope": "[resourceGroup().id]"
       }
+    },
+    {
+      "name": "Windows2019ImageDeployment",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "relativePath": "../Windows-2019-Base/azureDeploy.json"
+        },
+        "parameters": {
+          "Location": {
+            "value": "[parameters('Location')]"
+          }
+        }
+      }
     }
-  ],
-  "outputs": {
-    "DriveTrainImageBuilderIdentity": {
-      "type": "string",
-      "value": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]"
-    }
-  }
+  ]
 }
