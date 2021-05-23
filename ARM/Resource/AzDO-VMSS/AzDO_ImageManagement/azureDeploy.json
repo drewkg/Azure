@@ -170,7 +170,6 @@
       "name": "Windows2019ImageDeployment",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
-      "location": "[parameters('Location')]",
       "properties": {
         "mode": "Incremental",
         "templateLink": {
