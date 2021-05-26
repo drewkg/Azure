@@ -36,9 +36,9 @@
       "properties": { },
       "resources": [
         {
-          "type": "images",
+          "type": "Microsoft.Compute/galleries/images",
           "apiVersion": "2020-09-30",
-          "name": "Windows-2019-Base'",
+          "name": "[concat(parameters('imageGalleryName'), '/Windows2019Base')]",
           "location": "[parameters('Location')]",
           "dependsOn": [
             "[parameters('imageGalleryName')]"
@@ -141,10 +141,9 @@
     {
       "name": "[guid(concat(resourceGroup().name, '-uai-DevOps-ImageBuilderContributor'))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2021-04-01-preview",
       "dependsOn": [
-        "uai-DevOps-ImageBuilder",
-        "[parameters('imageGalleryName')]"
+        "uai-DevOps-ImageBuilder"
       ],
       "properties": {
         "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
@@ -155,17 +154,16 @@
     {
       "name": "[guid(concat(resourceGroup().name, '-uai-DevOps-ImageBuilderBlobReader'))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2021-04-01-preview",
       "dependsOn": [
-        "uai-DevOps-ImageBuilder",
-        "[parameters('imageGalleryName')]"
+        "uai-DevOps-ImageBuilder"
       ],
       "properties": {
         "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
         "principalId": "[reference('uai-DevOps-ImageBuilder', '2018-11-30').principalId]",
         "scope": "[resourceGroup().id]"
       }
-    },
+    }/*,
     {
       "name": "Windows2019ImageDeployment",
       "type": "Microsoft.Resources/deployments",
@@ -181,6 +179,6 @@
           }
         }
       }
-    }
+    }*/
   ]
 }
