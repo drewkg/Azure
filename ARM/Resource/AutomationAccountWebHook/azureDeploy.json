@@ -45,7 +45,7 @@
       }
     },
     "_artifactsLocationSasToken": {
-      "type": "string",
+      "type": "securestring",
       "defaultValue": ""
     }
 	},
