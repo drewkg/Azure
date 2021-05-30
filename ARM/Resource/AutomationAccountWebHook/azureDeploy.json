@@ -13,36 +13,40 @@
       "type": "String",
       "defaultValue": "Webhook-aa",
       "metadata": {
-          "description": "Automation account name"
+        "description": "Automation account name"
       }
     },
     "webhookName": {
       "type": "String",
       "defaultValue": "Sample-wh",
       "metadata": {
-          "description": "Webhook Name"
+        "description": "Webhook Name"
       }
     },
     "runbookName": {
       "type": "String",
       "defaultValue": "SampleRunbook",
       "metadata": {
-          "description": "Runbook Name for which webhook will be created"
+        "description": "Runbook Name for which webhook will be created"
       }
     },
     "WebhookExpiryTime": {
       "type": "String",
       "defaultValue": "[dateTimeAdd(utcNow('u'), 'P3Y')]",
       "metadata": {
-          "description": "Webhook Expiry time"
+         "description": "Webhook Expiry time"
       }
     },
     "_artifactsLocation": {
-      "defaultValue": "https://raw.githubusercontent.com/drewkg/Azure/feature/Webhook/ARM/Resource/AutomationAccountWebHook/",
+      "defaultValue": "[deployment().properties.templateLink.uri]",
       "type": "String",
       "metadata": {
-          "description": "URI to artifacts location"
+        "description": "URI to artifacts location"
       }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "string",
+      "defaultValue": ""
     }
 	},
 	"variables": { },
@@ -73,7 +77,7 @@
             "logVerbose": false,
             "description": "Sample Runbook",
             "publishContentLink": {
-              "uri": "[uri(parameters('_artifactsLocation'), 'Script/HelloWorld.ps1')]",
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Script/HelloWorld.ps1'), parameters('_artifactsLocationSasToken'))]",
               "version": "1.0.0.0"
             }
           }
