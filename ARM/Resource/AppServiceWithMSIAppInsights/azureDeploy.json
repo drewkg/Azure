@@ -27,7 +27,7 @@
 		{
 			"name": "[variables('applicationInsightsName')]",
 			"type": "microsoft.insights/components",
-			"apiVersion": "2020-02-02-preview",
+			"apiVersion": "2015-05-01",
 			"location": "[parameters('resourceLocation')]",
 			"kind": "web",
 			"properties": {
