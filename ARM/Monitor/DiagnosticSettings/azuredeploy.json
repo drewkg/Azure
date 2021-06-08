@@ -7,12 +7,12 @@
       "defaultValue": "[deployment().properties.templateLink.uri]"
     },
     "_artifactsLocationSasToken": {
-      "type": "securestring",
+      "type": "string",
       "defaultValue": ""
     },
     "location": {
       "type": "string",
-      "defaultValue": "uksouth"
+      "defaultValue": "[deployment().location]"
     },
     "diagnosticPolicies": {
       "type": "array",
@@ -85,7 +85,7 @@
         "mode": "Incremental",
         "parameters": { },
         "templateLink": {
-          "uri": "[concat(parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], '.json', parameters('_artifactsLocationSasToken'))]"
+          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
         }
       },
       "copy": {
