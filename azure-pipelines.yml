@@ -2,7 +2,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
-- feature/ARMTTK
+- feature/ARM-TTK
 
 resources:
 - repo: self
