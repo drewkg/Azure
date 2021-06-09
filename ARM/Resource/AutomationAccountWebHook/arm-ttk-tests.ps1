@@ -1,1 +1,1 @@
-﻿Test-AzTemplate $PSScriptRoot -Pester
+﻿Test-AzTemplate $PSScriptRoot -Skip "apiVersions Should Be Recent" -Pester
