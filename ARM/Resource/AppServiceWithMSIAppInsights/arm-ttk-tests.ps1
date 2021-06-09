@@ -1,1 +1,1 @@
-﻿Test-AzTemplate $PSScriptRoot -Skip "Location Should Not Be Hardcoded","IDs Should Be Derived From ResourceIDs" -Pester
+﻿Test-AzTemplate $PSScriptRoot -Skip "apiVersions Should Be Recent", "apiVersions Should Be Recent In Reference Functions" -Pester

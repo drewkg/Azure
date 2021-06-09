@@ -9,7 +9,7 @@
 				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
 			}
 		},
-		"resourceLocation": {
+		"Location": {
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]",
 			"metadata": {
@@ -27,8 +27,8 @@
 		{
 			"name": "[variables('applicationInsightsName')]",
 			"type": "microsoft.insights/components",
-			"apiVersion": "2020-02-02-preview",
-			"location": "[parameters('resourceLocation')]",
+			"apiVersion": "2015-05-01",
+			"location": "[parameters('Location')]",
 			"kind": "web",
 			"properties": {
 				"Application_Type": "web",
@@ -63,7 +63,7 @@
 								"description": "The resource name for the Application Insights instance."
 							}
 						},
-						"resourceLocation": {
+						"Location": {
 							"type": "string",
 							"metadata": {
 								"description": "The location of the resources created, excluding 'Global'."
@@ -75,7 +75,7 @@
 							"name": "[parameters('applicationInsightsDashboardName')]",
 							"type": "Microsoft.Portal/dashboards",
 							"apiVersion": "2020-09-01-preview",
-							"location": "[parameters('resourceLocation')]",
+							"location": "[parameters('Location')]",
 							"properties": {
 								"lenses": [
 									{
@@ -119,13 +119,13 @@
 				},
 				"parameters": {
 					"applicationInsightsDashboardName": {
-						"value": "[concat(reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01', 'Full').properties.AppId, '-dashboard')]"
+						"value": "[concat(reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2015-05-01', 'Full').properties.AppId, '-dashboard')]"
 					},
 					"applicationInsightsName": {
 						"value": "[variables('applicationInsightsName')]"
 					},
-					"resourceLocation": {
-						"value": "[parameters('resourceLocation')]"
+					"Location": {
+						"value": "[parameters('Location')]"
 					}
 				},
 				"mode": "Incremental",
@@ -138,7 +138,7 @@
 			"type": "Microsoft.Web/serverfarms",
 			"apiVersion": "2020-12-01",
 			"name": "[variables('appServicePlanName')]",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[parameters('Location')]",
 			"sku": {
 				"name": "B1",
 				"tier": "Basic",
@@ -160,7 +160,7 @@
 			"type": "Microsoft.Web/sites",
 			"apiVersion": "2020-12-01",
 			"name": "[variables('appServiceName')]",
-			"location": "[parameters('resourceLocation')]",
+			"location": "[parameters('Location')]",
 			"dependsOn": [
 				"[variables('appServicePlanName')]"
 			],
@@ -200,7 +200,7 @@
 					"type": "Microsoft.Web/sites/config",
 					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/web')]",
-					"location": "[parameters('resourceLocation')]",
+					"location": "[parameters('Location')]",
 					"dependsOn": [
 						"[variables('appServiceName')]"
 					],
@@ -272,8 +272,8 @@
 						"[variables('appServiceName')]"
 					],
 					"properties": {
-						"APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey]",
-						"APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2014-04-01').InstrumentationKey, ';IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/')]",
+						"APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2015-05-01').InstrumentationKey]",
+						"APPLICATIONINSIGHTS_CONNECTION_STRING": "[concat('InstrumentationKey=', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2015-05-01').InstrumentationKey, ';IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/')]",
 						"ApplicationInsightsAgent_EXTENSION_VERSION": "~2",
 						"XDT_MicrosoftApplicationInsights_Mode": "recommended",
 						"APPINSIGHTS_PROFILERFEATURE_VERSION": "1.0.0",
@@ -291,7 +291,7 @@
 					"type": "Microsoft.Web/sites/hostNameBindings",
 					"apiVersion": "2020-12-01",
 					"name": "[concat(variables('appServiceName'), '/', variables('appServiceName'), '.azurewebsites.net')]",
-					"location": "[parameters('resourceLocation')]",
+					"location": "[parameters('Location')]",
 					"dependsOn": [
 						"[variables('appServiceName')]"
 					],
