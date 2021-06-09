@@ -1,1 +1,3 @@
-﻿Test-AzTemplate $PSScriptRoot -Skip "Location Should Not Be Hardcoded","IDs Should Be Derived From ResourceIDs" -Pester
+﻿Test-AzTemplate $PSScriptRoot\Connectivity  -Pester
+Test-AzTemplate $PSScriptRoot\Identity  -Pester
+Test-AzTemplate $PSScriptRoot\Management  -Pester
