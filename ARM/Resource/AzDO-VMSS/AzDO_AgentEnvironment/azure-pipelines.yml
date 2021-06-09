@@ -1,0 +1,63 @@
+trigger:
+  branches:
+    include:
+    - master
+
+stages:
+- stage: QABuild
+  displayName: "QA Build"
+
+  jobs:
+  - job: Basic
+    displayName: "Build Basic Environment"
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: false
+    workspace:
+      clean: outputs
+    timeoutInMinutes: 120
+
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'New Signature - GMS - Service Delivery - DriveTrain'
+        subscriptionId: '28fe843b-a2d0-4f2a-97b4-cbd2a52a968e'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'RG-DevOps-QA-BuildAgent-Environment'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: 'azdo-agents-pool.json'
+        overrideParameters: '-adminPassword $(AdminPassword)'
+        deploymentMode: 'Complete'
+
+- stage: PromoteProduction
+  displayName: "Promote to Production"
+  dependsOn: "QABuild"
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+  jobs:
+  - job: Basic
+    displayName: "Build Basic Environment"
+    pool:
+      vmImage: 'windows-latest'
+    continueOnError: false
+    workspace:
+      clean: outputs
+    timeoutInMinutes: 120
+
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'New Signature - GMS - Service Delivery - DriveTrain Production'
+        subscriptionId: '49dbf3b7-c3a3-4b6d-a1c6-0526edcc3c1e'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'RG-DevOps-Prod-BuildAgent-Environment'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: 'azdo-agents-pool.json'
+        csmParametersFile: 'azdo-agents-pool.prod.parameters.json'
+        overrideParameters: '-adminPassword $(AdminPassword)'
+        deploymentMode: 'Complete'

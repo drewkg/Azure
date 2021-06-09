@@ -1,0 +1,110 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"Location": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().location]",
+			"metadata": {
+				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
+			}
+    },
+    "automationAccountName": {
+      "type": "String",
+      "defaultValue": "Webhook-aa",
+      "metadata": {
+        "description": "Automation account name"
+      }
+    },
+    "webhookName": {
+      "type": "String",
+      "defaultValue": "Sample-wh",
+      "metadata": {
+        "description": "Webhook Name"
+      }
+    },
+    "runbookName": {
+      "type": "String",
+      "defaultValue": "SampleRunbook",
+      "metadata": {
+        "description": "Runbook Name for which webhook will be created"
+      }
+    },
+    "WebhookExpiryTime": {
+      "type": "String",
+      "defaultValue": "[dateTimeAdd(utcNow('u'), 'P3Y')]",
+      "metadata": {
+         "description": "Webhook Expiry time"
+      }
+    },
+    "_artifactsLocation": {
+      "defaultValue": "[deployment().properties.templateLink.uri]",
+      "type": "String",
+      "metadata": {
+        "description": "URI to artifacts location"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": ""
+    }
+	},
+	"variables": { },
+  "functions": [ ],
+	"resources": [
+    {
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2020-01-13-preview",
+      "name": "[parameters('automationAccountName')]",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "sku": {
+          "name": "Free"
+        }
+      },
+      "resources": [
+        {
+          "type": "runbooks",
+          "apiVersion": "2018-06-30",
+          "name": "[parameters('runbookName')]",
+          "location": "[parameters('Location')]",
+          "dependsOn": [
+            "[parameters('automationAccountName')]"
+          ],
+          "properties": {
+            "runbookType": "PowerShell",
+            "logProgress": false,
+            "logVerbose": false,
+            "description": "Sample Runbook",
+            "publishContentLink": {
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Script/HelloWorld.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "version": "1.0.0.0"
+            }
+          }
+        },
+        {
+          "type": "webhooks",
+          "apiVersion": "2018-06-30",
+          "name": "[parameters('webhookName')]",
+          "dependsOn": [
+            "[parameters('automationAccountName')]",
+            "[parameters('runbookName')]"
+          ],
+          "properties": {
+            "isEnabled": true,
+            "expiryTime": "[parameters('WebhookExpiryTime')]",
+            "runbook": {
+              "name": "[parameters('runbookName')]"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "webhookUri": {
+      "type": "String",
+      "value": "[reference(parameters('webhookName')).uri]"
+    }
+  }
+}
