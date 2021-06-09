@@ -1,1 +1,1 @@
-﻿Test-AzTemplate $PSScriptRoot -Skip "IDs Should Be Derived From ResourceIDs" -Pester
+﻿Test-AzTemplate $PSScriptRoot -Skip "apiVersions Should Be Recent", "apiVersions Should Be Recent In Reference Functions" -Pester
