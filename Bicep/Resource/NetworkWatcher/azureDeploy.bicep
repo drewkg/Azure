@@ -5,7 +5,7 @@ param Locations array = [
 ]
 
 resource networkWatcher 'Microsoft.Network/networkWatchers@2020-11-01' = [for location in Locations: {
-  name: concat(location, '-nw')
+  name: '${location}-nw'
   location: location
   properties: {}
 }]
