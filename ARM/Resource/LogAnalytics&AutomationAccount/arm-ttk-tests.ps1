@@ -1,3 +1,4 @@
-﻿Test-AzTemplate $PSScriptRoot\Connectivity  -Pester
+﻿Write-Host "Validating Connectivity Template."
+Test-AzTemplate $PSScriptRoot\Connectivity  -Pester
 Test-AzTemplate $PSScriptRoot\Identity  -Pester
 Test-AzTemplate $PSScriptRoot\Management  -Pester
