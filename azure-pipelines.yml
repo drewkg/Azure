@@ -2,7 +2,6 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
-- feature/ARM-TTK
 
 resources:
 - repo: self
