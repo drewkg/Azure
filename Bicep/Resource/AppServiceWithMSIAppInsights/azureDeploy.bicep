@@ -9,7 +9,7 @@ var applicationInsightsName_var = '${environment_var}-appi'
 var appServiceName_var = '${environment_var}-as'
 var appServicePlanName_var = '${environment_var}-asp'
 
-resource applicationInsightsName 'microsoft.insights/components@2015-05-01' = {
+resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
   name: applicationInsightsName_var
   location: resourceLocation
   kind: 'web'
@@ -18,13 +18,15 @@ resource applicationInsightsName 'microsoft.insights/components@2015-05-01' = {
     Flow_Type: 'Bluefield'
     Request_Source: 'rest'
     RetentionInDays: 90
+    publicNetworkAccessForIngestion: true
+    publicNetworkAccessForQuery: true
   }
 }
 
 module ApplicationInsightsDashboard './nested_ApplicationInsightsDashboard.bicep' = {
   name: 'ApplicationInsightsDashboard'
   params: {
-    applicationInsightsDashboardName: '${reference(applicationInsightsName.id, '2015-05-01', 'Full').properties.AppId}-dashboard'
+    applicationInsightsDashboardName: '${reference(applicationInsightsName.id, '2020-02-02', 'Full').properties.AppId}-dashboard'
     applicationInsightsName: applicationInsightsName_var
     resourceLocation: resourceLocation
   }
@@ -160,8 +162,8 @@ resource appServiceName_web 'Microsoft.Web/sites/config@2018-11-01' = {
 resource appServiceName_appsettings 'Microsoft.Web/sites/config@2020-09-01' = {
   name: '${appServiceName.name}/appsettings'
   properties: {
-    APPINSIGHTS_INSTRUMENTATIONKEY: reference(applicationInsightsName.id, '2015-05-01').InstrumentationKey
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${reference(applicationInsightsName.id, '2015-05-01').InstrumentationKey};IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/'
+    APPINSIGHTS_INSTRUMENTATIONKEY: reference(applicationInsightsName.id, '2020-02-02').InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${reference(applicationInsightsName.id, '2020-02-02').InstrumentationKey};IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/'
     ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
     XDT_MicrosoftApplicationInsights_Mode: 'recommended'
     APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
