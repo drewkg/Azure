@@ -13,6 +13,7 @@ API management service instance | Microsoft.ApiManagement/service | apim
 Managed Identity | Microsoft.ManagedIdentity/userAssignedIdentities | id
 Management group | Microsoft.Management/managementGroups | mg
 Policy definition | Microsoft.Authorization/policyDefinitions | policy
+Policy initiative | Microsoft.Authorization/policySetDefinitions | initiative
 Resource group | Microsoft.Resources/resourceGroups| rg
 Diagnostic Setting | | diagset
 ### Networking
