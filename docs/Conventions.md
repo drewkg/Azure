@@ -7,6 +7,7 @@ All Azure resources need to have a unique name, at leats within the tenant, ther
 Placing the resource extension at the end of the naming convention , which is different to the Mcirosoft best practice, meas resources are grouped by name when viewing a complete list and not by the extension.   I have found in practice this makes a big difference when viewing a large estate.
 
 ### General
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 API management service instance | Microsoft.ApiManagement/service | apim
@@ -15,8 +16,10 @@ Management group | Microsoft.Management/managementGroups | mg
 Policy definition | Microsoft.Authorization/policyDefinitions | policy
 Policy initiative | Microsoft.Authorization/policySetDefinitions | initiative
 Resource group | Microsoft.Resources/resourceGroups| rg
-Diagnostic Setting | | diagset
+Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
+
 ### Networking
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Application gateway | Microsoft.Network/applicationGateways | agw
@@ -42,6 +45,7 @@ Network Watcher | Microsoft.Network/networkWatchers | nw
 Private Link | "Microsoft.Network/privateLinkServices | pl
 Public IP address | Microsoft.Network/publicIPAddresses | pip
 Public IP address prefix | Microsoft.Network/publicIPPrefixes | ippre
+Relay | Microsoft.Relay/namespaces | relay
 Route filter | Microsoft.Network/routeFilters | rf
 Route table | Microsoft.Network/routeTables | rt
 Service endpoint | Microsoft.serviceEndPointPolicies | se
@@ -57,7 +61,9 @@ VPN site | Microsoft.Network/vpnGateways/vpnSites | st
 Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
 Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
 Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
+
 ### Compute and Web
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 App Service environment | Microsoft.Web/sites | ase
@@ -80,14 +86,18 @@ Virtual machine | Microsoft.Compute/virtualMachines | vm
 Virtual machine scale set | Microsoft.Compute/virtualMachineScaleSets | vmss
 VM storage account | Microsoft.Storage/storageAccounts | stvm
 Web app | Microsoft.Web/sites | app
+
 ### Containers
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 AKS cluster | Microsoft.ContainerService/managedClusters | aks
 Container registry | Microsoft.ContainerRegistry/registries | cr
 Container instance | Microsoft.ContainerInstance/containerGroups | ci
 Service Fabric cluster | Microsoft.ServiceFabric/clusters | sf
+
 ### Databases
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Azure Cosmos DB database | Microsoft.DocumentDB/databaseAccounts/sqlDatabases | cosmos
@@ -101,19 +111,27 @@ Azure Synapse Analytics Spark Pool | Microsoft.Synapse/workspaces/sqlPools | syn
 MySQL database | Microsoft.DBforMySQL/servers | mysql
 PostgreSQL database | Microsoft.DBforPostgreSQL/servers | psql
 SQL Server Stretch Database | Microsoft.Sql/servers/databases | sqlstrdb
+SQL Elastic Pool | Microsoft.Sql/servers/elasticPools | sqlel
 SQL Managed Instance | Microsoft.Sql/managedInstances | sqlmi
+SQL Managed Instance database | Microsoft.Sql/managedInstances/databases | sqlmidb
+
 ### Storage
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Storage account | Microsoft.Storage/storageAccounts | st
 Azure StorSimple | Microsoft.StorSimple/managers | ssimp
+
 ### AI and Machine Learning
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Azure Cognitive Search | Microsoft.Search/searchServices | srch
 Azure Cognitive Services | Microsoft.CognitiveServices/accounts | cog
 Azure Machine Learning workspace | Microsoft.MachineLearningServices/workspaces | mlw
+
 ### Analytics and IoT
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Azure Analysis Services server | Microsoft.AnalysisServices/servers | as
@@ -128,6 +146,7 @@ Event Hubs namespace | Microsoft.EventHub/namespaces | evhns
 Event hub | Microsoft.EventHub/namespaces/eventHubs | evh
 Event Grid domain | Microsoft.EventGrid/domains | evgd
 Event Grid topic | Microsoft.EventGrid/domains/topics | evgt
+Event Grig subscription | Microsoft.EventGrid/eventSubscriptions | esub
 HDInsight - Hadoop cluster | Microsoft.HDInsight/clusters | hadoop
 HDInsight - HBase cluster | Microsoft.HDInsight/clusters | hbase
 HDInsight - Kafka cluster | Microsoft.HDInsight/clusters | kafka
@@ -139,13 +158,17 @@ Provisioning services | Microsoft.Devices/provisioningServices | provs
 Provisioning services certificate | Microsoft.Devices/provisioningServices/certificates | pcert
 Power BI Embedded | Microsoft.PowerBIDedicated/capacities | pbi
 Time Series Insights environment | Microsoft.TimeSeriesInsights/environments | tsi
+
 ### Developer tools
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 App Configuration store | Microsoft.AppConfiguration/configurationStores | appcs
 Azure Static Web Apps | Microsoft.Web/sites | stap
 SignalR | Microsoft.SignalRService/SignalR | sigr
+
 ### Integration
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Integration account | Microsoft.Logic/integrationAccounts | ia
@@ -153,7 +176,9 @@ Logic apps | Microsoft.Logic/workflows | logic
 Service Bus | Microsoft.ServiceBus/namespaces | sb
 Service Bus queue | Microsoft.ServiceBus/namespaces/queues | sbq
 Service Bus topic | Microsoft.ServiceBus/namespaces/topics | sbt
+
 ### Management and governance
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Automation account | Microsoft.Automation/automationAccounts | aa
@@ -164,13 +189,17 @@ Blueprint | Microsoft.Blueprint/blueprints | bp
 Blueprint assignment | Microsoft.Blueprint/blueprints/artifacts | bpa
 Key vault | Microsoft.KeyVault/vaults | kv
 Log Analytics workspace | Microsoft.OperationalInsights/workspaces | log
+
 ### Migration
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Azure Migrate project | Microsoft.Migrate/assessmentProjects | migr
 Database Migration Service instance | Microsoft.DataMigration/services | dms
 Recovery Services vault | Microsoft.RecoveryServices/vaults | rsv
+
 ### Deprecated product names
+
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Azure SQL Data Warehouse | Microsoft.Sql/servers | sqldw
