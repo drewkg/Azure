@@ -1,10 +1,12 @@
-targetScope = 'subscription'
+targetScope = 'managementGroup'
 
-resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
-  name: 'diagnostics-aa-deploy'
+output policyId string = policy.id
+
+resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
+  name: 'diagnostics-adf-deploy-policy'
   properties: {
-    displayName: 'Deploy Diagnostics & Metrics for Automation Accounts to a Log Analytics workspace'
-    description: 'Apply diagnostic & metric settings for Automation Accounts to stream data to a Log Analytics workspace when any Automation Account which is missing this diagnostic settings is created or updated.'
+    displayName: 'Deploy Diagnostics & Metrics for Data Factory to a Log Analytics workspace'
+    description: 'Apply diagnostic & metric settings for Data Factory to stream data to a Log Analytics workspace when any Data Factory which is missing this diagnostic settings is created or updated.'
     metadata: {
       category: 'Monitoring'
       version: '1.0.0.0'
@@ -33,7 +35,7 @@ resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-0
     policyRule: {
       if: {
         field: 'type'
-        equals: 'Microsoft.Automation/automationAccounts'
+        equals: 'Microsoft.DataFactory/factories'
       }
       then: {
         effect: 'deployIfNotExists'
@@ -54,7 +56,7 @@ resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-0
               }
               {
                 field: 'Microsoft.Insights/diagnosticSettings/workspaceId'
-                matchInsensitively: '[parameters(\'logAnalytics\')]'
+                matchInsensitively: '[[parameters(\'logAnalytics\')]'
               }
             ]
           }
@@ -62,7 +64,7 @@ resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-0
             properties: {
               mode: 'incremental'
               template: {
-                '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+                schema: 'https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#'
                 contentVersion: '1.0.0.0'
                 parameters: {
                   profileName: {
@@ -80,34 +82,58 @@ resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-0
                 }
                 resources: [
                   {
-                    type: 'Microsoft.Automation/automationAccounts/providers/diagnosticSettings'
+                    type: 'Microsoft.DataFactory/factories/providers/diagnosticSettings'
                     apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
+                    name: '[[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
+                    location: '[[parameters(\'location\')]'
                     properties: {
-                      workspaceId: '[parameters(\'logAnalytics\')]'
+                      workspaceId: '[[parameters(\'logAnalytics\')]'
                       metrics: [
                         {
                           category: 'AllMetrics'
-                          timeGrain: null
                           enabled: true
                           retentionPolicy: {
-                            enabled: false
                             days: 0
+                            enabled: false
                           }
+                          timeGrain: null
                         }
                       ]
                       logs: [
                         {
-                          category: 'JobLogs'
+                          category: 'ActivityRuns'
                           enabled: true
                         }
                         {
-                          category: 'JobStreams'
+                          category: 'PipelineRuns'
                           enabled: true
                         }
                         {
-                          category: 'DscNodeStatus'
+                          category: 'TriggerRuns'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISPackageEventMessages'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISPackageExecutableStatistics'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISPackageEventMessageContext'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISPackageExecutionComponentPhases'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISPackageExecutionDataStatistics'
+                          enabled: true
+                        }
+                        {
+                          category: 'SSISIntegrationRuntimeLogs'
                           enabled: true
                         }
                       ]
@@ -117,16 +143,16 @@ resource diagnostics_aa_deploy 'Microsoft.Authorization/policyDefinitions@2019-0
               }
               parameters: {
                 profileName: {
-                  value: '[parameters(\'profileName\')]'
+                  value: '[[parameters(\'profileName\')]'
                 }
                 logAnalytics: {
-                  value: '[parameters(\'logAnalytics\')]'
+                  value: '[[parameters(\'logAnalytics\')]'
                 }
                 location: {
-                  value: '[field(\'location\')]'
+                  value: '[[field(\'location\')]'
                 }
                 resourceName: {
-                  value: '[field(\'name\')]'
+                  value: '[[field(\'name\')]'
                 }
               }
             }
