@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
@@ -92,7 +92,7 @@
         "name": "diagnosticPolicies",
         "count": "[length(parameters('diagnosticPolicies'))]"
       }
-    },
+    }/*
     {
       "type": "Microsoft.Authorization/policySetDefinitions",
       "apiVersion": "2019-09-01",
@@ -146,6 +146,6 @@
           }
         ]
       }
-    }
+    }*/
   ]
 }
