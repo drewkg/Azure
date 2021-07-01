@@ -77,10 +77,10 @@
   },
   "resources": [
     {
+      "name": "getManagementGroupName",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
-      "name": "getManagementGroupName",
-      "location": "[deployment().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "expressionEvaluationOptions": {
           "scope": "inner"
@@ -89,14 +89,6 @@
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
-          "metadata": {
-            "_generator": {
-              "name": "bicep",
-              "version": "0.4.1.14562",
-              "templateHash": "10298276120160485756"
-            }
-          },
-          "functions": [],
           "resources": []
         }
       }
