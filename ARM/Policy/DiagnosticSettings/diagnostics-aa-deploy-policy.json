@@ -140,11 +140,5 @@
         }
       }
     }
-  ],
-  "outputs": {
-    "policyDefinitionId": {
-      "type": "string",
-      "value": "[reference('diagnostics-aa-deploy-policy', '2019-09-01', 'Full').resourceId]"
-    }
-  }
+  ]
 }

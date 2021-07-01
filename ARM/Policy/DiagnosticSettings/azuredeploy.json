@@ -77,6 +77,31 @@
   },
   "resources": [
     {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "getManagementGroupName",
+      "location": "[deployment().location]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.4.1.14562",
+              "templateHash": "10298276120160485756"
+            }
+          },
+          "functions": [],
+          "resources": []
+        }
+      }
+    },
+    {
       "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-08-01",
@@ -92,7 +117,7 @@
         "name": "diagnosticPolicies",
         "count": "[length(parameters('diagnosticPolicies'))]"
       }
-    }/*,
+    },
     {
       "type": "Microsoft.Authorization/policySetDefinitions",
       "apiVersion": "2019-09-01",
@@ -132,7 +157,7 @@
             "name": "policyDefinitions",
             "count": "[length(parameters('diagnosticPolicies'))]",
             "input": {
-              "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
+              "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
               "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
               "parameters": {
                 "profileName": {
@@ -146,6 +171,6 @@
           }
         ]
       }
-    }*/
+    }
   ]
 }
