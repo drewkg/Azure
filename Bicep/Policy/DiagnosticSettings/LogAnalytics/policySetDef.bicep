@@ -1,13 +1,6 @@
-
 targetScope = 'managementGroup'
 
-module DiagnosticsAADeployPolicy './diagnostics-aa-deploy-policy.bicep' = {
-  name: 'diagnostics-aa-deploy-policy'
-}
-
-module DiagnosticsADFDeployPolicy './diagnostics-adf-deploy-policy.bicep' = {
-  name: 'diagnostics-adf-deploy-policy'
-}
+param policyDefinitionId array
 
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
   name: 'diagnostics-loganalytics-deploy'
@@ -21,6 +14,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
     }
     parameters: {
       profileName: {
+        type: 'String'
         metadata: {
           displayName: 'Profile name'
           description: 'The diagnostic settings profile name'
@@ -28,6 +22,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         defaultValue: 'setbypolicy_logAnalytics'
       }
       logAnalytics: {
+        type: 'String'
         metadata: {
           displayName: 'Log Analytics workspace'
           description: 'Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant Log Analytics Contributor permissions (or similar) to the policy assignments principal ID.'
@@ -36,31 +31,42 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         }
       }
     }
-    policyDefinitions: [
+    policyDefinitions: [for policydef in policyDefinitionId: {
+      policyDefinitionId: policydef
+      parameters: {
+        profileName: {
+          value: '[[parameters(\'profileName\')]'
+        }
+        logAnalytics: {
+          value: '[[parameters(\'logAnalytics\')]'
+        }
+      }
+    }]
+    /*policyDefinitions: [
       {
-        policyDefinitionId: DiagnosticsAADeployPolicy.outputs.policyId
+        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAADeployPolicy.name)
         policyDefinitionReferenceId: 'diagnostics-aa-deploy'
         parameters: {
           profileName: {
-            value: '[[[parameters(\'profileName\')]'
+            value: '[parameters(\'profileName\')]'
           }
           logAnalytics: {
-            value: '[[[parameters(\'logAnalytics\')]'
+            value: '[parameters(\'logAnalytics\')]'
           }
         }
       }
       {
-        policyDefinitionId: DiagnosticsADFDeployPolicy.outputs.policyId
+        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.name)
         policyDefinitionReferenceId: 'diagnostics-adf-deploy'
         parameters: {
           profileName: {
-            value: '[[[parameters(\'profileName\')]'
+            value: '[parameters(\'profileName\')]'
           }
           logAnalytics: {
-            value: '[[[parameters(\'logAnalytics\')]'
+            value: '[parameters(\'logAnalytics\')]'
           }
         }
       }
-    ]
+    ]*/
   }
 }

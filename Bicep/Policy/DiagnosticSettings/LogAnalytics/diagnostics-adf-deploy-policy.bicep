@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-output policyId string = policy.id
+output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
   name: 'diagnostics-adf-deploy-policy'
@@ -56,7 +56,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               {
                 field: 'Microsoft.Insights/diagnosticSettings/workspaceId'
-                matchInsensitively: '[[parameters(\'logAnalytics\')]'
+                matchInsensitively: '[parameters(\'logAnalytics\')]'
               }
             ]
           }
@@ -64,7 +64,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
             properties: {
               mode: 'incremental'
               template: {
-                schema: 'https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#'
+                '$schema': 'https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#'
                 contentVersion: '1.0.0.0'
                 parameters: {
                   profileName: {
@@ -84,10 +84,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   {
                     type: 'Microsoft.DataFactory/factories/providers/diagnosticSettings'
                     apiVersion: '2017-05-01-preview'
-                    name: '[[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
-                    location: '[[parameters(\'location\')]'
+                    name: '[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
+                    location: '[parameters(\'location\')]'
                     properties: {
-                      workspaceId: '[[parameters(\'logAnalytics\')]'
+                      workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
                         {
                           category: 'AllMetrics'
@@ -143,16 +143,16 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               parameters: {
                 profileName: {
-                  value: '[[parameters(\'profileName\')]'
+                  value: '[parameters(\'profileName\')]'
                 }
                 logAnalytics: {
-                  value: '[[parameters(\'logAnalytics\')]'
+                  value: '[parameters(\'logAnalytics\')]'
                 }
                 location: {
-                  value: '[[field(\'location\')]'
+                  value: '[field(\'location\')]'
                 }
                 resourceName: {
-                  value: '[[field(\'name\')]'
+                  value: '[field(\'name\')]'
                 }
               }
             }

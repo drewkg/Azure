@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-output policyId string = policy.id
+output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
   name: 'diagnostics-aa-deploy-policy'
