@@ -4,7 +4,7 @@
   "parameters": {
     "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "[deployment().properties.templateLink.uri]"
+      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]"
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
@@ -17,7 +17,7 @@
     "diagnosticPolicies": {
       "type": "array",
       "defaultValue": [
-        "diagnostics-aa-deploy-policy"/*,
+        "diagnostics-aa-deploy-policy",
         "diagnostics-adf-deploy-policy",
         "diagnostics-agw-deploy-policy",
         "diagnostics-aks-deploy-policy",
@@ -71,7 +71,7 @@
         "diagnostics-vmss-deploy-policy",
         "diagnostics-wvdappgroup-deploy-policy",
         "diagnostics-wvdhostpool-deploy-policy",
-        "diagnostics-wvdworkspace-deploy-policy"*/
+        "diagnostics-wvdworkspace-deploy-policy"
       ]
     }
   },
@@ -92,7 +92,7 @@
         "name": "diagnosticPolicies",
         "count": "[length(parameters('diagnosticPolicies'))]"
       }
-    }/*
+    }/*,
     {
       "type": "Microsoft.Authorization/policySetDefinitions",
       "apiVersion": "2019-09-01",
