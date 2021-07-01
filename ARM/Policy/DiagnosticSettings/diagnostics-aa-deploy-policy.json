@@ -140,5 +140,11 @@
         }
       }
     }
-  ]
+  ],
+  "outputs": {
+    "policyDefinitionId": {
+      "type": "string",
+      "value": "[reference('diagnostics-aa-deploy-policy').policyDefinitionId]"
+    }
+  }
 }
