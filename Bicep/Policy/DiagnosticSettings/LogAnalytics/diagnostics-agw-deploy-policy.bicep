@@ -14,7 +14,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
     mode: 'All'
     parameters: {
       profileName: {
-        type: 'string'
+        type: 'String'
         metadata: {
           displayName: 'Profile name'
           description: 'The diagnostic settings profile name'
@@ -22,7 +22,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
         defaultValue: 'setbypolicy_logAnalytics'
       }
       logAnalytics: {
-        type: 'string'
+        type: 'String'
         metadata: {
           displayName: 'Log Analytics workspace'
           description: 'Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant \'Log Analytics Contributor\' permissions (or similar) to the policy assignment\'s principal ID.'
