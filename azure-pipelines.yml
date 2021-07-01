@@ -62,6 +62,7 @@ stages:
           Import-Module -Name Pester -MaximumVersion 4.10.1
           Set-Location "$(Build.SourcesDirectory)"
           Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach { Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml }
+        pswh: true
 
     - task: PublishTestResults@2
       inputs:
