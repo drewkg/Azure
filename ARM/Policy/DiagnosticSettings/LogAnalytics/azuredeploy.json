@@ -45,6 +45,7 @@
         "diagnostics-iot-deploy-policy",
         "diagnostics-kv-deploy-policy",
         "diagnostics-lb-deploy-policy",
+        "diagnostics-log-deploy-policy",
         "diagnostics-logic-deploy-policy",
         "diagnostics-mysql-deploy-policy",
         "diagnostics-net-deploy-policy",
