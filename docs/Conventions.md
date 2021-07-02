@@ -17,6 +17,7 @@ Policy definition | Microsoft.Authorization/policyDefinitions | policy
 Policy initiative | Microsoft.Authorization/policySetDefinitions | initiative
 Resource group | Microsoft.Resources/resourceGroups| rg
 Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
+Subscription | Microsoft.Subscription/aliases | sub
 
 ### Networking
 
