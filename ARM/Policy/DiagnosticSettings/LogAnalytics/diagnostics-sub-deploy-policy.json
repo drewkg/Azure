@@ -37,7 +37,7 @@
         "policyRule": {
           "if": {
             "field": "type",
-            "equals": "Microsoft.Subscription/aliases"
+            "equals": "Microsoft.Resources/subscriptions"
           },
           "then": {
             "effect": "deployIfNotExists",
@@ -46,6 +46,8 @@
               "roleDefinitionIds": [
                 "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
               ],
+              "ExistenceScope": "Subscription",
+              "DeploymentScope": "Subscription",
               "existenceCondition": {
                 "allOf": [
                   {
@@ -66,7 +68,7 @@
                 "properties": {
                   "mode": "incremental",
                   "template": {
-                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
                     "parameters": {
                       "profileName": {
@@ -77,20 +79,16 @@
                       },
                       "location": {
                         "type": "string"
-                      },
-                      "resourceName": {
-                        "type": "string"
                       }
                     },
                     "resources": [
                       {
-                        "type": "Microsoft.Subscription/aliases/providers/diagnosticSettings",
+                        "type": "Microsoft.Insights/diagnosticSettings",
                         "apiVersion": "2017-05-01-preview",
-                        "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
-                        "location": "[[parameters('location')]",
+                        "name": "[[parameters('profileName')]",
+                        "location": "global",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
-                          "metrics": [ ],
                           "logs": [
                             {
                               "category": "Administrative",
