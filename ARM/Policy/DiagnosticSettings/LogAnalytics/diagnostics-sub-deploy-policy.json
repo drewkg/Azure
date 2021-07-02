@@ -65,6 +65,7 @@
                 ]
               },
               "deployment": {
+                "location": "uksouth",
                 "properties": {
                   "mode": "incremental",
                   "template": {
