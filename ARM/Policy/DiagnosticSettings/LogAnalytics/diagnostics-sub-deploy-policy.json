@@ -46,43 +46,16 @@
               "roleDefinitionIds": [
                 "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
               ],
+              "existenceScope": "subscription",
               "existenceCondition": {
                 "allOf": [
                   {
                     "field": "Microsoft.Insights/diagnosticSettings/workspaceId",
                     "equals": "[[parameters('logAnalytics')]"
-                  },
-                  {
-                    "count": {
-                      "field": "Microsoft.Insights/diagnosticSettings/logs[*]",
-                      "where": {
-                        "allof": [
-                          {
-                            "field": "Microsoft.Insights/diagnosticSettings/logs[*].Category",
-                            "in": [
-                              "Administrative",
-                              "Security",
-                              "ServiceHealth",
-                              "Alert",
-                              "Recommendation",
-                              "Policy",
-                              "Autoscale",
-                              "ResourceHealth"
-                            ]
-                          },
-                          {
-                            "field": "Microsoft.Insights/diagnosticSettings/logs[*].enabled",
-                            "equals": "True"
-                          }
-                        ]
-                      }
-                    },
-                    "Equals": 8
                   }
                 ]
               },
-              "existenceScope": "subscription",
-              "deploymentScope": "Subscription",
+              "deploymentScope": "subscription",
               "deployment": {
                 "location": "uksouth",
                 "properties": {
