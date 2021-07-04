@@ -24,6 +24,10 @@ module DiagnosticsAKSDeployPolicy './Modules/diagnostics-agw-deploy-policy.bicep
   name: 'diagnostics-aks-deploy-policy'
 }
 
+module DiagnosticsAPIMDeployPolicy './Modules/diagnostics-apim-deploy-policy.bicep' = {
+  name: 'diagnostics-apim-deploy-policy'
+}
+
 module DiagnosticsLogAnalyticsPolicySet './Modules/policySetDef.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
@@ -32,6 +36,7 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/policySetDef.bicep' = {
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAGWDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAKSDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAPIMDeployPolicy.outputs.name)
     ]
   }
 }
