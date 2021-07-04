@@ -40,7 +40,7 @@
             "equals": "Microsoft.Resources/subscriptions"
           },
           "then": {
-            "effect": "[[parameters('effect')]",
+            "effect": "deployIfNotExists",
             "details": {
               "type": "microsoft.insights/diagnosticSettings",
               "existenceCondition": {
