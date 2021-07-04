@@ -2,7 +2,7 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
-- feature/ARM-TTK
+- feature/DiagnosticPolicies
 
 resources:
 - repo: self
@@ -40,34 +40,35 @@ stages:
             Write-Output "setting version as -alpha"
           }
 
-  - job: 'Validation'
-    displayName: 'Validate & Package Templates'
-    continueOnError: false
-    dependsOn: 'Init'
-    pool:
-      vmImage: 'windows-latest'
-    workspace:
-      clean: all
-    steps:
-    - checkout: self
+  #- job: 'Validation'
+  #  displayName: 'Validate & Package Templates'
+  #  continueOnError: false
+  #  dependsOn: 'Init'
+  #  pool:
+  #    vmImage: 'windows-latest'
+  #  workspace:
+  #    clean: all
+  #  steps:
+  #  - checkout: self
 
-    - task: PowerShell@1
-      displayName: 'Install & Run ARM-TTK'
-      inputs:
-        scriptType: inlineScript
-        inlineScript: |
-          Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip"
-          Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
-          Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
-          Import-Module -Name Pester -MaximumVersion 4.10.1
-          Set-Location "$(Build.SourcesDirectory)"
-          Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach { Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml }
+    #- task: PowerShell@1
+    #  displayName: 'Install & Run ARM-TTK'
+    #  inputs:
+    #    scriptType: inlineScript
+    #    inlineScript: |
+    #      Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip"
+    #      Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
+    #      Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
+    #      Import-Module -Name Pester -MaximumVersion 4.10.1
+    #      Set-Location "$(Build.SourcesDirectory)"
+    #      Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach { Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml }
+    #    pswh: true
 
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'NUnit'
-        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
-        searchFolder: '$(Common.TestResultsDirectory)'
-        mergeTestResults: true
-        failTaskOnFailedTests: true
-        testRunTitle: 'ARM TTK'
+    #- task: PublishTestResults@2
+    #  inputs:
+    #    testResultsFormat: 'NUnit'
+    #    testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
+    #    searchFolder: '$(Common.TestResultsDirectory)'
+    #    mergeTestResults: true
+    #    failTaskOnFailedTests: true
+    #    testRunTitle: 'ARM TTK'

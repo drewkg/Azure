@@ -1,0 +1,170 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string",
+      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]"
+    },
+    "diagnosticPolicies": {
+      "type": "array",
+      "defaultValue": [
+        "diagnostics-aa-deploy-policy",
+        "diagnostics-adf-deploy-policy",
+        "diagnostics-agw-deploy-policy",
+        "diagnostics-aks-deploy-policy",
+        "diagnostics-apim-deploy-policy",
+        "diagnostics-app-deploy-policy",
+        "diagnostics-as-deploy-policy",
+        "diagnostics-asa-deploy-policy",
+        "diagnostics-batch-deploy-policy",
+        "diagnostics-cdne-deploy-policy",
+        "diagnostics-ci-deploy-policy",
+        "diagnostics-cog-deploy-policy",
+        "diagnostics-cosmos-deploy-policy",
+        "diagnostics-cr-deploy-policy",
+        "diagnostics-dla-deploy-policy",
+        "diagnostics-dls-deploy-policy",
+        "diagnostics-erc-deploy-policy",
+        "diagnostics-esub-deploy-policy",
+        "diagnostics-evgt-deploy-policy",
+        "diagnostics-evhns-deploy-policy",
+        "diagnostics-fd-deploy-policy",
+        "diagnostics-func-deploy-policy",
+        "diagnostics-fw-deploy-policy",
+        "diagnostics-hdinsight-deploy-policy",
+        "diagnostics-ia-deploy-policy",
+        "diagnostics-iot-deploy-policy",
+        "diagnostics-kv-deploy-policy",
+        "diagnostics-lb-deploy-policy",
+        "diagnostics-log-deploy-policy",
+        "diagnostics-logic-deploy-policy",
+        "diagnostics-mysql-deploy-policy",
+        "diagnostics-net-deploy-policy",
+        "diagnostics-nic-deploy-policy",
+        "diagnostics-nsg-deploy-policy",
+        "diagnostics-pbi-deploy-policy",
+        "diagnostics-pip-deploy-policy",
+        "diagnostics-plan-deploy-policy",
+        "diagnostics-psql-deploy-policy",
+        "diagnostics-redis-deploy-policy",
+        "diagnostics-relay-deploy-policy",
+        "diagnostics-rsv-deploy-policy",
+        "diagnostics-sb-deploy-policy",
+        "diagnostics-sigr-deploy-policy",
+        "diagnostics-sqldb-deploy-policy",
+        "diagnostics-sqlel-deploy-policy",
+        "diagnostics-sqlmi-deploy-policy",
+        "diagnostics-sqlmidb-deploy-policy",
+        "diagnostics-srch-deploy-policy",
+        "diagnostics-sub-deploy-policy",
+        "diagnostics-traf-deploy-policy",
+        "diagnostics-tsi-deploy-policy",
+        "diagnostics-vgw-deploy-policy",
+        "diagnostics-vm-deploy-policy",
+        "diagnostics-vmss-deploy-policy",
+        "diagnostics-wvdappgroup-deploy-policy",
+        "diagnostics-wvdhostpool-deploy-policy",
+        "diagnostics-wvdworkspace-deploy-policy"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "name": "getManagementGroupName",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-08-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": { },
+        "templateLink": {
+          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
+        }
+      },
+      "copy": {
+        "name": "diagnosticPolicies",
+        "count": "[length(parameters('diagnosticPolicies'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2019-09-01",
+      "name": "diagnostics-loganalytics-deploy-initiative",
+      "dependsOn": [
+        "diagnosticPolicies"
+      ],
+      "properties": {
+        "displayName": "Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.",
+        "policyType": "Custom",
+        "metadata": {
+          "category": "Monitoring",
+          "version": "1.0.0"
+        },
+        "parameters": {
+          "profileName": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Profile name",
+              "description": "The diagnostic settings profile name"
+            },
+            "defaultValue": "setbypolicy_logAnalytics"
+          },
+          "logAnalytics": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Log Analytics workspace",
+              "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+              "strongType": "omsWorkspace",
+              "assignPermissions": true
+            }
+          }
+        },
+        "copy": [
+          {
+            "name": "policyDefinitions",
+            "count": "[length(parameters('diagnosticPolicies'))]",
+            "input": {
+              "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
+              "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
+              "parameters": {
+                "profileName": {
+                  "value":  "[[[parameters('profileName')]"
+                },
+                "logAnalytics": {
+                  "value": "[[[parameters('logAnalytics')]"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
