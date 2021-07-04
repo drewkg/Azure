@@ -42,31 +42,5 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         }
       }
     }]
-    /*policyDefinitions: [
-      {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAADeployPolicy.name)
-        policyDefinitionReferenceId: 'diagnostics-aa-deploy'
-        parameters: {
-          profileName: {
-            value: '[parameters(\'profileName\')]'
-          }
-          logAnalytics: {
-            value: '[parameters(\'logAnalytics\')]'
-          }
-        }
-      }
-      {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.name)
-        policyDefinitionReferenceId: 'diagnostics-adf-deploy'
-        parameters: {
-          profileName: {
-            value: '[parameters(\'profileName\')]'
-          }
-          logAnalytics: {
-            value: '[parameters(\'logAnalytics\')]'
-          }
-        }
-      }
-    ]*/
   }
 }
