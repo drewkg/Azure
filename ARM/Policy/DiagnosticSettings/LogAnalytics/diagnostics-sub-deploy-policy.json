@@ -65,7 +65,7 @@
                       "profileName": {
                         "type": "string"
                       },
-                      "workspaceId": {
+                      "logAnalytics": {
                         "type": "string"
                       }
                     },
@@ -76,7 +76,7 @@
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[parameters('profileName')]",
                         "properties": {
-                          "workspaceId": "[[parameters('workspaceId')]",
+                          "workspaceId": "[[parameters('logAnalytics')]",
                           "logs": [
                             {
                               "category": "Administrative",
@@ -117,7 +117,7 @@
                     "outputs": {}
                   },
                   "parameters": {
-                    "workspaceId": {
+                    "logAnalytics": {
                       "value": "[[parameters('logAnalytics')]"
                     },
                     "profileName": {
