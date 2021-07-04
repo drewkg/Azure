@@ -1,30 +1,30 @@
 
 targetScope = 'managementGroup'
 
-module getManagementGroupNameDeploy 'empty.bicep' = {
+module getManagementGroupNameDeploy './Modules/empty.bicep' = {
   // temporary fix
   // this is a no-op to get the name of the managementGroup for the policyDefintion, i.e. the name of the mg for this deployment'
   name: 'getManagementGroupName'
   scope: managementGroup()
 }
 
-module DiagnosticsAADeployPolicy './diagnostics-aa-deploy-policy.bicep' = {
+module DiagnosticsAADeployPolicy './Modules/diagnostics-aa-deploy-policy.bicep' = {
   name: 'diagnostics-aa-deploy-policy'
 }
 
-module DiagnosticsADFDeployPolicy './diagnostics-adf-deploy-policy.bicep' = {
+module DiagnosticsADFDeployPolicy './Modules/diagnostics-adf-deploy-policy.bicep' = {
   name: 'diagnostics-adf-deploy-policy'
 }
 
-module DiagnosticsAGWDeployPolicy './diagnostics-agw-deploy-policy.bicep' = {
+module DiagnosticsAGWDeployPolicy './Modules/diagnostics-agw-deploy-policy.bicep' = {
   name: 'diagnostics-agw-deploy-policy'
 }
 
-module DiagnosticsAKSDeployPolicy './diagnostics-agw-deploy-policy.bicep' = {
+module DiagnosticsAKSDeployPolicy './Modules/diagnostics-agw-deploy-policy.bicep' = {
   name: 'diagnostics-aks-deploy-policy'
 }
 
-module DiagnosticsLogAnalyticsPolicySet './policySetDef.bicep' = {
+module DiagnosticsLogAnalyticsPolicySet './Modules/policySetDef.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
     policyDefinitionId: [
