@@ -3,7 +3,7 @@ targetScope = 'managementGroup'
 param policyDefinitionId array
 
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
-  name: 'diagnostics-loganalytics-deploy'
+  name: 'diagnostics-loganalytics-deploy-initiative'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace'
     description: 'Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.'

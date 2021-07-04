@@ -28,7 +28,7 @@ module DiagnosticsAPIMDeployPolicy './Modules/diagnostics-apim-deploy-policy.bic
   name: 'diagnostics-apim-deploy-policy'
 }
 
-module DiagnosticsLogAnalyticsPolicySet './Modules/policySetDef.bicep' = {
+module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-deploy-initiative.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
     policyDefinitionId: [
