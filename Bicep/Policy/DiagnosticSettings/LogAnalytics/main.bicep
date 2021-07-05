@@ -36,17 +36,22 @@ module DiagnosticsASDeployPolicy './Modules/diagnostics-as-deploy-policy.bicep' 
   name: 'diagnostics-as-deploy-policy'
 }
 
+module DiagnosticsASADeployPolicy './Modules/diagnostics-asa-deploy-policy.bicep' = {
+  name: 'diagnostics-asa-deploy-policy'
+}
+
 module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-deploy-initiative.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
     policyDefinitionId: [
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAADeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAGWDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAKSDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAPIMDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAPPDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('Microsoft.Resources/deployments/getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsASDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAADeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAGWDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAKSDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAPIMDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAPPDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsASDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsASADeployPolicy.outputs.name)
     ]
   }
 }
