@@ -59,16 +59,16 @@ stages:
           Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip"
           Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
           Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
-          Import-Module -Name Pester -MaximumVersion 5.2.2
+          Import-Module -Name Pester -MaximumVersion 4.10.1
           Set-Location "$(Build.SourcesDirectory)"
           Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach { Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml }
         pwsh: true
 
-    #- task: PublishTestResults@2
-    #  inputs:
-    #    testResultsFormat: 'NUnit'
-    #    testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
-    #    searchFolder: '$(Common.TestResultsDirectory)'
-    #    mergeTestResults: true
-    #    failTaskOnFailedTests: true
-    #    testRunTitle: 'ARM TTK'
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'NUnit'
+        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
+        searchFolder: '$(Common.TestResultsDirectory)'
+        mergeTestResults: true
+        failTaskOnFailedTests: true
+        testRunTitle: 'ARM TTK'
