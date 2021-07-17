@@ -108,6 +108,10 @@ module DiagnosticsIADeployPolicy './Modules/diagnostics-ia-deploy-policy.bicep' 
   name: 'diagnostics-ia-deploy-policy'
 }
 
+module DiagnosticsIOTDeployPolicy './Modules/diagnostics-iot-deploy-policy.bicep' = {
+  name: 'diagnostics-iot-deploy-policy'
+}
+
 module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-deploy-initiative.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
@@ -137,6 +141,7 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-depl
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsFWDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsHSINSIGHTDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsIADeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsIOTDeployPolicy.outputs.name)
     ]
   }
 }
