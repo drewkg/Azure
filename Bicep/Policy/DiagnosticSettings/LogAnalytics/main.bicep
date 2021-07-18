@@ -100,7 +100,7 @@ module DiagnosticsFWDeployPolicy './Modules/diagnostics-fw-deploy-policy.bicep' 
   name: 'diagnostics-fw-deploy-policy'
 }
 
-module DiagnosticsHSINSIGHTDeployPolicy './Modules/diagnostics-hdinsight-deploy-policy.bicep' = {
+module DiagnosticsHDINSIGHTDeployPolicy './Modules/diagnostics-hdinsight-deploy-policy.bicep' = {
   name: 'diagnostics-hdinsight-deploy-policy'
 }
 
@@ -211,7 +211,7 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-depl
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsFDDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsFUNCDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsFWDeployPolicy.outputs.name)
-      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsHSINSIGHTDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsHDINSIGHTDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsIADeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsIOTDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsKVDeployPolicy.outputs.name)
