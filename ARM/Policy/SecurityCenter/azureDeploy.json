@@ -1,0 +1,478 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]"
+    }
+  },
+  "resources": [
+    {
+      "name": "getManagementGroupName",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "azuredefender-sub-deploy-policy",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "displayName": "Configure Azure Defender Plans",
+        "description": "Configures Azure Defender Plans to an Azure Subscription.'",
+        "metadata": {
+          "category": "Security Center",
+          "version": "1.0.0.0"
+        },
+        "mode": "All",
+        "parameters": {
+          "appServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "App Service Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for App Services resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "kubernetesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "App Service Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Kubernetes resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "sqlServerTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Sql Server resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "SqlServerVirtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Virtual Machine Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Sql Server Virtual Machines resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "StorageAccountTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Storage Account Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Storage Account resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "virtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Virtual Service Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Virtual Machine resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          }
+        },
+        "policyType": "Custom",
+        "policyRule": {
+          "if": {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions"
+          },
+          "then": {
+            "effect": "deployIfNotExists",
+            "details": {
+              "type": "Microsoft.Security/pricings",
+              "existenceScope": "subscription",
+              "existenceCondition": {
+                "anyof": [
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "AppServices"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('appServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "KubernetesService"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('kubernetesServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "SqlServers"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('sqlServerTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "SqlServerVirtualMachines"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('SqlServerVirtualMachineTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "StorageAccounts"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('storageAccountTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "VirtualMachines"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('virtualMachineTier')]"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "roleDefinitionIds": [
+                "/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd"
+              ],
+              "deploymentScope": "subscription",
+              "deployment": {
+                "location": "eastus",
+                "properties": {
+                  "mode": "incremental",
+                  "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                      "appServiceTier": {
+                        "type": "string"
+                      },
+                      "kubernetesServiceTier": {
+                        "type": "string"
+                      },
+                      "sqlServerTier": {
+                        "type": "string"
+                      },
+                      "sqlServerVMTier": {
+                        "type": "string"
+                      },
+                      "storageAccountTier": {
+                        "type": "string"
+                      },
+                      "virtualMachineTier": {
+                        "type": "string"
+                      }
+                    },
+                    "resources": [
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "AppServices",
+                        "properties": {
+                          "pricingTier": "[[parameters('appServiceTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "KubernetesService",
+                        "properties": {
+                          "pricingTier": "[[parameters('kubernetesServiceTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "SqlServers",
+                        "properties": {
+                          "pricingTier": "[[parameters('sqlServerTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "SqlServerVirtualMachines",
+                        "properties": {
+                          "pricingTier": "[[parameters('sqlServerVMTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "StorageAccounts",
+                        "properties": {
+                          "pricingTier": "[[parameters('storageAccountTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "VirtualMachines",
+                        "properties": {
+                          "pricingTier": "[[parameters('virtualMachineTier')]"
+                        }
+                      }
+                    ]
+                  },
+                  "parameters": {
+                    "appServiceTier": {
+                      "value": "[[parameters('appServiceTier')]"
+                    },
+                    "kubernetesServiceTier": {
+                      "value": "[[parameters('kubernetesServiceTier')]"
+                    },
+                    "sqlServerTier": {
+                      "value": "[[parameters('sqlServerTier')]"
+                    },
+                    "sqlServerVMTier": {
+                      "value": "[[parameters('SqlServerVirtualMachineTier')]"
+                    },
+                    "storageAccountTier": {
+                      "value": "[[parameters('storageAccountTier')]"
+                    },
+                    "virtualMachineTier": {
+                      "value": "[[parameters('virtualMachineTier')]"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "autoprovisioning-sub-deploy-policy",
+      "apiVersion": "2019-09-01",
+      "properties": {
+        "displayName": "Configure Security Center Auto Provisioning",
+        "description": "Configures Security Center Auto Provisioning",
+        "metadata": {
+          "category": "Security Center",
+          "version": "1.0.0.0"
+        },
+        "mode": "All",
+        "parameters": { },
+        "policyType": "Custom",
+        "policyRule": {
+          "if": {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions"
+          },
+          "then": {
+            "effect": "deployIfNotExists",
+            "details": {
+              "type": "Microsoft.Security/autoProvisioningSettings",
+              "existenceScope": "subscription",
+              "existenceCondition": {
+                "anyof": [ ]
+              },
+              "roleDefinitionIds": [
+                "/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd"
+              ],
+              "deploymentScope": "subscription",
+              "deployment": {
+                "location": "eastus",
+                "properties": {
+                  "mode": "incremental",
+                  "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": { },
+                    "resources": [ ]
+                  },
+                  "parameters": { }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2019-09-01",
+      "name": "securitycenter-deploy-initiative",
+      "dependsOn": [
+        "getManagementGroupName",
+        "azuredefender-sub-deploy-policy",
+        "autoprovisioning-sub-deploy-policy"
+      ],
+      "properties": {
+        "displayName": "Apply Security Center Settings to a Subscription",
+        "description": "Applies Security Center Settings to an Azure Subscription.",
+        "policyType": "Custom",
+        "metadata": {
+          "category": "Security Center",
+          "version": "1.0.0"
+        },
+        "parameters": {
+          "appServiceTier": {
+            "type": "string",
+            "metadata": {
+              "description": "Specify whether you want to enable standard tier for App Service resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Standard",
+              "Free"
+            ]
+          },
+          "kubernetesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "App Service Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Kubernetes resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "sqlServerTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Sql Server resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "SqlServerVirtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Virtual Machine Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Sql Server Virtual Machines resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "StorageAccountTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Storage Account Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Storage Account resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "virtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "description": "Specify whether you want to enable standard tier for Virtual Machine resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Standard",
+              "Free"
+            ]
+          }
+        },
+        "policyDefinitions": [
+          {
+            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'azuredefender-sub-deploy-policy')]",
+            "policyDefinitionReferenceId": "azuredefender-sub-deploy-policy",
+            "parameters": {
+              "appServiceTier": {
+                "value": "[[parameters('appServiceTier')]"
+              },
+              "kubernetesServiceTier": {
+                "value": "[[parameters('kubernetesServiceTier')]"
+              },
+              "sqlServerTier": {
+                "value": "[[parameters('sqlServerTier')]"
+              },
+              "StorageAccountTier": {
+                "value": "[[parameters('StorageAccountTier')]"
+              },
+              "virtualMachineTier": {
+                "value": "[[parameters('virtualMachineTier')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'autoprovisioning-sub-deploy-policy')]",
+            "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy"
+          }
+        ]
+      }
+    }
+  ]
+}
