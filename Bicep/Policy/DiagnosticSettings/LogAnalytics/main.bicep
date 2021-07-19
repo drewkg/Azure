@@ -223,6 +223,18 @@ module DiagnosticsVMSSDeployPolicy './Modules/diagnostics-vmss-deploy-policy.bic
   name: 'diagnostics-vmss-deploy-policy'
 }
 
+module DiagnosticsWVDAPPGROUPDeployPolicy './Modules/diagnostics-wvdappgroup-deploy-policy.bicep' = {
+  name: 'diagnostics-wvdappgroup-deploy-policy'
+}
+
+module DiagnosticsWVDHOSTPOOLDeployPolicy './Modules/diagnostics-wvdhostpool-deploy-policy.bicep' = {
+  name: 'diagnostics-wvdhostpool-deploy-policy'
+}
+
+module DiagnosticsWVDWORKSPACEDeployPolicy './Modules/diagnostics-wvdworkspace-deploy-policy.bicep' = {
+  name: 'diagnostics-wvdworkspace-deploy-policy'
+}
+
 module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-deploy-initiative.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
@@ -281,6 +293,9 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-depl
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVGWDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVMDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVMSSDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsWVDAPPGROUPDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsWVDHOSTPOOLDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsWVDWORSPACEDeployPolicy.outputs.name)
     ]
   }
 }
