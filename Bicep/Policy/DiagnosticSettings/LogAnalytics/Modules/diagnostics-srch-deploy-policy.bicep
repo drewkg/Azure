@@ -3,10 +3,10 @@ targetScope = 'managementGroup'
 output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
-  name: 'diagnostics-sqlmidb-deploy-policy'
+  name: 'diagnostics-srch-deploy-policy'
   properties: {
-    displayName: 'Deploy Diagnostics & Metrics for SQL Managed Instance Database to a Log Analytics workspace'
-    description: 'Apply diagnostic & metric settings for SQL Managed Instance Database to stream data to a Log Analytics workspace when any SQL Managed Instance Database which is missing this diagnostic settings is created or updated.'
+    displayName: 'Deploy Diagnostics & Metrics for Search to a Log Analytics workspace'
+    description: 'Apply diagnostic & metric settings for Search to stream data to a Log Analytics workspace when any Search which is missing this diagnostic settings is created or updated.'
     metadata: {
       category: 'Monitoring'
       version: '1.0.0.0'
@@ -35,7 +35,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
     policyRule: {
       if: {
         field: 'type'
-        equals: 'Microsoft.Sql/managedInstances/databases'
+        equals: 'Microsoft.Search/searchServices'
       }
       then: {
         effect: 'deployIfNotExists'
@@ -82,27 +82,26 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 }
                 resources: [
                   {
-                    type: 'Microsoft.Sql/managedInstances/databases/providers/diagnosticSettings'
+                    type: 'Microsoft.Search/searchServices/providers/diagnosticSettings'
                     apiVersion: '2017-05-01-preview'
                     name: '[concat(parameters(\'resourceName\') \'/Microsoft.Insights/\' parameters(\'profileName\'))]'
                     location: '[parameters(\'location\')]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
+                      metrics: [
+                        {
+                          category: 'AllMetrics'
+                          enabled: true
+                          retentionPolicy: {
+                            days: 0
+                            enabled: false
+                          }
+                          timeGrain: null
+                        }
+                      ]
                       logs: [
                         {
-                          category: 'SQLInsights'
-                          enabled: true
-                        }
-                        {
-                          category: 'QueryStoreRuntimeStatistics'
-                          enabled: true
-                        }
-                        {
-                          category: 'QueryStoreWaitStatistics'
-                          enabled: true
-                        }
-                        {
-                          category: 'Errors'
+                          category: 'OperationLogs'
                           enabled: true
                         }
                       ]
@@ -121,7 +120,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   value: '[field(\'location\')]'
                 }
                 resourceName: {
-                  value: '[field(\'fullName\')]'
+                  value: '[field(\'name\')]'
                 }
               }
             }
