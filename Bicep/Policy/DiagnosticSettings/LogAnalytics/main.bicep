@@ -219,6 +219,10 @@ module DiagnosticsVMDeployPolicy './Modules/diagnostics-vm-deploy-policy.bicep' 
   name: 'diagnostics-vm-deploy-policy'
 }
 
+module DiagnosticsVMSSDeployPolicy './Modules/diagnostics-vmss-deploy-policy.bicep' = {
+  name: 'diagnostics-vmss-deploy-policy'
+}
+
 module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-deploy-initiative.bicep' = {
   name: 'diagnostics-loganalytics-deploy'
   params: {
@@ -276,6 +280,7 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-depl
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsTSIDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVGWDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVMDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsVMSSDeployPolicy.outputs.name)
     ]
   }
 }
