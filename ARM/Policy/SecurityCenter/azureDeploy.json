@@ -50,6 +50,18 @@
               "Standard"
             ]
           },
+          "containerRegistryTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "App Service Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Container Registry resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
           "kubernetesServiceTier": {
             "type": "string",
             "metadata": {
@@ -74,7 +86,7 @@
               "Standard"
             ]
           },
-          "SqlServerVirtualMachineTier": {
+          "sqlServerVirtualMachineTier": {
             "type": "string",
             "metadata": {
               "displayName": "Sql Server Virtual Machine Pricing Tier",
@@ -86,7 +98,7 @@
               "Standard"
             ]
           },
-          "StorageAccountTier": {
+          "storageAccountTier": {
             "type": "string",
             "metadata": {
               "displayName": "Storage Account Pricing Tier",
@@ -133,6 +145,18 @@
                       {
                         "field": "microsoft.security/pricings/pricingTier",
                         "equals": "[[parameters('appServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "ContainerRegistry"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('containerRegistryTier')]"
                       }
                     ]
                   },
@@ -213,6 +237,9 @@
                       "appServiceTier": {
                         "type": "string"
                       },
+                      "containerRegistryTier": {
+                        "type": "string"
+                      },
                       "kubernetesServiceTier": {
                         "type": "string"
                       },
@@ -236,6 +263,14 @@
                         "name": "AppServices",
                         "properties": {
                           "pricingTier": "[[parameters('appServiceTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "ContainerRegistry",
+                        "properties": {
+                          "pricingTier": "[[parameters('containerRegistryTier')]"
                         }
                       },
                       {
@@ -284,6 +319,9 @@
                     "appServiceTier": {
                       "value": "[[parameters('appServiceTier')]"
                     },
+                    "containerRegistryTier": {
+                      "value": "[[parameters('containerRegistryTier')]"
+                    },
                     "kubernetesServiceTier": {
                       "value": "[[parameters('kubernetesServiceTier')]"
                     },
@@ -291,7 +329,7 @@
                       "value": "[[parameters('sqlServerTier')]"
                     },
                     "sqlServerVMTier": {
-                      "value": "[[parameters('SqlServerVirtualMachineTier')]"
+                      "value": "[[parameters('sqlServerVirtualMachineTier')]"
                     },
                     "storageAccountTier": {
                       "value": "[[parameters('storageAccountTier')]"
@@ -385,6 +423,17 @@
               "Free"
             ]
           },
+          "containerRegistryTier": {
+            "type": "string",
+            "metadata": {
+              "description": "Specify whether you want to enable standard tier for Container Registry resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Standard",
+              "Free"
+            ]
+          },
           "kubernetesServiceTier": {
             "type": "string",
             "metadata": {
@@ -409,7 +458,7 @@
               "Standard"
             ]
           },
-          "SqlServerVirtualMachineTier": {
+          "sqlServerVirtualMachineTier": {
             "type": "string",
             "metadata": {
               "displayName": "Sql Server Virtual Machine Pricing Tier",
@@ -421,7 +470,7 @@
               "Standard"
             ]
           },
-          "StorageAccountTier": {
+          "storageAccountTier": {
             "type": "string",
             "metadata": {
               "displayName": "Storage Account Pricing Tier",
@@ -452,6 +501,9 @@
             "parameters": {
               "appServiceTier": {
                 "value": "[[parameters('appServiceTier')]"
+              },
+              "containerRegistryTier": {
+                "value": "[[parameters('containerRegistryTier')]"
               },
               "kubernetesServiceTier": {
                 "value": "[[parameters('kubernetesServiceTier')]"
