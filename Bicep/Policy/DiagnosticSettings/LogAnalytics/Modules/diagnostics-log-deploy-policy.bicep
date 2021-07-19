@@ -84,10 +84,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   {
                     type: 'Microsoft.OperationalInsights/workspaces/providers/diagnosticSettings'
                     apiVersion: '2017-05-01-preview'
-                    name: '[[concat(parameters(\'resourceName\') \'/Microsoft.Insights/\' parameters(\'profileName\'))]'
-                    location: '[[parameters(\'location\')]'
+                    name: '[concat(parameters(\'resourceName\') \'/Microsoft.Insights/\' parameters(\'profileName\'))]'
+                    location: '[parameters(\'location\')]'
                     properties: {
-                      workspaceId: '[[parameters(\'logAnalytics\')]'
+                      workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
                         {
                           category: 'AllMetrics'
@@ -111,16 +111,16 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               parameters: {
                 profileName: {
-                  value: '[[parameters(\'profileName\')]'
+                  value: '[parameters(\'profileName\')]'
                 }
                 logAnalytics: {
-                  value: '[[parameters(\'logAnalytics\')]'
+                  value: '[parameters(\'logAnalytics\')]'
                 }
                 location: {
-                  value: '[[field(\'location\')]'
+                  value: '[field(\'location\')]'
                 }
                 resourceName: {
-                  value: '[[field(\'name\')]'
+                  value: '[field(\'name\')]'
                 }
               }
             }

@@ -19,7 +19,7 @@ module DiagnosticsAGWDeployPolicy './Modules/diagnostics-agw-deploy-policy.bicep
   name: 'diagnostics-agw-deploy-policy'
 }
 
-module DiagnosticsAKSDeployPolicy './Modules/diagnostics-agw-deploy-policy.bicep' = {
+module DiagnosticsAKSDeployPolicy './Modules/diagnostics-aks-deploy-policy.bicep' = {
   name: 'diagnostics-aks-deploy-policy'
 }
 
