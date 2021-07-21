@@ -50,6 +50,18 @@
               "Standard"
             ]
           },
+          "armServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "ARM Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for ARM operations."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
           "containerRegistryTier": {
             "type": "string",
             "metadata": {
@@ -62,11 +74,47 @@
               "Standard"
             ]
           },
+          "dnsTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "DNS Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for DNS resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "keyVaultTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Key Vault Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Key Vault resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
           "kubernetesServiceTier": {
             "type": "string",
             "metadata": {
               "displayName": "App Service Pricing Tier",
               "description": "Specify whether you want to enable Standard tier for Kubernetes resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "openSourceRelationalDatabasesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Open Source Relational Databases Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Open Source Relational Databases resource type."
             },
             "defaultValue": "Free",
             "allowedValues": [
@@ -152,6 +200,30 @@
                     "allof": [
                       {
                         "field": "name",
+                        "equals": "Arm"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('armServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "Dns"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('appServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
                         "equals": "ContainerRegistry"
                       },
                       {
@@ -164,11 +236,35 @@
                     "allof": [
                       {
                         "field": "name",
+                        "equals": "KeyVault"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('keyVaultTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
                         "equals": "KubernetesService"
                       },
                       {
                         "field": "microsoft.security/pricings/pricingTier",
                         "equals": "[[parameters('kubernetesServiceTier')]"
+                      }
+                    ]
+                  },
+                  {
+                    "allof": [
+                      {
+                        "field": "name",
+                        "equals": "OpenSourceRelationalDatabases"
+                      },
+                      {
+                        "field": "microsoft.security/pricings/pricingTier",
+                        "equals": "[[parameters('openSourceRelationalDatabasesServiceTier')]"
                       }
                     ]
                   },
@@ -192,7 +288,7 @@
                       },
                       {
                         "field": "microsoft.security/pricings/pricingTier",
-                        "equals": "[[parameters('SqlServerVirtualMachineTier')]"
+                        "equals": "[[parameters('sqlServerVirtualMachineTier')]"
                       }
                     ]
                   },
@@ -237,10 +333,22 @@
                       "appServiceTier": {
                         "type": "string"
                       },
+                      "armServiceTier": {
+                        "type": "string"
+                      },
                       "containerRegistryTier": {
                         "type": "string"
                       },
+                      "dnsTier": {
+                        "type": "string"
+                      },
+                      "keyVaultTier": {
+                        "type": "string"
+                      },
                       "kubernetesServiceTier": {
+                        "type": "string"
+                      },
+                      "openSourceRelationalDatabasesServiceTier": {
                         "type": "string"
                       },
                       "sqlServerTier": {
@@ -268,6 +376,14 @@
                       {
                         "type": "Microsoft.Security/pricings",
                         "apiVersion": "2018-06-01",
+                        "name": "Arm",
+                        "properties": {
+                          "pricingTier": "[[parameters('appServiceTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
                         "name": "ContainerRegistry",
                         "properties": {
                           "pricingTier": "[[parameters('containerRegistryTier')]"
@@ -276,9 +392,33 @@
                       {
                         "type": "Microsoft.Security/pricings",
                         "apiVersion": "2018-06-01",
+                        "name": "Dns",
+                        "properties": {
+                          "pricingTier": "[[parameters('keyVaultTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "KeyVault",
+                        "properties": {
+                          "pricingTier": "[[parameters('keyVaultTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
                         "name": "KubernetesService",
                         "properties": {
                           "pricingTier": "[[parameters('kubernetesServiceTier')]"
+                        }
+                      },
+                      {
+                        "type": "Microsoft.Security/pricings",
+                        "apiVersion": "2018-06-01",
+                        "name": "OpenSourceRelationalDatabases",
+                        "properties": {
+                          "pricingTier": "[[parameters('openSourceRelationalDatabasesServiceTier')]"
                         }
                       },
                       {
@@ -319,11 +459,23 @@
                     "appServiceTier": {
                       "value": "[[parameters('appServiceTier')]"
                     },
+                    "armServiceTier": {
+                      "value": "[[parameters('armServiceTier')]"
+                    },
                     "containerRegistryTier": {
                       "value": "[[parameters('containerRegistryTier')]"
                     },
+                    "dnsTier": {
+                      "value": "[[parameters('dnsTier')]"
+                    },
+                    "keyVaultTier": {
+                      "value": "[[parameters('keyVaultTier')]"
+                    },
                     "kubernetesServiceTier": {
                       "value": "[[parameters('kubernetesServiceTier')]"
+                    },
+                    "openSourceRelationalDatabasesServiceTier": {
+                      "value": "[[parameters('openSourceRelationalDatabasesServiceTier')]"
                     },
                     "sqlServerTier": {
                       "value": "[[parameters('sqlServerTier')]"
@@ -370,7 +522,12 @@
               "type": "Microsoft.Security/autoProvisioningSettings",
               "existenceScope": "subscription",
               "existenceCondition": {
-                "anyof": [ ]
+                "allof": [
+                  {
+                    "field": "Microsoft.Security/autoProvisioningSettings/autoProvision",
+                    "equals": "Off"
+                  }
+                ]
               },
               "roleDefinitionIds": [
                 "/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd"
@@ -415,30 +572,80 @@
           "appServiceTier": {
             "type": "string",
             "metadata": {
+              "displayName": "App Service Pricing Tier",
               "description": "Specify whether you want to enable standard tier for App Service resource type."
             },
             "defaultValue": "Free",
             "allowedValues": [
-              "Standard",
-              "Free"
+              "Free",
+              "Standard"
+            ]
+          },
+          "armServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "ARM Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for ARM operations."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
             ]
           },
           "containerRegistryTier": {
             "type": "string",
             "metadata": {
+              "displayName": "Container Registry Pricing Tier",
               "description": "Specify whether you want to enable standard tier for Container Registry resource type."
             },
             "defaultValue": "Free",
             "allowedValues": [
-              "Standard",
-              "Free"
+              "Free",
+              "Standard"
+            ]
+          },
+          "dnsTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "DNS Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for DNS resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "keyVaultTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Key Vault Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Key Vault resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
             ]
           },
           "kubernetesServiceTier": {
             "type": "string",
             "metadata": {
-              "displayName": "App Service Pricing Tier",
+              "displayName": "Kubernetes Pricing Tier",
               "description": "Specify whether you want to enable Standard tier for Kubernetes resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "openSourceRelationalDatabasesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Open Source Relational Databases Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Open Source Relational Databases resource type."
             },
             "defaultValue": "Free",
             "allowedValues": [
@@ -485,12 +692,13 @@
           "virtualMachineTier": {
             "type": "string",
             "metadata": {
+              "displayName": "Virtual Machine Pricing Tier",
               "description": "Specify whether you want to enable standard tier for Virtual Machine resource type."
             },
             "defaultValue": "Free",
             "allowedValues": [
-              "Standard",
-              "Free"
+              "Free",
+              "Standard"
             ]
           }
         },
@@ -502,17 +710,32 @@
               "appServiceTier": {
                 "value": "[[parameters('appServiceTier')]"
               },
+              "armServiceTier": {
+                "value": "[[parameters('armServiceTier')]"
+              },
               "containerRegistryTier": {
                 "value": "[[parameters('containerRegistryTier')]"
+              },
+              "dnsTier": {
+                "value": "[[parameters('dnsTier')]"
+              },
+              "keyVaultTier": {
+                "value": "[[parameters('keyVaultTier')]"
               },
               "kubernetesServiceTier": {
                 "value": "[[parameters('kubernetesServiceTier')]"
               },
+              "openSourceRelationalDatabasesServiceTier": {
+                "value": "[[parameters('openSourceRelationalDatabasesServiceTier')]"
+              },
               "sqlServerTier": {
                 "value": "[[parameters('sqlServerTier')]"
               },
+              "sqlServerVirtualMachineTier": {
+                "value": "[[parameters('sqlServerVirtualMachineTier')]"
+              },
               "StorageAccountTier": {
-                "value": "[[parameters('StorageAccountTier')]"
+                "value": "[[parameters('storageAccountTier')]"
               },
               "virtualMachineTier": {
                 "value": "[[parameters('virtualMachineTier')]"
