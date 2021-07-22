@@ -509,7 +509,20 @@
           "version": "1.0.0.0"
         },
         "mode": "All",
-        "parameters": { },
+        "parameters": {
+          "autoProvisioningSetting": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Auto Provisioning Setting",
+              "description": "Specify whether you want to enable auto provisioning of VM's to a log analytics workspace."
+            },
+            "defaultValue": "Off",
+            "allowedValues": [
+              "Off",
+              "On"
+            ]
+          }
+        },
         "policyType": "Custom",
         "policyRule": {
           "if": {
@@ -525,7 +538,7 @@
                 "allof": [
                   {
                     "field": "Microsoft.Security/autoProvisioningSettings/autoProvision",
-                    "equals": "Off"
+                    "equals": "[[parameters('autoProvisioningSetting')]"
                   }
                 ]
               },
@@ -700,6 +713,18 @@
               "Free",
               "Standard"
             ]
+          },
+          "autoProvisioningSetting": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Auto Provisioning Setting",
+              "description": "Specify whether you want to enable auto provisioning of VM's to a log analytics workspace."
+            },
+            "defaultValue": "Off",
+            "allowedValues": [
+              "Off",
+              "On"
+            ]
           }
         },
         "policyDefinitions": [
@@ -744,7 +769,12 @@
           },
           {
             "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'autoprovisioning-sub-deploy-policy')]",
-            "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy"
+            "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy",
+            "parameters": {
+              "autoProvisioningSetting": {
+                "value": "[[parameters('autoProvisioningSetting')]"
+              }
+            }
           }
         ]
       }
