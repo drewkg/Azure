@@ -60,6 +60,7 @@ stages:
           Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
           Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
           Import-Module -Name Pester -MaximumVersion 4.10.1
+          Get-Module -Name ARM-TTK
           Set-Location "$(Build.SourcesDirectory)"
           Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach {
             Write-Host "Running ARM-TTK on Directory - " $_.Split('\')[$_.Split('\').Count - 2]
