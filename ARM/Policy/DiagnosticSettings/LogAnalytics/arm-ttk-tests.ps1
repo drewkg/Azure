@@ -1,1 +1,1 @@
-﻿Test-AzTemplate $PSScriptRoot -Skip "Parameters Property Must Exist", "Template Should Not Contain Blanks" -Pester
+﻿#Test-AzTemplate $PSScriptRoot -Skip "Parameters Property Must Exist", "Template Should Not Contain Blanks" -Pester
