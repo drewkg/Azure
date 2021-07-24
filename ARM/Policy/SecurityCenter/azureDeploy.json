@@ -553,10 +553,27 @@
                   "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
-                    "parameters": { },
-                    "resources": [ ]
+                    "parameters": {
+                      "autoProvisioningSetting": {
+                        "type": "string"
+                      }
+                    },
+                    "resources": [
+                      {
+                        "type": "Microsoft.Security/autoProvisioningSettings",
+                        "apiVersion": "2018-06-01",
+                        "name": "autoProvision",
+                        "properties": {
+                          "pricingTier": "[[parameters('autoProvisioningSetting')]"
+                        }
+                      }
+                    ]
                   },
-                  "parameters": { }
+                  "parameters": {
+                    "autoProvisioningSetting": {
+                      "value": "[[parameters('autoProvisioningSetting')]"
+                    }
+                  }
                 }
               }
             }
