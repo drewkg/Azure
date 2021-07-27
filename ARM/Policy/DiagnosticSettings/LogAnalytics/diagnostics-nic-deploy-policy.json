@@ -90,7 +90,6 @@
                           "metrics": [
                             {
                               "category": "AllMetrics",
-                              "timeGrain": null,
                               "enabled": true,
                               "retentionPolicy": {
                                 "enabled": false,

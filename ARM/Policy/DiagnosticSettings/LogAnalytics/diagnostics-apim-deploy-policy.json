@@ -98,8 +98,7 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             },
                             {
                               "category": "Capacity",
@@ -107,8 +106,7 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             },
                             {
                               "category": "EventHub Events",
@@ -116,8 +114,7 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             },
                             {
                               "category": "Network Status",
@@ -125,8 +122,7 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             }
                           ],
                           "logs": [
