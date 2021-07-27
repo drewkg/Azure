@@ -81,17 +81,17 @@
     {
       "name": "getManagementGroupName",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
       "properties": {
         "expressionEvaluationOptions": {
-          "scope": "inner"
+          "scope": "Inner"
         },
         "mode": "Incremental",
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
           "contentVersion": "1.0.0.0",
-          "resources": []
+          "resources": [ ]
         }
       }
     },
