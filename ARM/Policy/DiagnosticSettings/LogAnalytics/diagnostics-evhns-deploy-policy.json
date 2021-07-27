@@ -89,7 +89,6 @@
                         "apiVersion": "2017-05-01-preview",
                         "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
                         "location": "[[parameters('location')]",
-                        "dependsOn": [],
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
                           "metrics": [
