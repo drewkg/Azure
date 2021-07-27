@@ -63,7 +63,7 @@
       "resources": [
         {
           "type": "runbooks",
-          "apiVersion": "2018-06-30",
+          "apiVersion": "2020-01-13-preview",
           "name": "[parameters('runbookName')]",
           "location": "[parameters('Location')]",
           "dependsOn": [
