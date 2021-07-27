@@ -78,7 +78,7 @@
     }
   },
   "resources": [
-    {
+    /*{
       "name": "getManagementGroupName",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-10-01",
@@ -94,7 +94,7 @@
           "resources": []
         }
       }
-    },
+    },*/
     {
       "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
