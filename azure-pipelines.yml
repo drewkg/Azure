@@ -4,6 +4,14 @@ trigger:
 - main
 - feature/ARMTTK
 
+schedules:
+- cron: "0 1 * * *"
+  displayName: Daily 1am build
+  branches:
+    include:
+    - main
+  always: true
+
 resources:
 - repo: self
 
