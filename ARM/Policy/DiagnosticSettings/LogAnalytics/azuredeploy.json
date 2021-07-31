@@ -151,7 +151,7 @@
             "name": "policyDefinitions",
             "count": "[length(parameters('diagnosticPolicies'))]",
             "input": {
-              "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
+              "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
               "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
               "parameters": {
                 "profileName": {
