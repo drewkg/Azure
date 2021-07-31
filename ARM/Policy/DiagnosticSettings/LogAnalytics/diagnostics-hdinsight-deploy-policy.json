@@ -93,11 +93,9 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             }
-                          ],
-                          "logs": []
+                          ]
                         }
                       }
                     ]

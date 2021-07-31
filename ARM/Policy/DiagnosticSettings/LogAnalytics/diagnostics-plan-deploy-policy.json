@@ -78,7 +78,6 @@
                         "type": "string"
                       }
                     },
-                    "variables": {},
                     "resources": [
                       {
                         "type": "Microsoft.Web/serverfarms/providers/diagnosticSettings",
@@ -94,8 +93,7 @@
                               "retentionPolicy": {
                                 "days": 0,
                                 "enabled": false
-                              },
-                              "timeGrain": null
+                              }
                             }
                           ]
                         }
