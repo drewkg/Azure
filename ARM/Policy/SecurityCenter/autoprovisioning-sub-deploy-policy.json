@@ -88,6 +88,15 @@
                         "properties": {
                           "autoProvision": "[[parameters('autoProvisioningSetting')]"
                         }
+                      },
+                      {
+                        "type": "Microsoft.Security/workspaceSettings",
+                        "apiVersion": "2019-01-01",
+                        "name": "default",
+                        "properties": {
+                          "workspaceId": "[[parameters('logAnalytics')]",
+                          "scope": "[subscription().id]"
+                        }
                       }
                     ]
                   },
