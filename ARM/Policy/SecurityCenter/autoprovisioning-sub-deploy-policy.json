@@ -95,7 +95,7 @@
                         "name": "default",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
-                          "scope": "[subscription().id]"
+                          "scope": "[[subscription().id]"
                         }
                       }
                     ]
