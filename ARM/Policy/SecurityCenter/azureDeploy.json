@@ -120,9 +120,9 @@
                       {
                         "type": "Microsoft.Security/autoProvisioningSettings",
                         "apiVersion": "2019-01-01",
-                        "name": "autoProvision",
+                        "name": "default",
                         "properties": {
-                          "pricingTier": "[[parameters('autoProvisioningSetting')]"
+                          "autoProvision": "[[parameters('autoProvisioningSetting')]"
                         }
                       }
                     ]
