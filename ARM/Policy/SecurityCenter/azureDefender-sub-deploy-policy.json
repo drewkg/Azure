@@ -213,7 +213,7 @@
                     "allof": [
                       {
                         "field": "name",
-                        "equals": "KeyVault"
+                        "equals": "KeyVaults"
                       },
                       {
                         "field": "microsoft.security/pricings/pricingTier",
@@ -377,7 +377,7 @@
                       {
                         "type": "Microsoft.Security/pricings",
                         "apiVersion": "2018-06-01",
-                        "name": "KeyVault",
+                        "name": "KeyVaults",
                         "properties": {
                           "pricingTier": "[[parameters('keyVaultTier')]"
                         }
