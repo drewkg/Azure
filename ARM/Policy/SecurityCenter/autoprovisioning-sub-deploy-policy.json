@@ -105,7 +105,7 @@
                       "value": "[[parameters('autoProvisioningSetting')]"
                     },
                     "logAnalytics": {
-                      "value": "[[parameters('autoProvisioningSetting')]"
+                      "value": "[[parameters('logAnalytics')]"
                     }
                   }
                 }
