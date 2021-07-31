@@ -3,7 +3,7 @@ targetScope = 'managementGroup'
 param policyDefinitionId array
 
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
-  name: 'diagnostics-loganalytics-deploy'
+  name: 'diagnostics-loganalytics-deploy-initiative'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace'
     description: 'Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.'
@@ -42,31 +42,5 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         }
       }
     }]
-    /*policyDefinitions: [
-      {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsAADeployPolicy.name)
-        policyDefinitionReferenceId: 'diagnostics-aa-deploy'
-        parameters: {
-          profileName: {
-            value: '[parameters(\'profileName\')]'
-          }
-          logAnalytics: {
-            value: '[parameters(\'logAnalytics\')]'
-          }
-        }
-      }
-      {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference(getManagementGroupNameDeploy.name, '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsADFDeployPolicy.name)
-        policyDefinitionReferenceId: 'diagnostics-adf-deploy'
-        parameters: {
-          profileName: {
-            value: '[parameters(\'profileName\')]'
-          }
-          logAnalytics: {
-            value: '[parameters(\'logAnalytics\')]'
-          }
-        }
-      }
-    ]*/
   }
 }
