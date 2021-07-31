@@ -119,7 +119,7 @@
                     "resources": [
                       {
                         "type": "Microsoft.Security/autoProvisioningSettings",
-                        "apiVersion": "2018-06-01",
+                        "apiVersion": "2019-01-01",
                         "name": "autoProvision",
                         "properties": {
                           "pricingTier": "[[parameters('autoProvisioningSetting')]"
