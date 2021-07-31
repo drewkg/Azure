@@ -54,6 +54,10 @@
                   {
                     "field": "Microsoft.Security/autoProvisioningSettings/autoProvision",
                     "equals": "[[parameters('autoProvisioningSetting')]"
+                  },
+                  {
+                    "field": "Microsoft.Security/workspaceSettings/workspaceId",
+                    "equals": "[[parameters('logAnalytics')]"
                   }
                 ]
               },
