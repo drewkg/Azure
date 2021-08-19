@@ -3,12 +3,14 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 trigger:
   batch: false
   branches:
-    include: main
+    include:
+    - main
 
 pr:
   autoCancel: true
   branches:
-    include: main
+    include:
+    - main
   drafts: true
 
 schedules:
