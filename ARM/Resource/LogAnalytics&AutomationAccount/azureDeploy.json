@@ -1,9 +1,87 @@
 {
-	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-	"contentVersion": "1.0.0.0",
-	"parameters": {	},
-	"variables": { },
-  "functions": [ ],
-	"resources": [ ],
-  "outputs": { }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+		"Location": {
+			"type": "string",
+			"defaultValue": "uksouth",
+			"metadata": {
+				"description": "The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account."
+			},
+      "allowedValues": [
+        "eastus",
+        "westus2",
+        "canadacentral",
+        "australiasoutheast",
+        "southeastasia",
+        "centralindia",
+        "japaneast",
+        "uksouth",
+        "westeurope",
+        "usgovvirginia"
+      ]
+		}
+  },
+  "variables": {
+    "LogAnalyticsName" : "platform-prod-uks-log",
+    "AutomationAccountName": "platform-prod-uks-aa"
+  },
+  "resources": [
+    {
+      "name": "[variables('LogAnalyticsName')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2020-10-01",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": 30
+      },
+      "resources": [
+        {
+          "name": "[concat(variables('LogAnalyticsName'), '/' , 'Automation')]",
+          "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
+          "apiVersion": "2020-08-01",
+          "location": "[parameters('Location')]",
+          "dependsOn": [
+            "[variables('LogAnalyticsName')]",
+            "[variables('AutomationAccountName')]"
+          ],
+          "properties": {
+            "resourceId": "[resourceId('Microsoft.Automation/automationAccounts', variables('AutomationAccountName'))]"
+          }
+        }
+      ]
+    },
+    {
+      "name": "[concat('AzureActivity', '(', variables('LogAnalyticsName'), ')')]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[variables('LogAnalyticsName')]"
+      ],
+      "plan": {
+        "name": "[Concat('AzureActivity', '(', variables('LogAnalyticsName'), ')')]",
+        "publisher": "Microsoft",
+        "product": "[Concat('OMSGallery/', 'AzureActivity')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('LogAnalyticsName'))]"
+      }
+    },
+    {
+      "name": "[variables('AutomationAccountName')]",
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2021-04-01",
+      "location": "[parameters('Location')]",
+      "properties": {
+        "sku": {
+          "name": "Basic"
+        }
+      }
+    }
+  ]
 }
