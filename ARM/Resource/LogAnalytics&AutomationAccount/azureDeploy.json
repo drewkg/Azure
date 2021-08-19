@@ -20,15 +20,26 @@
         "westeurope",
         "usgovvirginia"
       ]
-		}
+		},
+    "logAnalyticsWorkspaceName": {
+      "type": "string",
+      "defaultValue": "platform-test-uks-log",
+      "metadata": {
+        "description": "The name of the log analytics resource that will be created."
+      }
+    },
+    "AutomationAccountName": {
+      "type": "string",
+      "defaultValue": "platform-test-uks-aa",
+      "metadata": {
+        "description": "The name of the automation account resource that will be created."
+      }
+    }
   },
-  "variables": {
-    "LogAnalyticsName" : "platform-prod-uks-log",
-    "AutomationAccountName": "platform-prod-uks-aa"
-  },
+  "variables": { },
   "resources": [
     {
-      "name": "[variables('LogAnalyticsName')]",
+      "name": "[parameters('logAnalyticsWorkspaceName')]",
       "type": "Microsoft.OperationalInsights/workspaces",
       "apiVersion": "2020-10-01",
       "location": "[parameters('Location')]",
@@ -40,40 +51,104 @@
       },
       "resources": [
         {
-          "name": "[concat(variables('LogAnalyticsName'), '/' , 'Automation')]",
+          "type": "Microsoft.OperationalInsights/workspaces/providers/diagnosticSettings",
+          "apiVersion": "2017-05-01-preview",
+          "name": "[concat(parameters('logAnalyticsWorkspaceName'), '/Microsoft.Insights/diagnosticSettings')]",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[parameters('logAnalyticsWorkspaceName')]"
+          ],
+          "properties": {
+            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]",
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "days": 0,
+                  "enabled": false
+                }
+              }
+            ],
+            "logs": [
+              {
+                "category": "Audit",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "name": "[concat(parameters('logAnalyticsWorkspaceName'), '/' , 'Automation')]",
           "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
           "apiVersion": "2020-08-01",
           "location": "[parameters('Location')]",
           "dependsOn": [
-            "[variables('LogAnalyticsName')]",
-            "[variables('AutomationAccountName')]"
+            "[parameters('logAnalyticsWorkspaceName')]",
+            "[parameters('AutomationAccountName')]"
           ],
           "properties": {
-            "resourceId": "[resourceId('Microsoft.Automation/automationAccounts', variables('AutomationAccountName'))]"
+            "resourceId": "[resourceId('Microsoft.Automation/automationAccounts', parameters('AutomationAccountName'))]"
           }
         }
       ]
     },
     {
-      "name": "[concat('AzureActivity', '(', variables('LogAnalyticsName'), ')')]",
+      "name": "[concat('SecurityCenterFree', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
       "location": "[parameters('Location')]",
       "dependsOn": [
-        "[variables('LogAnalyticsName')]"
+        "[parameters('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[Concat('AzureActivity', '(', variables('LogAnalyticsName'), ')')]",
+        "name": "[concat('SecurityCenterFree', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
         "publisher": "Microsoft",
-        "product": "[Concat('OMSGallery/', 'AzureActivity')]",
+        "product": "[concat('OMSGallery/', 'SecurityCenterFree')]",
         "promotionCode": ""
       },
       "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('LogAnalyticsName'))]"
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
       }
     },
     {
-      "name": "[variables('AutomationAccountName')]",
+      "name": "[concat('AzureActivity', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[parameters('logAnalyticsWorkspaceName')]"
+      ],
+      "plan": {
+        "name": "[concat('AzureActivity', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
+        "publisher": "Microsoft",
+        "product": "[concat('OMSGallery/', 'AzureActivity')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "[concat('AzureAutomation', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('Location')]",
+      "dependsOn": [
+        "[parameters('logAnalyticsWorkspaceName')]"
+      ],
+      "plan": {
+        "name": "[concat('AzureAutomation', '(', parameters('logAnalyticsWorkspaceName'), ')')]",
+        "publisher": "Microsoft",
+        "product": "[concat('OMSGallery/', 'AzureAutomation')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "[parameters('AutomationAccountName')]",
       "type": "Microsoft.Automation/automationAccounts",
       "apiVersion": "2021-04-01",
       "location": "[parameters('Location')]",
@@ -81,7 +156,46 @@
         "sku": {
           "name": "Basic"
         }
-      }
+      },
+      "resources": [
+        {
+          "type": "Microsoft.Automation/automationAccounts/providers/diagnosticSettings",
+          "apiVersion": "2017-05-01-preview",
+          "name": "[concat(parameters('AutomationAccountName'), '/Microsoft.Insights/diagnosticSettings')]",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[parameters('AutomationAccountName')]",
+            "[parameters('logAnalyticsWorkspaceName')]"
+          ],
+          "properties": {
+            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', parameters('logAnalyticsWorkspaceName'))]",
+            "metrics": [
+              {
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "enabled": false,
+                  "days": 0
+                }
+              }
+            ],
+            "logs": [
+              {
+                "category": "JobLogs",
+                "enabled": true
+              },
+              {
+                "category": "JobStreams",
+                "enabled": true
+              },
+              {
+                "category": "DscNodeStatus",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 }
