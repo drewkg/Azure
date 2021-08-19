@@ -48,16 +48,16 @@ stages:
             Write-Output "setting version as -alpha"
           }
 
-  #- job: 'Validation'
-  #  displayName: 'Validate & Package Templates'
-  #  continueOnError: false
-  #  dependsOn: 'Init'
-  #  pool:
-  #    vmImage: 'windows-latest'
-  #  workspace:
-  #    clean: all
-  #  steps:
-  #  - checkout: self
+  - job: 'Validation'
+    displayName: 'Validate & Package Templates'
+    continueOnError: false
+    dependsOn: 'Init'
+    pool:
+      vmImage: 'windows-latest'
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
 
     - task: PowerShell@1
       displayName: 'Install & Run ARM-TTK'
