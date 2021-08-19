@@ -2,11 +2,11 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
-- feature/ARMTTK
+- feature/ARMTTKUpdates
 
 schedules:
-- cron: "0 1 * * *"
-  displayName: Daily 1am build
+- cron: "0 0 * * 1"
+  displayName: Weekly build Monday Midnight
   branches:
     include:
     - main
