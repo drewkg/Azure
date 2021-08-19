@@ -1,12 +1,21 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
-- main
-- feature/ARMTTK
+  batch: false
+  branches:
+    include:
+    - main
+
+pr:
+  autoCancel: true
+  branches:
+    include:
+    - main
+  drafts: true
 
 schedules:
-- cron: "0 1 * * *"
-  displayName: Daily 1am build
+- cron: "0 0 * * 1"
+  displayName: Weekly build Monday Midnight
   branches:
     include:
     - main
@@ -48,16 +57,16 @@ stages:
             Write-Output "setting version as -alpha"
           }
 
-  #- job: 'Validation'
-  #  displayName: 'Validate & Package Templates'
-  #  continueOnError: false
-  #  dependsOn: 'Init'
-  #  pool:
-  #    vmImage: 'windows-latest'
-  #  workspace:
-  #    clean: all
-  #  steps:
-  #  - checkout: self
+  - job: 'Validation'
+    displayName: 'Validate & Package Templates'
+    continueOnError: false
+    dependsOn: 'Init'
+    pool:
+      vmImage: 'windows-latest'
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
 
     - task: PowerShell@1
       displayName: 'Install & Run ARM-TTK'
