@@ -16,7 +16,7 @@ Import-Module -Name Pester -MaximumVersion 4.10.1
 Set-Location "."
 Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path . | ForEach-Object {
   Write-Host "Running ARM-TTK on Directory - " $_.Split('\')[$_.Split('\').Count - 2]
-  Invoke-Pester -Script (Join-Path -Path $outputPath -ChildPath $_) -OutputFile (".\ARM-TTK\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml
+  Invoke-Pester -Script (Join-Path -Path ".\" -ChildPath $_) -OutputFile ($outputPath + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml
 }
 
 Remove-Item ".\ARM-TTK" -Recurse
