@@ -97,7 +97,7 @@ stages:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
+        testResultsFiles: '*.nunit'
         searchFolder: '$(Common.TestResultsDirectory)'
         mergeTestResults: true
         failTaskOnFailedTests: true
