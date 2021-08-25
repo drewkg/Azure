@@ -68,27 +68,21 @@ stages:
     steps:
     - checkout: self
 
-    - task: PowerShell@1
-      displayName: 'Install & Run ARM-TTK'
+    - task: PowerShell@2
+      displayName: 'Perform ARM TTK Test Run'
       inputs:
-        scriptType: inlineScript
-        inlineScript: |
-          Invoke-WebRequest -Uri "https://aka.ms/arm-ttk-latest" -OutFile "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip"
-          Expand-Archive -Path "$(Build.ArtifactStagingDirectory)\ARM-TTK.zip" -DestinationPath "$(Build.ArtifactStagingDirectory)\ARM-TTK"
-          Import-Module "$(Build.ArtifactStagingDirectory)\ARM-TTK\arm-ttk\arm-ttk.psd1"
-          Import-Module -Name Pester -MaximumVersion 4.10.1
-          Get-Module -Name ARM-TTK
-          Set-Location "$(Build.SourcesDirectory)"
-          Get-ChildItem -Name arm-ttk-tests.ps1 -recurse -Path $(Build.SourcesDirectory) | ForEach {
-            Write-Host "Running ARM-TTK on Directory - " $_.Split('\')[$_.Split('\').Count - 2]
-            Invoke-Pester -Script ("$(Build.SourcesDirectory)\" + $_) -OutputFile ("$(Common.TestResultsDirectory)\" + $_.Split('\')[$_.Split('\').Count - 2]  + ".nunit") -OutputFormat NUnitXml
-          }
-        pwsh: false
+        filePath: '$(Build.SourcesDirectory)\Utilities\Run-ARMTTK.ps1'
+        arguments: '-outputPath $(Common.TestResultsDirectory)'
+        failOnStderr: true
+        showWarnings: true
+        pwsh: true
+        workingDirectory: $(Build.SourcesDirectory)
 
     - task: PublishTestResults@2
+      displayName: 'Publish ARM TTK Test Run Results'
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(Common.TestResultsDirectory)\*.nunit'
+        testResultsFiles: '*.nunit'
         searchFolder: '$(Common.TestResultsDirectory)'
         mergeTestResults: true
         failTaskOnFailedTests: true
