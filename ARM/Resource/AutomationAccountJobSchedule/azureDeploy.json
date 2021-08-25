@@ -22,16 +22,9 @@
     },
     "automationAccountName": {
       "type": "String",
-      "defaultValue": "Webhook-aa",
+      "defaultValue": "JobSchedule-aa",
       "metadata": {
         "description": "Automation account name"
-      }
-    },
-    "runbookName": {
-      "type": "String",
-      "defaultValue": "SampleRunbook",
-      "metadata": {
-        "description": "Runbook Name for which webhook will be created"
       }
     },
     "baseTime": {
@@ -57,7 +50,7 @@
         {
           "type": "runbooks",
           "apiVersion": "2020-01-13-preview",
-          "name": "[parameters('runbookName')]",
+          "name": "HelloWorldRunbook",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[parameters('automationAccountName')]"
@@ -66,7 +59,7 @@
             "runbookType": "PowerShell",
             "logProgress": false,
             "logVerbose": false,
-            "description": "Sample Runbook",
+            "description": "Hello World Runbook",
             "publishContentLink": {
               "uri": "[concat(uri(parameters('_artifactsLocation'), 'Script/HelloWorld.ps1'), parameters('_artifactsLocationSasToken'))]",
               "version": "1.0.0.0"
@@ -91,20 +84,19 @@
         {
           "type": "jobSchedules",
           "apiVersion": "2021-04-01",
-          "name": "BasicJobSchedule",
+          "name": "[guid('HelloWorldJobSchedule')]",
           "dependsOn": [
             "[parameters('automationAccountName')]",
-            "[parameters('runbookName')]",
+            "HelloWorldRunbook",
             "RunbookSchedule"
           ],
           "properties": {
             "runbook": {
-              "name": "[parameters('runbookName')]"
+              "name": "HelloWorldRunbook"
             },
             "schedule": {
               "name": "RunbookSchedule"
-            },
-            "parameters": null
+            }
           }
         }
       ]

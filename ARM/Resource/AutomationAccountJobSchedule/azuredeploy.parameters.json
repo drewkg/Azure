@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "value": "https://github.com/drewkg/Azure/tree/main/ARM/Resource/AutomationAccountWebHook/"
+      "value": "https://raw.githubusercontent.com/drewkg/Azure/main/ARM/Resource/AutomationAccountWebHook/"
     }
   }
 }
