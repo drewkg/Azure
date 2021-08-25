@@ -69,6 +69,7 @@ stages:
     - checkout: self
 
     - task: PowerShell@2
+      displayName: 'Perform ARM TTK Test Run'
       inputs:
         filePath: '$(Build.SourcesDirectory)\Utilities\Run-ARMTTK.ps1'
         arguments: '-outputPath $(Common.TestResultsDirectory)'
@@ -78,6 +79,7 @@ stages:
         workingDirectory: $(Build.SourcesDirectory)
 
     - task: PublishTestResults@2
+      displayName: 'Publish ARM TTK Test Run Results'
       inputs:
         testResultsFormat: 'NUnit'
         testResultsFiles: '*.nunit'
