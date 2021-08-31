@@ -1,8 +1,35 @@
 # Azure Conventions
 
-## Azure Resources
+## Resource Naming
 
 All Azure resources need to have a unique name, at leats within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
+
+### Resources
+
+<Application>-<Environment>-<AzureRegion>-<Instance>-<ResourceType>
+
+<Application> - A Short code for the application.
+<Environment> - The environment beign deployed, e.g. tst, Int, Prd
+<AzureRegion> - A short code for teh Azure Region e.g. uks for uksouth
+<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services
+<ResourceType> - A short code for the Azure resource, see below.
+
+### Policy & Initiatives
+
+Azure Policies should be use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
+
+<Group> - The grouping of the Policy.
+<ResourceType> - A short code for the Azure resource the policy affects.
+<Action> - The action of the Policy, e.g. Deploy if not Exsists.
+Policy - The word Policy to denote an Azure Policy.
+
+## Locations
+
+Location | Location Short Code
+-------- | -------------------
+UK South | uks
+
+## Azure Resources
 
 Placing the resource extension at the end of the naming convention , which is different to the Mcirosoft best practice, meas resources are grouped by name when viewing a complete list and not by the extension.   I have found in practice this makes a big difference when viewing a large estate.
 
