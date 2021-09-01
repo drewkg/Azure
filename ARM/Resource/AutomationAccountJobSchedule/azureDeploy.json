@@ -84,7 +84,7 @@
         {
           "type": "jobSchedules",
           "apiVersion": "2020-01-13-preview",
-          "name": "[guid('HelloWorldJobSchedule12345')]",
+          "name": "[guid('HelloWorldJobSchedule')]",
           "dependsOn": [
             "[parameters('automationAccountName')]",
             "HelloWorldRunbook",

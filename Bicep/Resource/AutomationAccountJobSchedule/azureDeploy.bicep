@@ -9,10 +9,7 @@ param _artifactsLocation string = deployment().properties.templateLink.uri
 param artifactsLocationSasToken string = ''
 
 @description('Automation account name')
-param automationAccountName string = 'Webhook-aa'
-
-@description('Runbook Name for which webhook will be created')
-param runbookName string = 'SampleRunbook'
+param automationAccountName string = 'JobSchedule-aa'
 
 @description('Base time for all calcuations, default is Now() in UTC')
 param baseTime string = utcNow('u')
@@ -29,7 +26,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 
   resource runbookName_resource 'runbooks@2020-01-13-preview' = {
-    name: runbookName
+    name: 'HelloWorldRunbook'
     location: Location
     properties: {
       runbookType: 'PowerShell'
@@ -56,13 +53,13 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 
   resource jobSchedules 'jobSchedules@2020-01-13-preview' = {
-    name: guid('HelloWorldJobSchedule123456')
+    name: guid('HelloWorldJobSchedule')
     properties: {
       runbook: {
-        name: runbookName
+        name: runbookName_resource.name
       }
       schedule: {
-        name: 'RunbookSchedule'
+        name: runbookSchedule_resource.name
       }
     }
   }
