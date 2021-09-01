@@ -23,17 +23,32 @@
 		},
     "environment": {
       "type": "string",
-      "defaultValue": "Test"
+      "defaultValue": "test"
     },
     "namingConvention": {
       "type": "string",
-      "defaultValue": "platform-{0}-uks-{1}"
+      "defaultValue": "platform-{0}-{1}-{2}"
+    },
+    "locationShortCodeOverride": {
+      "type": "object",
+      "defaultValue": {
+        "eastus": "eus",
+        "westus2": "wus",
+        "canadacentral": "cac",
+        "australiasoutheast": "ase",
+        "southeastasia": "sea",
+        "centralindia": "cid",
+        "japaneast": "jpe",
+        "uksouth": "uks",
+        "westeurope": "weu",
+        "usgovvirginia": "usgv"
+      }
     },
     "resourceNameOverride": {
       "type": "object",
       "defaultValue": {
-        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('environment'), 'log')]",
-        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), 'aa')]"
+        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'log')]",
+        "automationAccountName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'aa')]"
       },
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the naming individual resources.  If used then all resources need to be defined."
