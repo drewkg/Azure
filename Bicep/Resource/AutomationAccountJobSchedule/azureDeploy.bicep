@@ -2,7 +2,7 @@
 param Location string = resourceGroup().location
 
 @description('URI to artifacts location')
-param artifactsLocation string = deployment().properties.templateLink.uri
+param _artifactsLocation string = deployment().properties.templateLink.uri
 
 @secure()
 @description('SAS Token as a Query String')
@@ -14,7 +14,7 @@ param automationAccountName string = 'Webhook-aa'
 @description('Runbook Name for which webhook will be created')
 param runbookName string = 'SampleRunbook'
 
-@description('Base time for all calcuations, default is Noe() in UTC')
+@description('Base time for all calcuations, default is Now() in UTC')
 param baseTime string = utcNow('u')
 
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
@@ -28,7 +28,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource automationAccountName_runbookName 'runbooks@2020-01-13-preview' = {
+  resource runbookName_resource 'runbooks@2020-01-13-preview' = {
     name: runbookName
     location: Location
     properties: {
@@ -37,13 +37,13 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
       logVerbose: false
       description: 'Sample Runbook'
       publishContentLink: {
-        uri: '${artifactsLocation}/Script/HelloWorld.ps1${artifactsLocationSasToken}'
+        uri: '${_artifactsLocation}/Script/HelloWorld.ps1${artifactsLocationSasToken}'
         version: '1.0.0.0'
       }
     }
   }
 
-  resource runbookSchedule 'schedules@2021-04-01' = {
+  resource runbookSchedule_resource 'schedules@2021-04-01' = {
     name: 'RunbookSchedule'
     location: Location
     properties: {
@@ -55,14 +55,14 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource jobSchedules 'jobSchedules@2021-04-01' = {
-    name: guid('HelloWorldJobSchedule')
+  resource jobSchedules 'jobSchedules@2020-01-13-preview' = {
+    name: guid('HelloWorldJobSchedule123456')
     properties: {
       runbook: {
         name: runbookName
       }
       schedule: {
-        name: runbookSchedule
+        name: 'RunbookSchedule'
       }
     }
   }
