@@ -55,32 +55,9 @@
       }
     }
   },
-  "functions": [
-    {
-      "namespace": "drewk",
-      "members": {
-        "resourceName": {
-          "parameters": [
-            {
-              "name": "nameFormatObject",
-              "type": "object"
-            },
-            {
-              "name": "resourceIdentifier",
-              "type": "string"
-            }
-          ],
-          "output": {
-            "type": "string",
-            "value": "[parameters('nameFormatObject')[parameters('resourceIdentifier')]]"
-          }
-        }
-      }
-    }
-  ],
   "variables": {
-    "logAnalyticsWorkspaceName": "[drewk.resourceName(parameters('resourceNameOverride'), 'logAnalyticsWorkspaceName')]",
-    "automationAccountName": "[drewk.resourceName(parameters('resourceNameOverride'), 'automationAccountName')]"
+    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
+    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]"
   },
   "resources": [
     {
@@ -129,7 +106,7 @@
           "apiVersion": "2020-08-01",
           "location": "[parameters('location')]",
           "dependsOn": [
-            "[drewk.resourceName(parameters('resourceNameOverride'), 'logAnalyticsWorkspaceName')]",
+            "[variables('logAnalyticsWorkspaceName')]",
             "[variables('automationAccountName')]"
           ],
           "properties": {
@@ -139,7 +116,7 @@
       ]
     },
     {
-      "name": "[concat('SecurityCenterFree', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+      "name": "[format('SecurityCenterFree({0})', variables('logAnalyticsWorkspaceName'))]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
       "location": "[parameters('location')]",
@@ -147,9 +124,9 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[concat('SecurityCenterFree', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+        "name": "[format('SecurityCenterFree ({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
-        "product": "[concat('OMSGallery/', 'SecurityCenterFree')]",
+        "product": "[format('OMSGallery/{0}', 'SecurityCenterFree')]",
         "promotionCode": ""
       },
       "properties": {
@@ -157,7 +134,7 @@
       }
     },
     {
-      "name": "[concat('AzureActivity', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+      "name": "[format('AzureActivity({0})', variables('logAnalyticsWorkspaceName'))]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
       "location": "[parameters('location')]",
@@ -165,9 +142,9 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[concat('AzureActivity', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+        "name": "[format('AzureActivity ({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
-        "product": "[concat('OMSGallery/', 'AzureActivity')]",
+        "product": "[format('OMSGallery/{0}', 'AzureActivity')]",
         "promotionCode": ""
       },
       "properties": {
@@ -175,7 +152,7 @@
       }
     },
     {
-      "name": "[concat('AzureAutomation', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+      "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
       "location": "[parameters('location')]",
@@ -183,9 +160,9 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[concat('AzureAutomation', '(', variables('logAnalyticsWorkspaceName'), ')')]",
+        "name": "[format('AzureAutomation ({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
-        "product": "[concat('OMSGallery/', 'AzureAutomation')]",
+        "product": "[format('OMSGallery/{0}', 'AzureAutomation')]",
         "promotionCode": ""
       },
       "properties": {

@@ -59,6 +59,48 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
   }
 }
 
+resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
+  location: location
+  plan: {
+    name: format('SecurityCenterFree ({0})', logAnalyticsWorkspaceName)
+    publisher: 'Microsoft'
+    product: format('OMSGallery/{0}', 'SecurityCenterFree')
+    promotionCode: ''
+  }
+  properties: {
+    workspaceResourceId: logAnalyticsWorkspace_resource.id
+  }
+}
+
+resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
+  location: location
+  plan: {
+    name: format('AzureActivity ({0})', logAnalyticsWorkspaceName)
+    publisher: 'Microsoft'
+    product: format('OMSGallery/{0}', 'AzureActivity')
+    promotionCode: ''
+  }
+  properties: {
+    workspaceResourceId: logAnalyticsWorkspace_resource.id
+  }
+}
+
+resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
+  location: location
+  plan: {
+    name: format('AzureAutomation ({0})', logAnalyticsWorkspaceName)
+    publisher: 'Microsoft'
+    product: format('OMSGallery/{0}', 'AzureAutomation')
+    promotionCode: ''
+  }
+  properties: {
+    workspaceResourceId: logAnalyticsWorkspace_resource.id
+  }
+}
+
 resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: logAnalyticsWorkspace_resource
@@ -122,56 +164,5 @@ resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagn
         enabled: true
       }
     ]
-  }
-}
-
-resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
-  location: location
-  dependsOn: [
-    logAnalyticsWorkspace_resource
-  ]
-  plan: {
-    name: format('SecurityCenterFree ({0})', logAnalyticsWorkspaceName)
-    publisher: 'Microsoft'
-    product: format('OMSGallery/{0}', 'SecurityCenterFree')
-    promotionCode: ''
-  }
-  properties: {
-    workspaceResourceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspaceName)
-  }
-}
-
-resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
-  location: location
-  dependsOn: [
-    logAnalyticsWorkspace_resource
-  ]
-  plan: {
-    name: format('AzureActivity ({0})', logAnalyticsWorkspaceName)
-    publisher: 'Microsoft'
-    product: format('OMSGallery/{0}', 'AzureActivity')
-    promotionCode: ''
-  }
-  properties: {
-    workspaceResourceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspaceName)
-  }
-}
-
-resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
-  location: location
-  dependsOn: [
-    logAnalyticsWorkspace_resource
-  ]
-  plan: {
-    name: format('AzureAutomation ({0})', logAnalyticsWorkspaceName)
-    publisher: 'Microsoft'
-    product: format('OMSGallery/{0}', 'AzureAutomation')
-    promotionCode: ''
-  }
-  properties: {
-    workspaceResourceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspaceName)
   }
 }
