@@ -126,8 +126,11 @@ resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagn
 }
 
 resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('SecurityCenterFree ({0})', logAnalyticsWorkspaceName)
+  name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
   location: location
+  dependsOn: [
+    logAnalyticsWorkspace_resource
+  ]
   plan: {
     name: format('SecurityCenterFree ({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
@@ -140,8 +143,11 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
 }
 
 resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('AzureActivity ({0})', logAnalyticsWorkspaceName)
+  name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
   location: location
+  dependsOn: [
+    logAnalyticsWorkspace_resource
+  ]
   plan: {
     name: format('AzureActivity ({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
@@ -154,8 +160,11 @@ resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutio
 }
 
 resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('AzureAutomation ({0})', logAnalyticsWorkspaceName)
+  name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
   location: location
+  dependsOn: [
+    logAnalyticsWorkspace_resource
+  ]
   plan: {
     name: format('AzureAutomation ({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
