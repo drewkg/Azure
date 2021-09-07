@@ -6,21 +6,21 @@ All Azure resources need to have a unique name, at leats within the tenant, ther
 
 ### Resources
 
-<Application>-<Environment>-<AzureRegion>-<Instance>-<ResourceType>
+\<Application>-\<Environment>-\<AzureRegion>-\<Instance>-\<ResourceType>
 
-<Application> - A Short code for the application.
-<Environment> - The environment beign deployed, e.g. tst, Int, Prd
-<AzureRegion> - A short code for teh Azure Region e.g. uks for uksouth
-<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services
-<ResourceType> - A short code for the Azure resource, see below.
+\<Application> - A Short code for the application.
+\<Environment> - The environment beign deployed, e.g. tst, Int, Prd
+\<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth
+\<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services
+\<ResourceType> - A short code for the Azure resource, see below.
 
 ### Policy & Initiatives
 
 Azure Policies should be use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
 
-<Group> - The grouping of the Policy.
-<ResourceType> - A short code for the Azure resource the policy affects.
-<Action> - The action of the Policy, e.g. Deploy if not Exsists.
+\<Group> - The grouping of the Policy.
+\<ResourceType> - A short code for the Azure resource the policy affects.
+\<Action> - The action of the Policy, e.g. Deploy if not Exsists.
 Policy - The word Policy to denote an Azure Policy.
 
 ## Locations

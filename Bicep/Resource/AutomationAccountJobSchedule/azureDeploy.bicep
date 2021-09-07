@@ -52,7 +52,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource jobSchedules 'jobSchedules@2020-01-13-preview' = {
+  resource jobSchedules 'jobSchedules@2021-04-01' = {
     name: guid('HelloWorldJobSchedule')
     properties: {
       runbook: {

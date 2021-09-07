@@ -83,7 +83,7 @@
         },
         {
           "type": "jobSchedules",
-          "apiVersion": "2020-01-13-preview",
+          "apiVersion": "2021-04-01",
           "name": "[guid('HelloWorldJobSchedule')]",
           "dependsOn": [
             "[parameters('automationAccountName')]",

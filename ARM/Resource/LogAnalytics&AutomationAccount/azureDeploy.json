@@ -1,0 +1,218 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+		"location": {
+			"type": "string",
+			"defaultValue": "uksouth",
+			"metadata": {
+				"description": "The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account."
+			},
+      "allowedValues": [
+        "eastus",
+        "westus2",
+        "canadacentral",
+        "australiasoutheast",
+        "southeastasia",
+        "centralindia",
+        "japaneast",
+        "uksouth",
+        "westeurope",
+        "usgovvirginia"
+      ]
+		},
+    "environment": {
+      "type": "string",
+      "defaultValue": "test"
+    },
+    "namingConvention": {
+      "type": "string",
+      "defaultValue": "platform-{0}-{1}-{2}"
+    },
+    "locationShortCodeOverride": {
+      "type": "object",
+      "defaultValue": {
+        "eastus": "eus",
+        "westus2": "wus",
+        "canadacentral": "cac",
+        "australiasoutheast": "ase",
+        "southeastasia": "sea",
+        "centralindia": "cid",
+        "japaneast": "jpe",
+        "uksouth": "uks",
+        "westeurope": "weu",
+        "usgovvirginia": "usgv"
+      }
+    },
+    "resourceNameOverride": {
+      "type": "object",
+      "defaultValue": {
+        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'log')]",
+        "automationAccountName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'aa')]"
+      },
+      "metadata": {
+        "description": "Object to allow the overriding of the default naming convention, by specifying the naming individual resources.  If used then all resources need to be defined."
+      }
+    }
+  },
+  "variables": {
+    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
+    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]"
+  },
+  "resources": [
+    {
+      "name": "[variables('logAnalyticsWorkSpaceName')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2020-10-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "PerGB2018"
+        },
+        "retentionInDays": 30
+      },
+      "resources": [
+        {
+          "name": "[concat(variables('logAnalyticsWorkSpaceName'), '/' , 'Automation')]",
+          "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
+          "apiVersion": "2020-08-01",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[variables('logAnalyticsWorkspaceName')]",
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "resourceId": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]"
+          }
+        }
+      ]
+    },
+    {
+      "name": "[format('SecurityCenterFree({0})', variables('logAnalyticsWorkspaceName'))]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('logAnalyticsWorkspaceName')]"
+      ],
+      "plan": {
+        "name": "[format('SecurityCenterFree({0})', variables('logAnalyticsWorkspaceName'))]",
+        "publisher": "Microsoft",
+        "product": "[format('OMSGallery/{0}', 'SecurityCenterFree')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "[format('AzureActivity({0})', variables('logAnalyticsWorkspaceName'))]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('logAnalyticsWorkspaceName')]"
+      ],
+      "plan": {
+        "name": "[format('AzureActivity({0})', variables('logAnalyticsWorkspaceName'))]",
+        "publisher": "Microsoft",
+        "product": "[format('OMSGallery/{0}', 'AzureActivity')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
+      "type": "Microsoft.OperationsManagement/solutions",
+      "apiVersion": "2015-11-01-preview",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[variables('logAnalyticsWorkspaceName')]"
+      ],
+      "plan": {
+        "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
+        "publisher": "Microsoft",
+        "product": "[format('OMSGallery/{0}', 'AzureAutomation')]",
+        "promotionCode": ""
+      },
+      "properties": {
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "diagnosticSettings",
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+      "properties": {
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true,
+            "retentionPolicy": {
+              "days": 0,
+              "enabled": false
+            }
+          }
+        ],
+        "logs": [
+          {
+            "category": "Audit",
+            "enabled": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('automationAccountName')]",
+      "type": "Microsoft.Automation/automationAccounts",
+      "apiVersion": "2021-04-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "sku": {
+          "name": "Basic"
+        }
+      }
+    },
+    {
+      "name": "diagnosticSettings",
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
+      "dependsOn": [
+        "[variables('automationAccountName')]",
+        "[variables('logAnalyticsWorkspaceName')]"
+      ],
+      "properties": {
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
+          }
+        ],
+        "logs": [
+          {
+            "category": "JobLogs",
+            "enabled": true
+          },
+          {
+            "category": "JobStreams",
+            "enabled": true
+          },
+          {
+            "category": "DscNodeStatus",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  ]
+}
