@@ -18,11 +18,11 @@ module AutoProvisioningSubDeployPolicy './Modules/autoprovisioning-sub-deploy-po
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
   name: 'diagnostics-loganalytics-deploy-initiative'
   properties: {
-    displayName: 'Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace'
-    description: 'Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.'
+    displayName: 'Deploy Configurations for Azure Security Center to a Subscription'
+    description: 'Apply configurations of Azure Security Center to a Subscription when the settings are missing or incorrect.'
     policyType: 'Custom'
     metadata: {
-      category: 'Monitoring'
+      category: 'Security Center'
       verion: '1.0.0'
     }
     parameters: {
