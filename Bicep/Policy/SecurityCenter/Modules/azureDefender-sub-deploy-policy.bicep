@@ -167,7 +167,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'appServiceTier\')]'
+                    equals: '[parameters(\'appServiceTier\')]'
                   }
                 ]
               }
@@ -179,7 +179,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'armServiceTier\')]'
+                    equals: '[parameters(\'armServiceTier\')]'
                   }
                 ]
               }
@@ -191,7 +191,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'appServiceTier\')]'
+                    equals: '[parameters(\'appServiceTier\')]'
                   }
                 ]
               }
@@ -203,7 +203,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'containerRegistryTier\')]'
+                    equals: '[parameters(\'containerRegistryTier\')]'
                   }
                 ]
               }
@@ -215,7 +215,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'keyVaultTier\')]'
+                    equals: '[parameters(\'keyVaultTier\')]'
                   }
                 ]
               }
@@ -227,7 +227,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'kubernetesServiceTier\')]'
+                    equals: '[parameters(\'kubernetesServiceTier\')]'
                   }
                 ]
               }
@@ -239,7 +239,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
+                    equals: '[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
                   }
                 ]
               }
@@ -251,7 +251,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'sqlServerTier\')]'
+                    equals: '[parameters(\'sqlServerTier\')]'
                   }
                 ]
               }
@@ -263,7 +263,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'sqlServerVirtualMachineTier\')]'
+                    equals: '[parameters(\'sqlServerVirtualMachineTier\')]'
                   }
                 ]
               }
@@ -275,7 +275,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'storageAccountTier\')]'
+                    equals: '[parameters(\'storageAccountTier\')]'
                   }
                 ]
               }
@@ -287,7 +287,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                   {
                     field: 'microsoft.security/pricings/pricingTier'
-                    equals: '[[parameters(\'virtualMachineTier\')]'
+                    equals: '[parameters(\'virtualMachineTier\')]'
                   }
                 ]
               }
@@ -345,7 +345,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'AppServices'
                     properties: {
-                      pricingTier: '[[parameters(\'appServiceTier\')]'
+                      pricingTier: '[parameters(\'appServiceTier\')]'
                     }
                   }
                   {
@@ -353,7 +353,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'Arm'
                     properties: {
-                      pricingTier: '[[parameters(\'appServiceTier\')]'
+                      pricingTier: '[parameters(\'appServiceTier\')]'
                     }
                   }
                   {
@@ -361,7 +361,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'ContainerRegistry'
                     properties: {
-                      pricingTier: '[[parameters(\'containerRegistryTier\')]'
+                      pricingTier: '[parameters(\'containerRegistryTier\')]'
                     }
                   }
                   {
@@ -369,7 +369,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'Dns'
                     properties: {
-                      pricingTier: '[[parameters(\'keyVaultTier\')]'
+                      pricingTier: '[parameters(\'keyVaultTier\')]'
                     }
                   }
                   {
@@ -377,7 +377,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'KeyVaults'
                     properties: {
-                      pricingTier: '[[parameters(\'keyVaultTier\')]'
+                      pricingTier: '[parameters(\'keyVaultTier\')]'
                     }
                   }
                   {
@@ -385,7 +385,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'KubernetesService'
                     properties: {
-                      pricingTier: '[[parameters(\'kubernetesServiceTier\')]'
+                      pricingTier: '[parameters(\'kubernetesServiceTier\')]'
                     }
                   }
                   {
@@ -393,7 +393,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'OpenSourceRelationalDatabases'
                     properties: {
-                      pricingTier: '[[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
+                      pricingTier: '[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
                     }
                   }
                   {
@@ -401,7 +401,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'SqlServers'
                     properties: {
-                      pricingTier: '[[parameters(\'sqlServerTier\')]'
+                      pricingTier: '[parameters(\'sqlServerTier\')]'
                     }
                   }
                   {
@@ -409,7 +409,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'SqlServerVirtualMachines'
                     properties: {
-                      pricingTier: '[[parameters(\'sqlServerVMTier\')]'
+                      pricingTier: '[parameters(\'sqlServerVMTier\')]'
                     }
                   }
                   {
@@ -417,7 +417,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'StorageAccounts'
                     properties: {
-                      pricingTier: '[[parameters(\'storageAccountTier\')]'
+                      pricingTier: '[parameters(\'storageAccountTier\')]'
                     }
                   }
                   {
@@ -425,44 +425,44 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2018-06-01'
                     name: 'VirtualMachines'
                     properties: {
-                      pricingTier: '[[parameters(\'virtualMachineTier\')]'
+                      pricingTier: '[parameters(\'virtualMachineTier\')]'
                     }
                   }
                 ]
               }
               parameters: {
                 appServiceTier: {
-                  value: '[[parameters(\'appServiceTier\')]'
+                  value: '[parameters(\'appServiceTier\')]'
                 }
                 armServiceTier: {
-                  value: '[[parameters(\'armServiceTier\')]'
+                  value: '[parameters(\'armServiceTier\')]'
                 }
                 containerRegistryTier: {
-                  value: '[[parameters(\'containerRegistryTier\')]'
+                  value: '[parameters(\'containerRegistryTier\')]'
                 }
                 dnsTier: {
-                  value: '[[parameters(\'dnsTier\')]'
+                  value: '[parameters(\'dnsTier\')]'
                 }
                 keyVaultTier: {
-                  value: '[[parameters(\'keyVaultTier\')]'
+                  value: '[parameters(\'keyVaultTier\')]'
                 }
                 kubernetesServiceTier: {
-                  value: '[[parameters(\'kubernetesServiceTier\')]'
+                  value: '[parameters(\'kubernetesServiceTier\')]'
                 }
                 openSourceRelationalDatabasesServiceTier: {
-                  value: '[[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
+                  value: '[parameters(\'openSourceRelationalDatabasesServiceTier\')]'
                 }
                 sqlServerTier: {
-                  value: '[[parameters(\'sqlServerTier\')]'
+                  value: '[parameters(\'sqlServerTier\')]'
                 }
                 sqlServerVMTier: {
-                  value: '[[parameters(\'sqlServerVirtualMachineTier\')]'
+                  value: '[parameters(\'sqlServerVirtualMachineTier\')]'
                 }
                 storageAccountTier: {
-                  value: '[[parameters(\'storageAccountTier\')]'
+                  value: '[parameters(\'storageAccountTier\')]'
                 }
                 virtualMachineTier: {
-                  value: '[[parameters(\'virtualMachineTier\')]'
+                  value: '[parameters(\'virtualMachineTier\')]'
                 }
               }
             }

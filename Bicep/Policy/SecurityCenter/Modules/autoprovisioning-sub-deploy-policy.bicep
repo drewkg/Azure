@@ -51,11 +51,11 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
             allof: [
               {
                 field: 'Microsoft.Security/autoProvisioningSettings/autoProvision'
-                equals: '[[parameters(\'autoProvisioningSetting\')]'
+                equals: '[parameters(\'autoProvisioningSetting\')]'
               }
               {
                 field: 'Microsoft.Security/workspaceSettings/workspaceId'
-                equals: '[[parameters(\'logAnalytics\')]'
+                equals: '[parameters(\'logAnalytics\')]'
               }
             ]
           }
@@ -84,7 +84,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2019-01-01'
                     name: 'default'
                     properties: {
-                      autoProvision: '[[parameters(\'autoProvisioningSetting\')]'
+                      autoProvision: '[parameters(\'autoProvisioningSetting\')]'
                     }
                   }
                   {
@@ -92,18 +92,18 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2019-01-01'
                     name: 'default'
                     properties: {
-                      workspaceId: '[[parameters(\'logAnalytics\')]'
-                      scope: '[[subscription().id]'
+                      workspaceId: '[parameters(\'logAnalytics\')]'
+                      scope: '[subscription().id]'
                     }
                   }
                 ]
               }
               parameters: {
                 autoProvisioningSetting: {
-                  value: '[[parameters(\'autoProvisioningSetting\')]'
+                  value: '[parameters(\'autoProvisioningSetting\')]'
                 }
                 logAnalytics: {
-                  value: '[[parameters(\'logAnalytics\')]'
+                  value: '[parameters(\'logAnalytics\')]'
                 }
               }
             }
