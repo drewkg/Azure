@@ -10,7 +10,7 @@ All Azure resources need to have a unique name, at leats within the tenant, ther
 
 \<Application> - A Short code for the application.
 \<Environment> - The environment beign deployed, e.g. tst, Int, Prd
-\<AzureRegion> - A short code for teh Azure Region e.g. uks for uksouth
+\<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth
 \<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services
 \<ResourceType> - A short code for the Azure resource, see below.
 
