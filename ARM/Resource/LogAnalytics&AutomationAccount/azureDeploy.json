@@ -144,7 +144,7 @@
     {
       "name": "diagnosticSettings",
       "type": "Microsoft.Insights/diagnosticSettings",
-      "apiVersion": "2017-05-01-preview",
+      "apiVersion": "2021-05-01-preview",
       "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
       "properties": {
         "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
@@ -180,7 +180,7 @@
     {
       "name": "diagnosticSettings",
       "type": "Microsoft.Insights/diagnosticSettings",
-      "apiVersion": "2017-05-01-preview",
+      "apiVersion": "2021-05-01-preview",
       "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
       "dependsOn": [
         "[variables('automationAccountName')]",

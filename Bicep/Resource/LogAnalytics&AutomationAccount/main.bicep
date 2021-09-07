@@ -98,7 +98,7 @@ resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solut
   }
 }
 
-resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: logAnalyticsWorkspace_resource
   properties: {
@@ -132,7 +132,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
   }
 }
 
-resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: automationAccount_resource
   properties: {
