@@ -50,11 +50,8 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
   }
   resource linkedService_resource 'linkedServices@2020-08-01' = {
     name: 'Automation'
-    dependsOn: [
-      automationAccount_resource
-    ]
     properties: {
-      resourceId: resourceId('Microsoft.Automation/automationAccounts', automationAccountName)
+      resourceId: automationAccount_resource.id
     }
   }
 }
@@ -63,7 +60,7 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
   name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
-    name: format('SecurityCenterFree ({0})', logAnalyticsWorkspaceName)
+    name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
     product: format('OMSGallery/{0}', 'SecurityCenterFree')
     promotionCode: ''
@@ -77,7 +74,7 @@ resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutio
   name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
-    name: format('AzureActivity ({0})', logAnalyticsWorkspaceName)
+    name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
     product: format('OMSGallery/{0}', 'AzureActivity')
     promotionCode: ''
@@ -91,7 +88,7 @@ resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solut
   name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
-    name: format('AzureAutomation ({0})', logAnalyticsWorkspaceName)
+    name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
     publisher: 'Microsoft'
     product: format('OMSGallery/{0}', 'AzureAutomation')
     promotionCode: ''
@@ -105,7 +102,7 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
   name: 'diagnosticSettings'
   scope: logAnalyticsWorkspace_resource
   properties: {
-    workspaceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspaceName)
+    workspaceId: logAnalyticsWorkspace_resource.id
     metrics: [
       {
         category: 'AllMetrics'
@@ -139,7 +136,7 @@ resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagn
   name: 'diagnosticSettings'
   scope: automationAccount_resource
   properties: {
-    workspaceId: resourceId('Microsoft.OperationalInsights/workspaces', logAnalyticsWorkspaceName)
+    workspaceId: logAnalyticsWorkspace_resource.id
     metrics: [
       {
         category: 'AllMetrics'

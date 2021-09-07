@@ -73,34 +73,6 @@
       },
       "resources": [
         {
-          "type": "Microsoft.OperationalInsights/workspaces/providers/diagnosticSettings",
-          "apiVersion": "2017-05-01-preview",
-          "name": "[concat(variables('logAnalyticsWorkspaceName'), '/Microsoft.Insights/diagnosticSettings')]",
-          "location": "[parameters('location')]",
-          "dependsOn": [
-            "[variables('logAnalyticsWorkspaceName')]"
-          ],
-          "properties": {
-            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkSpaceName'))]",
-            "metrics": [
-              {
-                "category": "AllMetrics",
-                "enabled": true,
-                "retentionPolicy": {
-                  "days": 0,
-                  "enabled": false
-                }
-              }
-            ],
-            "logs": [
-              {
-                "category": "Audit",
-                "enabled": true
-              }
-            ]
-          }
-        },
-        {
           "name": "[concat(variables('logAnalyticsWorkSpaceName'), '/' , 'Automation')]",
           "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
           "apiVersion": "2020-08-01",
@@ -124,7 +96,7 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[format('SecurityCenterFree ({0})', variables('logAnalyticsWorkspaceName'))]",
+        "name": "[format('SecurityCenterFree({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
         "product": "[format('OMSGallery/{0}', 'SecurityCenterFree')]",
         "promotionCode": ""
@@ -142,7 +114,7 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[format('AzureActivity ({0})', variables('logAnalyticsWorkspaceName'))]",
+        "name": "[format('AzureActivity({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
         "product": "[format('OMSGallery/{0}', 'AzureActivity')]",
         "promotionCode": ""
@@ -160,13 +132,38 @@
         "[variables('logAnalyticsWorkspaceName')]"
       ],
       "plan": {
-        "name": "[format('AzureAutomation ({0})', variables('logAnalyticsWorkspaceName'))]",
+        "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
         "publisher": "Microsoft",
         "product": "[format('OMSGallery/{0}', 'AzureAutomation')]",
         "promotionCode": ""
       },
       "properties": {
         "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+      }
+    },
+    {
+      "name": "diagnosticSettings",
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2017-05-01-preview",
+      "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+      "properties": {
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true,
+            "retentionPolicy": {
+              "days": 0,
+              "enabled": false
+            }
+          }
+        ],
+        "logs": [
+          {
+            "category": "Audit",
+            "enabled": true
+          }
+        ]
       }
     },
     {
@@ -178,46 +175,44 @@
         "sku": {
           "name": "Basic"
         }
-      },
-      "resources": [
-        {
-          "type": "Microsoft.Automation/automationAccounts/providers/diagnosticSettings",
-          "apiVersion": "2017-05-01-preview",
-          "name": "[concat(variables('automationAccountName'), '/Microsoft.Insights/diagnosticSettings')]",
-          "location": "[parameters('location')]",
-          "dependsOn": [
-            "[variables('automationAccountName')]",
-            "[variables('logAnalyticsWorkspaceName')]"
-          ],
-          "properties": {
-            "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
-            "metrics": [
-              {
-                "category": "AllMetrics",
-                "enabled": true,
-                "retentionPolicy": {
-                  "enabled": false,
-                  "days": 0
-                }
-              }
-            ],
-            "logs": [
-              {
-                "category": "JobLogs",
-                "enabled": true
-              },
-              {
-                "category": "JobStreams",
-                "enabled": true
-              },
-              {
-                "category": "DscNodeStatus",
-                "enabled": true
-              }
-            ]
+      }
+    },
+    {
+      "name": "diagnosticSettings",
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2017-05-01-preview",
+      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
+      "dependsOn": [
+        "[variables('automationAccountName')]",
+        "[variables('logAnalyticsWorkspaceName')]"
+      ],
+      "properties": {
+        "workspaceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "metrics": [
+          {
+            "category": "AllMetrics",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
           }
-        }
-      ]
+        ],
+        "logs": [
+          {
+            "category": "JobLogs",
+            "enabled": true
+          },
+          {
+            "category": "JobStreams",
+            "enabled": true
+          },
+          {
+            "category": "DscNodeStatus",
+            "enabled": true
+          }
+        ]
+      }
     }
   ]
 }
