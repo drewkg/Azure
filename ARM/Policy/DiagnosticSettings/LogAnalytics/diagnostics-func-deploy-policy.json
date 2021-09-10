@@ -83,20 +83,16 @@
                       "logAnalytics": {
                         "type": "string"
                       },
-                      "location": {
-                        "type": "string"
-                      },
                       "resourceName": {
                         "type": "string"
                       }
                     },
-                    "variables": {},
                     "resources": [
                       {
-                        "type": "Microsoft.Web/sites/providers/diagnosticSettings",
-                        "apiVersion": "2017-05-01-preview",
-                        "name": "[[concat(parameters('resourceName'), '/Microsoft.Insights/', parameters('profileName'))]",
-                        "location": "[[parameters('location')]",
+                        "name": "[[parameters('profileName')]",
+                        "type": "Microsoft.Insights/diagnosticSettings",
+                        "apiVersion": "2021-05-01-preview",
+                        "scope": "[[resourceId('Microsoft.Web/sites', parameters('resourceName'))]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
                           "metrics": [
@@ -125,9 +121,6 @@
                     },
                     "logAnalytics": {
                       "value": "[[parameters('logAnalytics')]"
-                    },
-                    "location": {
-                      "value": "[[field('location')]"
                     },
                     "resourceName": {
                       "value": "[[field('name')]"
