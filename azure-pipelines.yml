@@ -57,8 +57,8 @@ stages:
             Write-Output "setting version as -alpha"
           }
 
-  - job: 'Validation'
-    displayName: 'Validate & Package Templates'
+  - job: 'ARMValidation'
+    displayName: 'ARM Validation'
     continueOnError: false
     dependsOn: 'Init'
     pool:
@@ -71,7 +71,7 @@ stages:
     - task: PowerShell@2
       displayName: 'Perform ARM TTK Test Run'
       inputs:
-        filePath: '$(Build.SourcesDirectory)\Utilities\Run-ARMTTK.ps1'
+        filePath: '$(Build.SourcesDirectory)\Utilities\Invoke-ARMTTK.ps1'
         arguments: '-outputPath $(Common.TestResultsDirectory)'
         failOnStderr: true
         showWarnings: true
@@ -87,3 +87,23 @@ stages:
         mergeTestResults: true
         failTaskOnFailedTests: true
         testRunTitle: 'ARM TTK'
+
+  - job: 'BICEPValidation'
+    displayName: 'BICEP Validation'
+    continueOnError: false
+    dependsOn: 'Init'
+    pool:
+      vmImage: 'windows-latest'
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+
+    - task: PowerShell@2
+      displayName: 'Validate Bicep with Linter'
+      inputs:
+        filePath: '$(Build.SourcesDirectory)\Utilities\Invoke-BicepBuild.ps1'
+        failOnStderr: true
+        showWarnings: true
+        pwsh: true
+        workingDirectory: $(Build.SourcesDirectory)
