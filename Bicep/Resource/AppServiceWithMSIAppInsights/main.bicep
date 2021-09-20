@@ -18,8 +18,8 @@ resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
     Flow_Type: 'Bluefield'
     Request_Source: 'rest'
     RetentionInDays: 90
-    publicNetworkAccessForIngestion: true
-    publicNetworkAccessForQuery: true
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
   }
 }
 

@@ -45,7 +45,7 @@ resource automationAccountName_runbookName 'Microsoft.Automation/automationAccou
   }
 }
 
-resource automationAccountName_webhookName 'Microsoft.Automation/automationAccounts/webhooks@2018-06-30' = {
+resource automationAccountName_webhookName 'Microsoft.Automation/automationAccounts/webhooks@2015-10-31' = {
   name: '${automationAccountName_resource.name}/${webhookName}'
   properties: {
     isEnabled: true

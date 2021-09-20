@@ -14,9 +14,10 @@ param automationAccountName string = 'JobSchedule-aa'
 @description('Base time for all calcuations, default is Now() in UTC')
 param baseTime string = utcNow('u')
 
+var add10Minutes = dateTimeAdd(baseTime, 'P10M')
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2021-04-01' = {
+resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2019-06-01' = {
   name: automationAccountName
   location: Location
   properties: {
@@ -25,7 +26,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookName_resource 'runbooks@2020-01-13-preview' = {
+  resource runbookName_resource 'runbooks@2019-06-01' = {
     name: 'HelloWorldRunbook'
     location: Location
     properties: {
@@ -40,11 +41,11 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookSchedule_resource 'schedules@2021-04-01' = {
+  resource runbookSchedule_resource 'schedules@2019-06-01' = {
     name: 'RunbookSchedule'
-    location: Location
     properties: {
       description: 'Basic Schedule'
+      startTime: add10Minutes
       expiryTime: add3Years
       frequency: 'Day'
       interval: 1
@@ -52,7 +53,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource jobSchedules 'jobSchedules@2021-04-01' = {
+  resource jobSchedules 'jobSchedules@2019-06-01' = {
     name: guid('HelloWorldJobSchedule')
     properties: {
       runbook: {
