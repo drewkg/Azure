@@ -4,10 +4,10 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "autoprovisioning-sub-deploy-policy",
+      "name": "workspace-sub-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Configure Security Center Auto Provisioning",
+        "displayName": "Configure Log Analytics Security Center Auto Provisioning",
         "description": "Configures Security Center Auto Provisioning",
         "metadata": {
           "category": "Security Center",

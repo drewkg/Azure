@@ -7,7 +7,7 @@
       "name": "autoprovisioning-sub-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Configure Security Center Auto Provisioning",
+        "displayName": "Configure Subscription Security Center Auto Provisioning",
         "description": "Configures Security Center Auto Provisioning",
         "metadata": {
           "category": "Security Center",
