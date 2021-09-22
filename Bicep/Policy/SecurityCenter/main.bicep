@@ -15,10 +15,6 @@ module AutoProvisioningSubDeployPolicy './Modules/autoprovisioning-sub-deploy-po
   name: 'autoprovisioning-sub-deploy-policy'
 }
 
-module WorkspaceSubDeployPolicy './Modules/workspace-sub-deploy-policy.bicep' = {
-  name: 'workspace-sub-deploy-policy'
-}
-
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-01' = {
   name: 'diagnostics-loganalytics-deploy-initiative'
   properties: {
@@ -228,14 +224,6 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         parameters: {
           autoProvisioningSetting: {
             value: '[parameters(\'autoProvisioningSetting\')]'
-          }
-        }
-      }
-      {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', WorkspaceSubDeployPolicy.outputs.name)
-        parameters: {
-          logAnalytics: {
-            value: '[parameters(\'logAnalytics\')]'
           }
         }
       }
