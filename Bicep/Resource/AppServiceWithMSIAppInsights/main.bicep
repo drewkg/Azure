@@ -5,9 +5,9 @@ param environment string = 'ObjInt'
 param resourceLocation string = resourceGroup().location
 
 var environment_var = environment
-var applicationInsightsName_var = '${environment_var}-appi'
-var appServiceName_var = '${environment_var}-as'
-var appServicePlanName_var = '${environment_var}-asp'
+var applicationInsightsName_var = 'demo-${environment_var}-${resourceLocation}-appi'
+var appServiceName_var = 'demo-${environment_var}-${resourceLocation}-as'
+var appServicePlanName_var = 'demo-${environment_var}-${resourceLocation}-asp'
 
 resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
   name: applicationInsightsName_var
