@@ -1,0 +1,284 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string",
+      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]"
+    },
+    "policies": {
+      "type": "array",
+      "defaultValue": [
+        "azureDefender-sub-deploy-policy",
+        "autoprovisioning-sub-deploy-policy"
+      ]
+    }
+  },
+  "resources": [
+    {
+      "name": "getManagementGroupName",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": []
+        }
+      }
+    },
+    {
+      "name": "[parameters('policies')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('policies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
+        }
+      },
+      "copy": {
+        "name": "policies",
+        "count": "[length(parameters('policies'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2020-09-01",
+      "name": "securitycenter-deploy-initiative",
+      "dependsOn": [
+        "getManagementGroupName",
+        "policies"
+      ],
+      "properties": {
+        "displayName": "Apply Security Center Settings to a Subscription",
+        "description": "Applies Security Center Settings to an Azure Subscription.",
+        "policyType": "Custom",
+        "metadata": {
+          "category": "Security Center",
+          "version": "1.0.0"
+        },
+        "parameters": {
+          "appServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "App Service Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for App Service resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "armServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "ARM Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for ARM operations."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "containerRegistryTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Container Registry Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Container Registry resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "dnsTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "DNS Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for DNS resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "keyVaultTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Key Vault Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Key Vault resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "kubernetesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Kubernetes Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Kubernetes resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "openSourceRelationalDatabasesServiceTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Open Source Relational Databases Pricing Tier",
+              "description": "Specify whether you want to enable Standard tier for Open Source Relational Databases resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "sqlServerTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Sql Server resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "sqlServerVirtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Sql Server Virtual Machine Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Sql Server Virtual Machines resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "storageAccountTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Storage Account Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Storage Account resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "virtualMachineTier": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Virtual Machine Pricing Tier",
+              "description": "Specify whether you want to enable standard tier for Virtual Machine resource type."
+            },
+            "defaultValue": "Free",
+            "allowedValues": [
+              "Free",
+              "Standard"
+            ]
+          },
+          "autoProvisioningSetting": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Auto Provisioning Setting",
+              "description": "Specify whether you want to enable auto provisioning of VM's to a log analytics workspace."
+            },
+            "defaultValue": "Off",
+            "allowedValues": [
+              "Off",
+              "On"
+            ]
+          },
+          "logAnalytics": {
+            "type": "string",
+            "metadata": {
+              "displayName": "Log Analytics workspace",
+              "description": "Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant 'Log Analytics Contributor' permissions (or similar) to the policy assignment's principal ID.",
+              "strongType": "omsWorkspace",
+              "assignPermissions": true
+            },
+            "defaultValue": ""
+          }
+        },
+        "policyDefinitions": [
+          {
+            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'azuredefender-sub-deploy-policy')]",
+            "policyDefinitionReferenceId": "azuredefender-sub-deploy-policy",
+            "parameters": {
+              "appServiceTier": {
+                "value": "[[parameters('appServiceTier')]"
+              },
+              "armServiceTier": {
+                "value": "[[parameters('armServiceTier')]"
+              },
+              "containerRegistryTier": {
+                "value": "[[parameters('containerRegistryTier')]"
+              },
+              "dnsTier": {
+                "value": "[[parameters('dnsTier')]"
+              },
+              "keyVaultTier": {
+                "value": "[[parameters('keyVaultTier')]"
+              },
+              "kubernetesServiceTier": {
+                "value": "[[parameters('kubernetesServiceTier')]"
+              },
+              "openSourceRelationalDatabasesServiceTier": {
+                "value": "[[parameters('openSourceRelationalDatabasesServiceTier')]"
+              },
+              "sqlServerTier": {
+                "value": "[[parameters('sqlServerTier')]"
+              },
+              "sqlServerVirtualMachineTier": {
+                "value": "[[parameters('sqlServerVirtualMachineTier')]"
+              },
+              "StorageAccountTier": {
+                "value": "[[parameters('storageAccountTier')]"
+              },
+              "virtualMachineTier": {
+                "value": "[[parameters('virtualMachineTier')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'autoprovisioning-sub-deploy-policy')]",
+            "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy",
+            "parameters": {
+              "autoProvisioningSetting": {
+                "value": "[[parameters('autoProvisioningSetting')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
