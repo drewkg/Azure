@@ -26,7 +26,7 @@
     {
       "name": "getManagementGroupName",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-10-01",
+      "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -43,7 +43,7 @@
     {
       "name": "[parameters('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2019-08-01",
+      "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
       "properties": {
         "mode": "Incremental",
@@ -58,7 +58,7 @@
     },
     {
       "type": "Microsoft.Authorization/policySetDefinitions",
-      "apiVersion": "2019-09-01",
+      "apiVersion": "2020-09-01",
       "name": "securitycenter-deploy-initiative",
       "dependsOn": [
         "getManagementGroupName",
