@@ -122,7 +122,7 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-04-01' = {
+resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2019-06-01' = {
   name: automationAccountName
   location: location
   properties: {
