@@ -59,7 +59,7 @@
   },
   "resources": [
     {
-      "name": "[concat(parameters('Locations')[copyIndex()], '-nw')]",
+      "name": "[format('demo-general-{0}-nw', parameters('Locations')[copyIndex()])]",
       "type": "Microsoft.Network/networkWatchers",
       "apiVersion": "2020-11-01",
       "location": "[parameters('Locations')[copyIndex()]]",
