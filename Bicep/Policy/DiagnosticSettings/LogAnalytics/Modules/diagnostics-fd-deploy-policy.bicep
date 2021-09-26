@@ -70,9 +70,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   profileName: {
                     type: 'string'
                   }
-                  logAnalytics: {
-                    type: 'string'
-                  }
                   location: {
                     type: 'string'
                   }
@@ -82,10 +79,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 }
                 resources: [
                   {
-                    type: 'Microsoft.Network/frontDoors/providers/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\') \'/Microsoft.Insights/\' parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
+                    name: '[parameters(\'profileName\')]'
+                    type: 'Microsoft.Insights/diagnosticSettings'
+                    apiVersion: '2021-05-01-preview'
+                    scope: '[resourceId(\'Microsoft.Network/frontDoors\', parameters(\'resourceName\'))]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
@@ -116,9 +113,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               parameters: {
                 profileName: {
                   value: '[parameters(\'profileName\')]'
-                }
-                logAnalytics: {
-                  value: '[parameters(\'logAnalytics\')]'
                 }
                 location: {
                   value: '[field(\'location\')]'

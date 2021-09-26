@@ -73,9 +73,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   logAnalytics: {
                     type: 'string'
                   }
-                  location: {
-                    type: 'string'
-                  }
                   resourceName: {
                     type: 'string'
                   }
@@ -83,10 +80,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 variables: {}
                 resources: [
                   {
-                    type: 'Microsoft.Network/applicationGateways/providers/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
+                    name: '[parameters(\'profileName\')]'
+                    type: 'Microsoft.Insights/diagnosticSettings'
+                    apiVersion: '2021-05-01-preview'
+                    scope: '[resourceId(\'Microsoft.Network/applicationGateways\', parameters(\'resourceName\'))]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
@@ -124,9 +121,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 }
                 logAnalytics: {
                   value: '[parameters(\'logAnalytics\')]'
-                }
-                location: {
-                  value: '[field(\'location\')]'
                 }
                 resourceName: {
                   value: '[field(\'name\')]'

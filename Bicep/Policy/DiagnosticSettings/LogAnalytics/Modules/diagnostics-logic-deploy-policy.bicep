@@ -4,26 +4,26 @@ output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
   name: 'diagnostics-logic-deploy-policy'
-  properties:   {
+  properties: {
     displayName: 'Deploy Diagnostics & Metrics for Logic App Workflow to a Log Analytics workspace'
     description: 'Apply diagnostic & metric settings for Logic App Workflow to stream data to a Log Analytics workspace when any Logic App Workflow which is missing this diagnostic settings is created or updated.'
-    metadata:   {
+    metadata: {
       category: 'Monitoring'
       version: '1.0.0.0'
     }
     mode: 'All'
-    parameters:   {
-      profileName:   {
+    parameters: {
+      profileName: {
         type: 'String'
-        metadata:   {
+        metadata: {
           displayName: 'Profile name'
           description: 'The diagnostic settings profile name'
         }
         defaultValue: 'setbypolicy_logAnalytics'
       }
-      logAnalytics:   {
+      logAnalytics: {
         type: 'String'
-        metadata:   {
+        metadata: {
           displayName: 'Log Analytics workspace'
           description: 'Select Log Analytics workspace from dropdown list. If this workspace is outside of the scope of the assignment you must manually grant \'Log Analytics Contributor\' permissions (or similar) to the policy assignment\'s principal ID.'
           strongType: 'omsWorkspace'
@@ -32,19 +32,19 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
       }
     }
     policyType: 'Custom'
-    policyRule:   {
-      if:   {
+    policyRule: {
+      if: {
         field: 'type'
         equals: 'Microsoft.Logic/workflows'
       }
-      then:   {
+      then: {
         effect: 'deployIfNotExists'
-        details:   {
+        details: {
           type: 'Microsoft.Insights/diagnosticSettings'
           roleDefinitionIds:   [
           '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
           ]
-          existenceCondition:   {
+          existenceCondition: {
             allOf:   [
               {
                 field: 'Microsoft.Insights/diagnosticSettings/logs.enabled'
@@ -60,39 +60,36 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
             ]
           }
-          deployment:   {
-            properties:   {
+          deployment: {
+            properties: {
               mode: 'incremental'
-              template:   {
+              template: {
               '$schema': 'https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#'
                 contentVersion: '1.0.0.0'
-                parameters:   {
-                  profileName:   {
+                parameters: {
+                  profileName: {
                     type: 'string'
                   }
-                  logAnalytics:   {
+                  logAnalytics: {
                     type: 'string'
                   }
-                  location:   {
-                    type: 'string'
-                  }
-                  resourceName:   {
+                  resourceName: {
                     type: 'string'
                   }
                 }
-                resources:   [
+                resources: [
                   {
-                    type: 'Microsoft.Logic/workflows/providers/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\')   \'/Microsoft.Insights/\'   parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
-                    properties:   {
+                    name: '[parameters(\'profileName\')]'
+                    type: 'Microsoft.Insights/diagnosticSettings'
+                    apiVersion: '2021-05-01-preview'
+                    scope: '[resourceId(\'Microsoft.Logic/workflows\', parameters(\'resourceName\'))]'
+                    properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics:   [
                         {
                           category: 'AllMetrics'
                           enabled:   true
-                          retentionPolicy:   {
+                          retentionPolicy: {
                             days:   0
                             enabled:   false
                           }
@@ -109,17 +106,14 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   }
                 ]
               }
-              parameters:   {
-                profileName:   {
+              parameters: {
+                profileName: {
                   value: '[parameters(\'profileName\')]'
                 }
-                logAnalytics:   {
+                logAnalytics: {
                   value: '[parameters(\'logAnalytics\')]'
                 }
-                location:   {
-                  value: '[field(\'location\')]'
-                }
-                resourceName:   {
+                resourceName: {
                   value: '[field(\'name\')]'
                 }
               }

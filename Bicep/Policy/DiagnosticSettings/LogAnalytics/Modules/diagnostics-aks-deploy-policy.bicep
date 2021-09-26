@@ -83,19 +83,16 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   logAnalytics: {
                     type: 'string'
                   }
-                  location: {
-                    type: 'string'
-                  }
                   resourceName: {
                     type: 'string'
                   }
                 }
                 resources: [
                   {
-                    type: 'Microsoft.ContainerService/managedClusters/providers/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\'), \'/Microsoft.Insights/\', parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
+                    name: '[parameters(\'profileName\')]'
+                    type: 'Microsoft.Insights/diagnosticSettings'
+                    apiVersion: '2021-05-01-preview'
+                    scope: '[resourceId(\'Microsoft.ContainerService/managedClusters\', parameters(\'resourceName\'))]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       logAnalyticsDestinationType: 'Dedicated'
@@ -142,9 +139,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 }
                 logAnalytics: {
                   value: '[parameters(\'logAnalytics\')]'
-                }
-                location: {
-                  value: '[field(\'location\')]'
                 }
                 resourceName: {
                   value: '[field(\'name\')]'
