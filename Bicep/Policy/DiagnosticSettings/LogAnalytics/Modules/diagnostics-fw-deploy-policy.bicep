@@ -8,7 +8,8 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
     displayName: 'Deploy Diagnostics & Metrics for Firewall to a Log Analytics workspace'
     description: 'Apply diagnostic & metric settings for Firewall to stream data to a Log Analytics workspace when any Firewall which is missing this diagnostic settings is created or updated.'
     metadata: {
-      category: 'Diagnostics'
+      category: 'Monitoring'
+      version: '1.0.0.0'
     }
     mode: 'All'
     parameters: {
@@ -81,10 +82,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 }
                 resources: [
                   {
-                    type: 'Microsoft.Network/azureFirewalls/providers/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
-                    name: '[concat(parameters(\'resourceName\') \'/Microsoft.Insights/\' parameters(\'profileName\'))]'
-                    location: '[parameters(\'location\')]'
+                    name: '[parameters(\'profileName\')]'
+                    type: 'Microsoft.Insights/diagnosticSettings'
+                    apiVersion: '2021-05-01-preview'
+                    scope: '[resourceId(\'Microsoft.Network/azureFirewalls\', parameters(\'resourceName\'))]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
