@@ -56,7 +56,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               {
                 field: 'Microsoft.Insights/diagnosticSettings/workspaceId'
-                matchInsensitively: '[[parameters(\'logAnalytics\')]'
+                matchInsensitively: '[parameters(\'logAnalytics\')]'
               }
             ]
           }

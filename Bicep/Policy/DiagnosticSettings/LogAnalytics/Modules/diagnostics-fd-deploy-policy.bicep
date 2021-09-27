@@ -70,7 +70,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   profileName: {
                     type: 'string'
                   }
-                  location: {
+                  logAnalytics: {
                     type: 'string'
                   }
                   resourceName: {
@@ -114,8 +114,8 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                 profileName: {
                   value: '[parameters(\'profileName\')]'
                 }
-                location: {
-                  value: '[field(\'location\')]'
+                logAnalytics: {
+                  value: '[parameters(\'logAnalytics\')]'
                 }
                 resourceName: {
                   value: '[field(\'name\')]'
