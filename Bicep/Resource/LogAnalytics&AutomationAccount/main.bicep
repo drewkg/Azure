@@ -1,4 +1,4 @@
-@description('The location of the resources created, excluding \'Global\', defaults to UKSouth.')
+@description('The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account.')
 @allowed([
   'eastus'
   'westus2'
