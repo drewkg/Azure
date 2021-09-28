@@ -15,6 +15,7 @@ param location string = 'uksouth'
 
 param environment string = 'test'
 
+@description('Allows the override of the default naming convention. If specified there are 3 tags that can be utilized, {0} - the environment type, {1} - the location code and {2} - the resource moniker')
 param namingConvention string = 'platform-{0}-{1}-{2}'
 
 param locationShortCodeOverride object = {
@@ -30,10 +31,10 @@ param locationShortCodeOverride object = {
   usgovvirginia: 'usgv'
 }
 
-@description('Object to allow the overriding of the default naming convention, by specifying the naming individual resources. If used then all resources need to be defined.')
+@description('Object to allow the overriding of the default naming convention, by specifying the name of each individual resources. If used then all resources need to be defined.')
 param resourceNameOverride object = {
-  logAnalyticsWorkspaceName: format(namingConvention, locationShortCodeOverride[location], environment, 'log')
-  automationAccountName: format(namingConvention, locationShortCodeOverride[location], environment, 'aa')
+  logAnalyticsWorkspaceName: format(namingConvention, environment, locationShortCodeOverride[location], 'log')
+  automationAccountName: format(namingConvention, environment, locationShortCodeOverride[location], 'aa')
 }
 
 var logAnalyticsWorkspaceName = resourceNameOverride['logAnalyticsWorkspaceName']
