@@ -82,6 +82,9 @@ resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutio
   }
   properties: {
     workspaceResourceId: logAnalyticsWorkspace_resource.id
+    containedResources: [
+      resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('AzureActivity({0})', logAnalyticsWorkspaceName))
+    ]
   }
 }
 
@@ -96,6 +99,9 @@ resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solut
   }
   properties: {
     workspaceResourceId: logAnalyticsWorkspace_resource.id
+    containedResources: [
+      resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('AzureAutomation({0})', logAnalyticsWorkspaceName))
+    ]
   }
 }
 
@@ -118,6 +124,10 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
       {
         category: 'Audit'
         enabled: true
+        retentionPolicy: {
+          days: 0
+          enabled: false
+        }
       }
     ]
   }
@@ -159,6 +169,10 @@ resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagn
       }
       {
         category: 'DscNodeStatus'
+        enabled: true
+      }
+      {
+        category: 'AuditEvent'
         enabled: true
       }
     ]

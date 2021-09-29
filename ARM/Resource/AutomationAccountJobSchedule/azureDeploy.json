@@ -13,13 +13,6 @@
       "type": "securestring",
       "defaultValue": ""
     },
-    "baseTime": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]",
-      "metadata": {
-        "description": "Base time for all calcuations, default is Now() in UTC"
-      }
-    },
     "environment": {
 			"type": "string",
 			"defaultValue": "ObjInt",
@@ -33,6 +26,13 @@
 			"metadata": {
 				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
 			}
+    },
+    "baseTime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Base time for all calcuations, default is Now() in UTC"
+      }
     }
 	},
   	"variables": {
