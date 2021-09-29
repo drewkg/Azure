@@ -80,7 +80,7 @@
                         "name": "[[parameters('profileName')]",
                         "type": "Microsoft.Insights/diagnosticSettings",
                         "apiVersion": "2021-05-01-preview",
-                        "scope": "[[resourceId('Microsoft.Compute/virtualMachines/providers', parameters('resourceName'))]",
+                        "scope": "[[resourceId('Microsoft.Compute/virtualMachines', parameters('resourceName'))]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
                           "metrics": [

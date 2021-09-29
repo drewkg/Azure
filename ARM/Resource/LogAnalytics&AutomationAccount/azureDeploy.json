@@ -27,7 +27,10 @@
     },
     "namingConvention": {
       "type": "string",
-      "defaultValue": "platform-{0}-{1}-{2}"
+      "defaultValue": "platform-{0}-{1}-{2}",
+      "metadata": {
+        "description": "Allows the override of the default naming convention. If specified there are 3 tags that can be utilized, {0} - the environment type, {1} - the location code and {2} - the resource moniker"
+      }
     },
     "locationShortCodeOverride": {
       "type": "object",
@@ -47,11 +50,11 @@
     "resourceNameOverride": {
       "type": "object",
       "defaultValue": {
-        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'log')]",
-        "automationAccountName": "[format(parameters('namingConvention'), parameters('locationShortCodeOverride')[parameters('location')], parameters('environment'), 'aa')]"
+        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'log')]",
+        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'aa')]"
       },
       "metadata": {
-        "description": "Object to allow the overriding of the default naming convention, by specifying the naming individual resources.  If used then all resources need to be defined."
+        "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
     }
   },

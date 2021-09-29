@@ -76,7 +76,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                   {
                     name: '[parameters(\'profileName\')]'
                     type: 'Microsoft.Insights/diagnosticSettings'
-                    apiVersion: '2017-05-01-preview'
+                    apiVersion: '2021-05-01-preview'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       logs: [

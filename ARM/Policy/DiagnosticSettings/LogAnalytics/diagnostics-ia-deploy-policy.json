@@ -97,8 +97,8 @@
                     "profileName": {
                       "value": "[[parameters('profileName')]"
                     },
-                    "location": {
-                      "value": "[[field('location')]"
+                    "logAnalytics": {
+                      "value": "[[parameters('logAnalytics')]"
                     },
                     "resourceName": {
                       "value": "[[field('name')]"

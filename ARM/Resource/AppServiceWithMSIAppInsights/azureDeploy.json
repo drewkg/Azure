@@ -9,7 +9,7 @@
 				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
 			}
 		},
-		"Location": {
+		"location": {
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]",
 			"metadata": {
@@ -19,9 +19,9 @@
 	},
 	"variables": {
 		"environment": "[parameters('environment')]",
-		"applicationInsightsName": "[concat(variables('environment'), '-appi')]",
-		"appServiceName": "[concat(variables('environment'), '-as')]",
-		"appServicePlanName": "[concat(variables('environment'), '-asp')]"
+		"applicationInsightsName": "[format('demo-{0}-{1}-appi', variables('environment'), parameters('location'))]",
+		"appServiceName": "[format('demo-{0}-{1}-asp', variables('environment'), parameters('location'))]",
+		"appServicePlanName": "[format('demo-{0}-{1}-as', variables('environment'), parameters('location'))]"
 	},
 	"resources": [
 		{

@@ -52,7 +52,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               {
                 field: 'Microsoft.Insights/diagnosticSettings/workspaceId'
-                matchInsensitively: '[ parameters(\'logAnalytics\')]'
+                matchInsensitively: '[parameters(\'logAnalytics\')]'
               }
             ]
           }
@@ -73,7 +73,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     type: 'string'
                   }
                 }
-                variables:  {}
                 resources:  [
                   {
                     name: '[parameters(\'profileName\')]'
@@ -81,7 +80,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     apiVersion: '2021-05-01-preview'
                     scope: '[resourceId(\'Microsoft.Web/serverfarms\', parameters(\'resourceName\'))]'
                     properties:  {
-                      workspaceId: '[ parameters(\'logAnalytics\')]'
+                      workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics:  [
                         {
                           category: 'AllMetrics'
@@ -99,13 +98,13 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
               }
               parameters:  {
                 profileName:  {
-                  value: '[ parameters(\'profileName\')]'
+                  value: '[parameters(\'profileName\')]'
                 }
                 logAnalytics:  {
-                  value: '[ parameters(\'logAnalytics\')]'
+                  value: '[parameters(\'logAnalytics\')]'
                 }
                 resourceName:  {
-                  value: '[ field(\'name\')]'
+                  value: '[field(\'name\')]'
                 }
               }
             }

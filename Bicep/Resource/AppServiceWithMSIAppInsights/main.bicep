@@ -2,16 +2,16 @@
 param environment string = 'ObjInt'
 
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
-param resourceLocation string = resourceGroup().location
+param location string = resourceGroup().location
 
 var environment_var = environment
-var applicationInsightsName_var = '${environment_var}-appi'
-var appServiceName_var = '${environment_var}-as'
-var appServicePlanName_var = '${environment_var}-asp'
+var applicationInsightsName_var = 'demo-${environment_var}-${location}-appi'
+var appServiceName_var = 'demo-${environment_var}-${location}-as'
+var appServicePlanName_var = 'demo-${environment_var}-${location}-asp'
 
 resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
   name: applicationInsightsName_var
-  location: resourceLocation
+  location: location
   kind: 'web'
   properties: {
     Application_Type: 'web'
@@ -28,13 +28,13 @@ module ApplicationInsightsDashboard './nested_ApplicationInsightsDashboard.bicep
   params: {
     applicationInsightsDashboardName: '${reference(applicationInsightsName.id, '2020-02-02', 'Full').properties.AppId}-dashboard'
     applicationInsightsName: applicationInsightsName_var
-    resourceLocation: resourceLocation
+    resourceLocation: location
   }
 }
 
 resource appServicePlanName 'Microsoft.Web/serverfarms@2018-02-01' = {
   name: appServicePlanName_var
-  location: resourceLocation
+  location: location
   sku: {
     name: 'B1'
     tier: 'Basic'
@@ -57,7 +57,7 @@ resource appServicePlanName 'Microsoft.Web/serverfarms@2018-02-01' = {
 
 resource appServiceName 'Microsoft.Web/sites@2018-11-01' = {
   name: appServiceName_var
-  location: resourceLocation
+  location: location
   kind: 'app'
   properties: {
     enabled: true
