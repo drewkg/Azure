@@ -2,59 +2,55 @@
 	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"Location": {
-			"type": "string",
-			"defaultValue": "[resourceGroup().location]",
-			"metadata": {
-				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
-			}
-    },
-    "automationAccountName": {
-      "type": "String",
-      "defaultValue": "Webhook-aa",
-      "metadata": {
-        "description": "Automation account name"
-      }
-    },
-    "webhookName": {
-      "type": "String",
-      "defaultValue": "Sample-wh",
-      "metadata": {
-        "description": "Webhook Name"
-      }
-    },
-    "runbookName": {
-      "type": "String",
-      "defaultValue": "SampleRunbook",
-      "metadata": {
-        "description": "Runbook Name for which webhook will be created"
-      }
-    },
-    "WebhookExpiryTime": {
-      "type": "String",
-      "defaultValue": "[dateTimeAdd(utcNow('u'), 'P3Y')]",
-      "metadata": {
-         "description": "Webhook Expiry time"
-      }
-    },
     "_artifactsLocation": {
       "defaultValue": "[deployment().properties.templateLink.uri]",
-      "type": "String",
+      "type": "string",
       "metadata": {
         "description": "URI to artifacts location"
       }
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
-      "defaultValue": ""
+      "defaultValue": "",
+      "metadata": {
+        "description": "SAS Token as a Query String"
+      }
+    },
+    "environment": {
+			"type": "string",
+			"defaultValue": "demo",
+			"metadata": {
+				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
+			}
+		},
+		"location": {
+			"type": "string",
+			"defaultValue": "[resourceGroup().location]",
+			"metadata": {
+				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
+			}
+    },
+    "baseTime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Base time for all calcuations, default is Now() in UTC"
+      }
     }
+	},
+  "variables": {
+		"environment": "[parameters('environment')]",
+		"automationAccountName": "[format('webhook-{0}-{1}-aa', variables('environment'), parameters('location'))]",
+    "runbookName": "[format('webhook-{0}-{1}-runbook', variables('environment'), parameters('location'))]",
+    "webhookName": "[format('webhook-{0}-{1}-wh', variables('environment'), parameters('location'))]",
+    "add3Years": "[dateTimeAdd(parameters('baseTime'), 'P3Y')]"
 	},
 	"resources": [
     {
+      "name": "[variables('automationAccountName')]",
       "type": "Microsoft.Automation/automationAccounts",
       "apiVersion": "2021-04-01",
-      "name": "[parameters('automationAccountName')]",
-      "location": "[parameters('Location')]",
+      "location": "[parameters('location')]",
       "properties": {
         "sku": {
           "name": "Free"
@@ -62,12 +58,12 @@
       },
       "resources": [
         {
+          "name": "[variables('runbookName')]",
           "type": "runbooks",
           "apiVersion": "2020-01-13-preview",
-          "name": "[parameters('runbookName')]",
-          "location": "[parameters('Location')]",
+          "location": "[parameters('location')]",
           "dependsOn": [
-            "[parameters('automationAccountName')]"
+            "[variables('automationAccountName')]"
           ],
           "properties": {
             "runbookType": "PowerShell",
@@ -81,18 +77,18 @@
           }
         },
         {
+          "name": "[variables('webhookName')]",
           "type": "webhooks",
           "apiVersion": "2018-06-30",
-          "name": "[parameters('webhookName')]",
           "dependsOn": [
-            "[parameters('automationAccountName')]",
-            "[parameters('runbookName')]"
+            "[variables('automationAccountName')]",
+            "[variables('runbookName')]"
           ],
           "properties": {
             "isEnabled": true,
-            "expiryTime": "[parameters('WebhookExpiryTime')]",
+            "expiryTime": "[variables('add3Years')]",
             "runbook": {
-              "name": "[parameters('runbookName')]"
+              "name": "[variables('runbookName')]"
             }
           }
         }
@@ -102,7 +98,7 @@
   "outputs": {
     "webhookUri": {
       "type": "String",
-      "value": "[reference(parameters('webhookName')).uri]"
+      "value": "[reference(variables('webhookName')).uri]"
     }
   }
 }

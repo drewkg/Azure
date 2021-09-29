@@ -5,14 +5,14 @@ param _artifactsLocation string = deployment().properties.templateLink.uri
 @description('SAS Token as a Query String')
 param _artifactsLocationSasToken string = ''
 
-@description('Base time for all calcuations, default is Now() in UTC')
-param baseTime string = utcNow('u')
-
 @description('The environment tag to provide unique resources between test / production and ephemeral environments.')
 param environment string = 'ObjInt'
 
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
+
+@description('Base time for all calcuations, default is Now() in UTC')
+param baseTime string = utcNow('u')
 
 var environment_var = environment
 var applicationInsightsName_var = 'demo-${environment_var}-${location}-aa'
