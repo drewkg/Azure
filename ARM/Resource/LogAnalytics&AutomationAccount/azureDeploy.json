@@ -23,7 +23,7 @@
 		},
     "environment": {
       "type": "string",
-      "defaultValue": "prod"
+      "defaultValue": "test"
     },
     "namingConvention": {
       "type": "string",
@@ -56,10 +56,6 @@
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
-    },
-    "AzureActivityWorkbookUri": {
-      "type": "string",
-      "defaultValue": "https://azmonsolutions.blob.core.windows.net/workbooktemplates/Azure%20Activity%20Log/Azure%20Activity%20Log.workbook"
     }
   },
   "variables": {
@@ -129,14 +125,6 @@
         "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
         "containedResources": [
           "[resourceId('Microsoft.OperationalInsights/workspaces/views/', variables('logAnalyticsWorkspaceName'), format('AzureActivity({0})', variables('logAnalyticsWorkspaceName')))]"
-        ],
-        "workbookTemplates": [
-          {
-            "source": "url",
-            "id": {
-              "public": "[parameters('AzureActivityWorkbookUri')]"
-            }
-          }
         ]
       }
     },
