@@ -23,7 +23,7 @@
 		},
     "environment": {
       "type": "string",
-      "defaultValue": "test"
+      "defaultValue": "prod"
     },
     "namingConvention": {
       "type": "string",
@@ -56,6 +56,10 @@
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
+    },
+    "AzureActivityWorkbookUri": {
+      "type": "string",
+      "defaultValue": "https://azmonsolutions.blob.core.windows.net/workbooktemplates/Azure%20Activity%20Log/Azure%20Activity%20Log.workbook"
     }
   },
   "variables": {
@@ -79,7 +83,6 @@
           "name": "[concat(variables('logAnalyticsWorkSpaceName'), '/' , 'Automation')]",
           "type": "Microsoft.OperationalInsights/workspaces/linkedServices",
           "apiVersion": "2020-08-01",
-          "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('logAnalyticsWorkspaceName')]",
             "[variables('automationAccountName')]"
@@ -123,7 +126,18 @@
         "promotionCode": ""
       },
       "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "containedResources": [
+          "[resourceId('Microsoft.OperationalInsights/workspaces/views/', variables('logAnalyticsWorkspaceName'), format('AzureActivity({0})', variables('logAnalyticsWorkspaceName')))]"
+        ],
+        "workbookTemplates": [
+          {
+            "source": "url",
+            "id": {
+              "public": "[parameters('AzureActivityWorkbookUri')]"
+            }
+          }
+        ]
       }
     },
     {
@@ -141,7 +155,10 @@
         "promotionCode": ""
       },
       "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "containedResources": [
+          "[resourceId('Microsoft.OperationalInsights/workspaces/views/', variables('logAnalyticsWorkspaceName'), format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName')))]"
+        ]
       }
     },
     {
@@ -167,7 +184,11 @@
         "logs": [
           {
             "category": "Audit",
-            "enabled": true
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
           }
         ]
       }
@@ -177,7 +198,13 @@
       "type": "Microsoft.Automation/automationAccounts",
       "apiVersion": "2021-04-01",
       "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "properties": {
+        "encryption": {
+          "keySource": "Microsoft.Automation"
+        },
         "sku": {
           "name": "Basic"
         }
@@ -207,15 +234,35 @@
         "logs": [
           {
             "category": "JobLogs",
-            "enabled": true
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
           },
           {
             "category": "JobStreams",
-            "enabled": true
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
           },
           {
             "category": "DscNodeStatus",
-            "enabled": true
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
+          },
+          {
+            "category": "AuditEvent",
+            "enabled": true,
+            "retentionPolicy": {
+              "enabled": false,
+              "days": 0
+            }
           }
         ]
       }
