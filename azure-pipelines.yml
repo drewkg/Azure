@@ -1,10 +1,6 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
-trigger:
-  batch: false
-  branches:
-    include:
-    - main
+trigger: none
 
 pr:
   autoCancel: true
