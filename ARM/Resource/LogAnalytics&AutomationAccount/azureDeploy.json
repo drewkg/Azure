@@ -255,5 +255,23 @@
         ]
       }
     }
-  ]
+  ],
+  "outputs": {
+    "Subscription": {
+      "type": "string",
+      "value": "[subscription().id]"
+    },
+    "ResourceGroup": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "LogAnalyticsWorkspaceName": {
+      "type": "string",
+      "value": "[variables('logAnalyticsWorkspaceName')]"
+    },
+    "AutomationAccountName": {
+      "type": "string",
+      "value": "[variables('automationAccountName')]"
+    }
+  }
 }
