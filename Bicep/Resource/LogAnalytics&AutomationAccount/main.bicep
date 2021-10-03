@@ -40,6 +40,11 @@ param resourceNameOverride object = {
 var logAnalyticsWorkspaceName = resourceNameOverride['logAnalyticsWorkspaceName']
 var automationAccountName = resourceNameOverride['automationAccountName']
 
+output Subscription string = subscription().id
+output ResourceGroup string = resourceGroup().name
+output LogAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
+output AutomationAccountName string = automationAccountName
+
 resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
   name: logAnalyticsWorkspaceName
   location: location
@@ -133,9 +138,12 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2019-06-01' = {
+resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-04-01' = {
   name: automationAccountName
   location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     sku: {
       name: 'Basic'

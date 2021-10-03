@@ -82,7 +82,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     name: '[parameters(\'profileName\')]'
                     type: 'Microsoft.Insights/diagnosticSettings'
                     apiVersion: '2021-05-01-preview'
-                    scope: '[resourceId(\'Microsoft.Sql/servers/databases\', parameters(\'resourceName\'))]'
+                    scope: '[resourceId(\'Microsoft.Sql/servers/databases\', split(parameters(\'resourceName\'), \'/\')[0], split(parameters(\'resourceName\'), \'/\')[1])]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [

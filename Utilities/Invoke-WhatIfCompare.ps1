@@ -15,27 +15,43 @@ param (
   [Parameter(ParameterSetName="SubSet")]
   $SubscriptionName = "f0c0d850-482c-559b-82b2-b005c0aa2e7a",
   [string]
-  $ARMTemplate,
+  $ARMFile = ".\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json",
   [string]
-  $BicepFile
+  $ARMTemplate = ".\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json",
+  [string]
+  $BicepFile = ".\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep",
+  [string]
+  $BicepTemplate = ""
 )
+
+$BicepHashArguments = @{
+  TemplateFile = $BicepFile
+}
+
+If ($BicepTemplate -ne "") { $BicepHashArguments.Add("TemplateParameterFile", $BicepTemplate) }
+
+$ARMHashArguments = @{
+  TemplateFile = $ARMFile
+}
+
+If ($ARMHashArguments -ne "") { $ARMHashArguments.Add("TemplateParameterFile", $ARMTemplate) }
 
 switch ( $true )
 {
   $ManagementGroup
   {
-    $bicepWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @ARMHashArguments
   }
   $Subscription
   {
-    $bicepWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth @ARMHashArguments
   }
   $ResourceGroup
   {
-    $bicepWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @ARMHashArguments
   }
 }
 
@@ -45,13 +61,14 @@ $bicepNoChanges = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -eq '
 If ($armNoChanges.Count -eq $bicepNoChanges.Count) {
   Write-Host "Number of items with no change is the same"
 } Else {
-  $armNoChanges | ForEach-Object {
-    $itemtofind = $_.RelativeResourceId
-
-    $found = $bicepNoChanges | Where-Object {$_.RelativeResourceId -eq $itemtofind} | Measure-Object
-
-    if ($found.Count -eq 0) {
-      Write-Host $itemtofind "is unchanged in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armNoChanges) {
+    if ($($bicepNoChanges | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+    }
+  }
+  ForEach ($item in $bicepNoChanges) {
+    if ($($armNoChanges | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
@@ -62,13 +79,14 @@ $bicepCreate = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -eq 'Cre
 If ($armCreate.Count -eq $bicepCreate.Count) {
   Write-Host "Number of items modified is the same"
 } Else {
-  $armCreate | ForEach-Object {
-    $itemtofind = $_.RelativeResourceId
-
-    $found = $bicepCreate | Where-Object {$_.RelativeResourceId -eq $itemtofind} | Measure-Object
-
-    if ($found.Count -eq 0) {
-      Write-Host $itemtofind "is created in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armCreate) {
+    if ($($bicepCreate | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+    }
+  }
+  ForEach ($item in $bicepCreate) {
+    if ($($armCreate | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
@@ -79,13 +97,14 @@ $bicepModification = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -e
 If ($armModifications.Count -eq $bicepModification.Count) {
   Write-Host "Number of items modified is the same"
 } Else {
-  $armModifications | ForEach-Object {
-    $itemtofind = $_.RelativeResourceId
-
-    $found = $bicepModification | Where-Object {$_.RelativeResourceId -eq $itemtofind} | Measure-Object
-
-    if ($found.Count -eq 0) {
-      Write-Host $itemtofind "is changed in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armModifications) {
+    if ($($bicepModification | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+    }
+  }
+  ForEach ($item in $bicepModification) {
+    if ($($armModifications | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
