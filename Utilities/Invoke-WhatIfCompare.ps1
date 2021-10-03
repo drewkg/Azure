@@ -15,27 +15,43 @@ param (
   [Parameter(ParameterSetName="SubSet")]
   $SubscriptionName = "f0c0d850-482c-559b-82b2-b005c0aa2e7a",
   [string]
-  $ARMTemplate,
+  $ARMFile = ".\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json",
   [string]
-  $BicepFile
+  $ARMTemplate = ".\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json",
+  [string]
+  $BicepFile = ".\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep",
+  [string]
+  $BicepTemplate = ""
 )
+
+$BicepHashArguments = @{
+  TemplateFile = $BicepFile
+}
+
+If ($BicepTemplate -ne "") { $BicepHashArguments.Add("TemplateParameterFile", $BicepTemplate) }
+
+$ARMHashArguments = @{
+  TemplateFile = $ARMFile
+}
+
+If ($ARMHashArguments -ne "") { $ARMHashArguments.Add("TemplateParameterFile", $ARMTemplate) }
 
 switch ( $true )
 {
   $ManagementGroup
   {
-    $bicepWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzManagementGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @ARMHashArguments
   }
   $Subscription
   {
-    $bicepWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzSubscriptionDeploymentWhatIfResult -Name $SubscriptionName -Location UKSouth @ARMHashArguments
   }
   $ResourceGroup
   {
-    $bicepWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\Bicep\Policy\DiagnosticSettings\LogAnalytics\main.bicep
-    $armWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth -TemplateFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azureDeploy.json -TemplateParameterFile .\ARM\Policy\DiagnosticSettings\LogAnalytics\azuredeploy.parameters.json
+    $bicepWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @BicepHashArguments
+    $armWhatIfResult = Get-AzResourceGroupDeploymentWhatIfResult -ManagementGroupId $ManagemengGroupId -Location UKSouth @ARMHashArguments
   }
 }
 
