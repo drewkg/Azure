@@ -61,13 +61,14 @@ $bicepNoChanges = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -eq '
 If ($armNoChanges.Count -eq $bicepNoChanges.Count) {
   Write-Host "Number of items with no change is the same"
 } Else {
-  $armNoChanges | ForEach-Object {
-    $itemtofind = $_.RelativeResourceId
-
-    $found = $bicepNoChanges | Where-Object {$_.RelativeResourceId -eq $itemtofind} | Measure-Object
-
-    if ($found.Count -eq 0) {
-      Write-Host $itemtofind "is unchanged in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armNoChanges) {
+    if ($($bicepNoChanges | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+    }
+  }
+  ForEach ($item in $bicepNoChanges) {
+    if ($($armNoChanges | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
@@ -78,14 +79,14 @@ $bicepCreate = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -eq 'Cre
 If ($armCreate.Count -eq $bicepCreate.Count) {
   Write-Host "Number of items modified is the same"
 } Else {
-  ForEach ($createdItem in $armCreate) {
-    if ($($bicepCreate | Where-Object {$_.RelativeResourceId -eq $createdItem.RelativeResourceId} | Measure-Object).Count -eq 0) {
-      Write-Host $createdItem.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armCreate) {
+    if ($($bicepCreate | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
     }
   }
-  ForEach ($createdItem in $bicepCreate) {
-    if ($($armCreate | Where-Object {$_.RelativeResourceId -eq $createdItem.RelativeResourceId} | Measure-Object).Count -eq 0) {
-      Write-Host $createdItem.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
+  ForEach ($item in $bicepCreate) {
+    if ($($armCreate | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
@@ -96,13 +97,14 @@ $bicepModification = $bicepWhatIfResult.Changes | Where-Object {$_.ChangeType -e
 If ($armModifications.Count -eq $bicepModification.Count) {
   Write-Host "Number of items modified is the same"
 } Else {
-  $armModifications | ForEach-Object {
-    $itemtofind = $_.RelativeResourceId
-
-    $found = $bicepModification | Where-Object {$_.RelativeResourceId -eq $itemtofind} | Measure-Object
-
-    if ($found.Count -eq 0) {
-      Write-Host $itemtofind "is changed in the ARM template, but not in the Bicep file."
+  ForEach ($item in $armModifications) {
+    if ($($bicepModification | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the ARM template, but not in the Bicep file."
+    }
+  }
+  ForEach ($item in $bicepModification) {
+    if ($($armModifications | Where-Object {$_.RelativeResourceId -eq $item.RelativeResourceId} | Measure-Object).Count -eq 0) {
+      Write-Host $item.RelativeResourceId "is created in the Bicep file, but not in the ARM template."
     }
   }
 }
