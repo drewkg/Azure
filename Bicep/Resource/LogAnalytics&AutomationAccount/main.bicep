@@ -40,7 +40,7 @@ param resourceNameOverride object = {
 var logAnalyticsWorkspaceName = resourceNameOverride['logAnalyticsWorkspaceName']
 var automationAccountName = resourceNameOverride['automationAccountName']
 
-output Subscription string = subscription().id
+output Subscription string = subscription().subscriptionId
 output ResourceGroup string = resourceGroup().name
 output LogAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
 output AutomationAccountName string = automationAccountName
