@@ -274,6 +274,9 @@
             "parameters": {
               "autoProvisioningSetting": {
                 "value": "[[parameters('autoProvisioningSetting')]"
+              },
+              "logAnalytics": {
+                "value": "[[parameters('logAnalytics')]"
               }
             }
           }
