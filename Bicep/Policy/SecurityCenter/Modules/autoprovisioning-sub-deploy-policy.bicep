@@ -46,7 +46,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
             ]
           }
           roleDefinitionIds: [
-            '/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd'
+            '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
           ]
           deploymentScope: 'subscription'
           deployment: {
