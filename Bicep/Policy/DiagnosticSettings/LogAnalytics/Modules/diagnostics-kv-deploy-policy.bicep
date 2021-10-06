@@ -101,6 +101,10 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                           category: 'AuditEvent'
                           enabled: true
                         }
+                        {
+                          category: 'AzurePolicyEvaluationDetails'
+                          enabled: true
+                        }
                       ]
                     }
                   }
