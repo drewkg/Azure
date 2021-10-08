@@ -7,7 +7,7 @@
       "name": "workspace-sub-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Configure Subscription Security Center Auto Provisioning Workspace",
+        "displayName": "Configure Security Center Workspace",
         "description": "Configures Security Center Auto Provisioning Workspace",
         "metadata": {
           "category": "Security Center",
