@@ -18,7 +18,8 @@
       "type": "array",
       "defaultValue": [
         "azureDefender-sub-deploy-policy",
-        "autoprovisioning-sub-deploy-policy"
+        "autoprovisioning-sub-deploy-policy",
+        "workspace-sub-deploy-policy"
       ]
     }
   },
