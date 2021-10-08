@@ -107,40 +107,49 @@ function ConvertJsonDictTo-HashTable($JsonString) {
 # Use the Run As connection to login to Azure
 function Login-AzureAutomation([bool] $AzModuleOnly) {
     try {
-        $RunAsConnection = Get-AutomationConnection -Name "AzureRunAsConnection"
-        Write-Output "Logging in to Azure ($AzureEnvironment)..."
+        #$RunAsConnection = Get-AutomationConnection -Name "AzureRunAsConnection"
+        #Write-Output "Logging in to Azure ($AzureEnvironment)..."
 
-        if (!$RunAsConnection.ApplicationId) {
-            $ErrorMessage = "Connection 'AzureRunAsConnection' is incompatible type."
-            throw $ErrorMessage
-        }
+        #if (!$RunAsConnection.ApplicationId) {
+        #    $ErrorMessage = "Connection 'AzureRunAsConnection' is incompatible type."
+        #    throw $ErrorMessage
+        #}
 
         if ($AzModuleOnly) {
-            Connect-AzAccount `
-                -ServicePrincipal `
-                -TenantId $RunAsConnection.TenantId `
-                -ApplicationId $RunAsConnection.ApplicationId `
-                -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-                -Environment $AzureEnvironment
+            #Connect-AzAccount `
+            #    -ServicePrincipal `
+            #    -TenantId $RunAsConnection.TenantId `
+            #    -ApplicationId $RunAsConnection.ApplicationId `
+            #    -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+            #    -Environment $AzureEnvironment
 
-            Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+            #Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+            # Ensures you do not inherit an AzContext in your runbook
+            Disable-AzContextAutosave -Scope Process
+
+            # Connect to Azure with system-assigned managed identity
+            $AzureContext = (Connect-AzAccount -Identity).context
+
+            # set and store context
+            $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
         } else {
-            Add-AzureRmAccount `
-                -ServicePrincipal `
-                -TenantId $RunAsConnection.TenantId `
-                -ApplicationId $RunAsConnection.ApplicationId `
-                -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-                -Environment $AzureEnvironment
+            #Add-AzureRmAccount `
+            #    -ServicePrincipal `
+            #    -TenantId $RunAsConnection.TenantId `
+            #    -ApplicationId $RunAsConnection.ApplicationId `
+            #    -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+            #    -Environment $AzureEnvironment
 
-            Select-AzureRmSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+            #Select-AzureRmSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+            Connect-AzureRMAccount -Identity
         }
     } catch {
-        if (!$RunAsConnection) {
-            $RunAsConnection | fl | Write-Output
+        #if (!$RunAsConnection) {
+        #    $RunAsConnection | fl | Write-Output
             Write-Output $_.Exception
-            $ErrorMessage = "Connection 'AzureRunAsConnection' not found."
-            throw $ErrorMessage
-        }
+        #    $ErrorMessage = "Connection 'AzureRunAsConnection' not found."
+        #    throw $ErrorMessage
+        #}
 
         throw $_.Exception
     }
