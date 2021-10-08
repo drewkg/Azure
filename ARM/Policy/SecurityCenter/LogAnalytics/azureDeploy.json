@@ -274,7 +274,13 @@
             "parameters": {
               "autoProvisioningSetting": {
                 "value": "[[parameters('autoProvisioningSetting')]"
-              },
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'workspace-sub-deploy-policy')]",
+            "policyDefinitionReferenceId": "workspace-sub-deploy-policy",
+            "parameters": {
               "logAnalytics": {
                 "value": "[[parameters('logAnalytics')]"
               }

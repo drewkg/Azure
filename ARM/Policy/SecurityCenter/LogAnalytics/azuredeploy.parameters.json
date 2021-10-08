@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "value": "https://raw.githubusercontent.com/drewkg/Azure/main/ARM/Policy/SecurityCenter/"
+      "value": "https://raw.githubusercontent.com/drewkg/Azure/feature/SCWorkspace/ARM/Policy/SecurityCenter/"
     }
   }
 }
