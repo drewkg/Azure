@@ -67,11 +67,19 @@
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
+    },
+    "baseTime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Base time for all calcuations, default is Now() in UTC"
+      }
     }
   },
   "variables": {
     "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
-    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]"
+    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
+    "add3Years": "[dateTimeAdd(parameters('baseTime'), 'P3Y')]"
   },
   "resources": [
     {
@@ -210,9 +218,9 @@
       },
       "resources": [
         {
+          "name": "Update-AutomationAzureModulesForAccount",
           "type": "runbooks",
           "apiVersion": "2020-01-13-preview",
-          "name": "Update-AutomationAzureModulesForAccount",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('automationAccountName')]"
@@ -225,6 +233,45 @@
             "publishContentLink": {
               "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AutomationAzureModulesForAccount.ps1'), parameters('_artifactsLocationSasToken'))]",
               "version": "1.0.0.0"
+            }
+          }
+        },
+        {
+          "name": "Update-AutomationAzureModulesForAccountSchedule",
+          "type": "schedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "description": "Update-AutomationAzureModulesForAccount Monthly Schedule",
+            "advancedSchedule": {
+              "monthlyOccurrences": [
+                {
+                  "day": "Sunday",
+                  "occurrence": 1
+                }
+              ]
+            },
+            "interval": "1",
+            "frequency": "Month"
+          }
+        },
+        {
+          "name": "[guid(concat(resourceGroup().id, '/Update-AutomationAzureModulesForAccountJobSchedule'))]",
+          "type": "jobSchedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]",
+            "Update-AutomationAzureModulesForAccount",
+            "Update-AutomationAzureModulesForAccountSchedule"
+          ],
+          "properties": {
+            "runbook": {
+              "name": "Update-AutomationAzureModulesForAccount"
+            },
+            "schedule": {
+              "name": "Update-AutomationAzureModulesForAccountSchedule"
             }
           }
         }
