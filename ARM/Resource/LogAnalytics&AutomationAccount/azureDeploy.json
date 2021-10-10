@@ -67,19 +67,11 @@
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
-    },
-    "baseTime": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]",
-      "metadata": {
-        "description": "Base time for all calcuations, default is Now() in UTC"
-      }
     }
   },
   "variables": {
     "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
-    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
-    "add3Years": "[dateTimeAdd(parameters('baseTime'), 'P3Y')]"
+    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]"
   },
   "resources": [
     {
