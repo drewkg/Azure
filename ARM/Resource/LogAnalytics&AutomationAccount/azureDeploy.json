@@ -2,6 +2,17 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "_artifactsLocation": {
+      "type": "String",
+      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]",
+      "metadata": {
+        "description": "URI to artifacts location"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
 		"location": {
 			"type": "string",
 			"defaultValue": "uksouth",
@@ -196,7 +207,67 @@
         "sku": {
           "name": "Basic"
         }
-      }
+      },
+      "resources": [
+        {
+          "name": "Update-AutomationAzureModulesForAccount",
+          "type": "runbooks",
+          "apiVersion": "2020-01-13-preview",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "runbookType": "PowerShell",
+            "logProgress": false,
+            "logVerbose": false,
+            "description": "Update Azure PowerShell modules in an Azure Automation account.",
+            "publishContentLink": {
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AutomationAzureModulesForAccount.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "version": "1.0.0.0"
+            }
+          }
+        },
+        {
+          "name": "Update-AutomationAzureModulesForAccountSchedule",
+          "type": "schedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "description": "Update-AutomationAzureModulesForAccount Monthly Schedule",
+            "advancedSchedule": {
+              "monthlyOccurrences": [
+                {
+                  "day": "Sunday",
+                  "occurrence": 1
+                }
+              ]
+            },
+            "interval": "1",
+            "frequency": "Month"
+          }
+        },
+        {
+          "name": "[guid(concat(resourceGroup().id, '/Update-AutomationAzureModulesForAccountJobSchedule'))]",
+          "type": "jobSchedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]",
+            "Update-AutomationAzureModulesForAccount",
+            "Update-AutomationAzureModulesForAccountSchedule"
+          ],
+          "properties": {
+            "runbook": {
+              "name": "Update-AutomationAzureModulesForAccount"
+            },
+            "schedule": {
+              "name": "Update-AutomationAzureModulesForAccountSchedule"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "diagnosticSettings",
