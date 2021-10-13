@@ -1,3 +1,9 @@
+@description('URI to artifacts location')
+param _artifactsLocation string = substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))
+
+@secure()
+param _artifactsLocationSasToken string = ''
+
 @description('The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account.')
 @allowed([
   'eastus'
@@ -147,6 +153,53 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
   properties: {
     sku: {
       name: 'Basic'
+    }
+  }
+
+  resource UpdateAutomationAzureModulesForAccount 'runbooks@2019-06-01' = {
+    name: 'Update-AutomationAzureModulesForAccount'
+    properties: {
+      runbookType: 'PowerShell'
+      logProgress: false
+      logVerbose: false
+      description: 'Update Azure PowerShell modules in an Azure Automation account.'
+      publishContentLink: {
+        uri: uri(_artifactsLocation, 'Runbook/Powershell/Update-AutomationAzureModulesForAccount.ps1${_artifactsLocationSasToken}')
+        version: '1.0.0.0'
+      }
+    }
+  }
+
+  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2021-04-01' = {
+    name: 'Update-AutomationAzureModulesForAccountSchedule'
+    properties: {
+      description: 'Update-AutomationAzureModulesForAccount Monthly Schedule'
+      advancedSchedule: {
+        monthlyOccurrences: [
+          {
+            day: 'Sunday'
+            occurrence: 1
+          }
+        ]
+      }
+      interval: '1'
+      frequency: 'Month'
+    }
+  }
+
+  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules@2021-04-01' = {
+    name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
+    properties: {
+      parameters: {
+        ResourceGroupName: resourceGroup().name
+        AutomationAccountName: automationAccount_resource.name
+      }
+      runbook: {
+        name: UpdateAutomationAzureModulesForAccount.name
+      }
+      schedule: {
+        name: UpdateAutomationAzureModulesForAccountSchedule.name
+      }
     }
   }
 }

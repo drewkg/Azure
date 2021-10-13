@@ -1,4 +1,4 @@
-﻿Test-AzTemplate $PSScriptRoot -Pester -Skip "Location Should Not Be Hardcoded", "DeploymentTemplate Must Not Contain Hardcoded Uri"
+﻿Test-AzTemplate $PSScriptRoot -Pester -Skip "Location Should Not Be Hardcoded", "apiVersions Should Be Recent"
 
 # Location Should Not Be Hardcoded, as only allowed values so this test does not make sense.
-# DeploymentTemplate Must Not Contain Hardcoded Uri, this does not allow for URI's in params, known issue.
+# apiVersions Should Be Recent, as the latest none preview runbook api is over 2 years old.

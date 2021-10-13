@@ -34,7 +34,7 @@
 		},
     "environment": {
       "type": "string",
-      "defaultValue": "test"
+      "defaultValue": "prod"
     },
     "namingConvention": {
       "type": "string",
@@ -212,7 +212,7 @@
         {
           "name": "Update-AutomationAzureModulesForAccount",
           "type": "runbooks",
-          "apiVersion": "2020-01-13-preview",
+          "apiVersion": "2019-06-01",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('automationAccountName')]"
@@ -250,7 +250,7 @@
           }
         },
         {
-          "name": "[guid(concat(resourceGroup().id, '/Update-AutomationAzureModulesForAccountJobSchedule'))]",
+          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule'))]",
           "type": "jobSchedules",
           "apiVersion": "2021-04-01",
           "dependsOn": [
@@ -259,6 +259,10 @@
             "Update-AutomationAzureModulesForAccountSchedule"
           ],
           "properties": {
+            "parameters": {
+              "ResourceGroupName": "[resourceGroup().name]",
+              "AutomationAccountName": "[variables('automationAccountName')]"
+            },
             "runbook": {
               "name": "Update-AutomationAzureModulesForAccount"
             },
