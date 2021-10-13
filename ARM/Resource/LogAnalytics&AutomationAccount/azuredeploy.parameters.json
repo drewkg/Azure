@@ -3,7 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "value": "https://raw.githubusercontent.com/drewkg/Azure/feature/PSModules/"
+      "value": "https://raw.githubusercontent.com/drewkg/Azure/main/"
+    },
+    "location": {
+      "value": "uksouth"
     }
   }
 }
