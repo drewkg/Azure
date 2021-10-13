@@ -1,75 +1,75 @@
-# <# <#
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-# #>
+<#
+  Copyright (c) Microsoft Corporation. All rights reserved.
+  Licensed under the MIT License.
+#>
 
-# <#
-# .SYNOPSIS
-# Update Azure PowerShell modules in an Azure Automation account.
+<#
+  .SYNOPSIS
+  Update Azure PowerShell modules in an Azure Automation account.
 
-# .DESCRIPTION
-# This Azure Automation runbook updates Azure PowerShell modules imported into an
-# Azure Automation account with the module versions published to the PowerShell Gallery.
+  .DESCRIPTION
+  This Azure Automation runbook updates Azure PowerShell modules imported into an
+  Azure Automation account with the module versions published to the PowerShell Gallery.
 
-# Prerequisite: an Azure Automation account with an Azure Run As account credential.
+  Prerequisite: an Azure Automation account with an Azure Run As account credential.
 
-# .PARAMETER ResourceGroupName
-# The Azure resource group name.
+  .PARAMETER ResourceGroupName
+  The Azure resource group name.
 
-# .PARAMETER AutomationAccountName
-# The Azure Automation account name.
+  .PARAMETER AutomationAccountName
+  The Azure Automation account name.
 
-# .PARAMETER SimultaneousModuleImportJobCount
-# (Optional) The maximum number of module import jobs allowed to run concurrently.
+  .PARAMETER SimultaneousModuleImportJobCount
+  (Optional) The maximum number of module import jobs allowed to run concurrently.
 
-# .PARAMETER AzureModuleClass
-# (Optional) The class of module that will be updated (AzureRM or Az)
-# If set to Az, this script will rely on only Az modules to update other modules.
-# Set this to Az if your runbooks use only Az modules to avoid conflicts.
+  .PARAMETER AzureModuleClass
+  (Optional) The class of module that will be updated (AzureRM or Az)
+  If set to Az, this script will rely on only Az modules to update other modules.
+  Set this to Az if your runbooks use only Az modules to avoid conflicts.
 
-# .PARAMETER AzureEnvironment
-# (Optional) Azure environment name.
+  .PARAMETER AzureEnvironment
+  (Optional) Azure environment name.
 
-# .PARAMETER Login
-# (Optional) If $false, do not login to Azure.
+  .PARAMETER Login
+  (Optional) If $false, do not login to Azure.
 
-# .PARAMETER ModuleVersionOverrides
-# (Optional) Module versions to use instead of the latest on the PowerShell Gallery.
-# If $null, the currently published latest versions will be used.
-# If not $null, must contain a JSON-serialized dictionary, for example:
-#     '{ "AzureRM.Compute": "5.8.0", "AzureRM.Network": "6.10.0" }'
-# or
-#     @{ 'AzureRM.Compute'='5.8.0'; 'AzureRM.Network'='6.10.0' } | ConvertTo-Json
+  .PARAMETER ModuleVersionOverrides
+  (Optional) Module versions to use instead of the latest on the PowerShell Gallery.
+  If $null, the currently published latest versions will be used.
+  If not $null, must contain a JSON-serialized dictionary, for example:
+    '{ "AzureRM.Compute": "5.8.0", "AzureRM.Network": "6.10.0" }'
+  or
+    @{ 'AzureRM.Compute'='5.8.0'; 'AzureRM.Network'='6.10.0' } | ConvertTo-Json
 
-# .PARAMETER PsGalleryApiUrl
-# (Optional) PowerShell Gallery API URL.
+  .PARAMETER PsGalleryApiUrl
+  (Optional) PowerShell Gallery API URL.
 
-# .LINK
-# https://docs.microsoft.com/en-us/azure/automation/automation-update-azure-modules
-# #>
+  .LINK
+  https://docs.microsoft.com/en-us/azure/automation/automation-update-azure-modules
+#>
 
-# [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
-# param(
-#     [Parameter(Mandatory = $true)]
-#     [string] $ResourceGroupName,
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
+param(
+  [Parameter(Mandatory = $true)]
+  [string] $ResourceGroupName,
 
-#     [Parameter(Mandatory = $true)]
-#     [string] $AutomationAccountName,
+  [Parameter(Mandatory = $true)]
+  [string] $AutomationAccountName,
 
-#     [int] $SimultaneousModuleImportJobCount = 10,
+  [int] $SimultaneousModuleImportJobCount = 10,
 
-#     [string] $AzureModuleClass = 'AzureRM',
+  [string] $AzureModuleClass = 'AzureRM',
 
-#     [string] $AzureEnvironment = 'AzureCloud',
+  [string] $AzureEnvironment = 'AzureCloud',
 
-#     [bool] $Login = $true,
+  [bool] $Login = $true,
 
-#     [string] $ModuleVersionOverrides = $null,
+  [string] $ModuleVersionOverrides = $null,
 
-#     [string] $PsGalleryApiUrl = 'https://www.powershellgallery.com/api/v2'
-# )
+  [string] $PsGalleryApiUrl = 'https://www.powershellgallery.com/api/v2'
+)
 
-# $ErrorActionPreference = "Continue"
+$ErrorActionPreference = "Continue"
 
 Write-Host "Hello World"
 
