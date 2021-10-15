@@ -229,6 +229,25 @@
           }
         },
         {
+          "name": "Confirm-AzurePolicyCompliance",
+          "type": "runbooks",
+          "apiVersion": "2019-06-01",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "runbookType": "PowerShell",
+            "logProgress": false,
+            "logVerbose": false,
+            "description": "Queries and updates Log Analytics with the current state of the Azure Policy Compliance..",
+            "publishContentLink": {
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Confirm-AzurePolicyCompliance.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "version": "1.0.0.0"
+            }
+          }
+        },
+        {
           "name": "Update-AutomationAzureModulesForAccountSchedule",
           "type": "schedules",
           "apiVersion": "2021-04-01",
