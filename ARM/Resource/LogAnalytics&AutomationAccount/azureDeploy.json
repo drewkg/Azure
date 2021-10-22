@@ -267,7 +267,7 @@
             "interval": "1",
             "frequency": "Month"
           }
-        },
+        }/*,
         {
           "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule'))]",
           "type": "jobSchedules",
@@ -289,8 +289,23 @@
               "name": "Update-AutomationAzureModulesForAccountSchedule"
             }
           }
-        }
+        }*/
       ]
+    },
+    {
+      "name": "[guid(concat(resourceGroup().id, 'AAMSIAutomationContributorAssignment'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-08-01-preview",
+      "dependsOn": [
+        "[variables('automationAccountName')]"
+      ],
+      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
+      "properties": {
+        "description": "MSI granted Automation Contributor on Automation Account, to manage modules.",
+        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')]"
+      }
     },
     {
       "name": "diagnosticSettings",
