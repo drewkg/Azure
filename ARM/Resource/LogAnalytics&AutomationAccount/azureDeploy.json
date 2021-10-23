@@ -267,9 +267,9 @@
             "interval": "1",
             "frequency": "Month"
           }
-        }/*,
+        },
         {
-          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule'))]",
+          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule1'))]",
           "type": "jobSchedules",
           "apiVersion": "2021-04-01",
           "dependsOn": [
@@ -289,17 +289,17 @@
               "name": "Update-AutomationAzureModulesForAccountSchedule"
             }
           }
-        }*/
+        }
       ]
     },
     {
       "name": "[guid(concat(resourceGroup().id, 'AAMSIAutomationContributorAssignment'))]",
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-08-01-preview",
+      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
       "dependsOn": [
         "[variables('automationAccountName')]"
       ],
-      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
       "properties": {
         "description": "MSI granted Automation Contributor on Automation Account, to manage modules.",
         "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
