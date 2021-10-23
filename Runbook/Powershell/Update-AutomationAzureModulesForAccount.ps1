@@ -104,46 +104,57 @@ function ConvertJsonDictTo-HashTable($JsonString) {
 # Use the Run As connection to login to Azure
 function Login-AzureAutomation([bool] $AzModuleOnly) {
   try {
-    #$RunAsConnection = Get-AutomationConnection -Name "AzureRunAsConnection"
-    #Write-Output "Logging in to Azure ($AzureEnvironment)..."
+    $RunAsConnection = Get-AutomationConnection -Name "AzureRunAsConnection"
 
-    #if (!$RunAsConnection.ApplicationId) {
-    #  $ErrorMessage = "Connection 'AzureRunAsConnection' is incompatible type."
-    #  throw $ErrorMessage
-    #}
+    if (!$RunAsConnection) {
+      Write-Output "Invalid or missing RunAs connection, attempting access using a MSI."
+      if ($AzModuleOnly) {
+        # Ensures you do not inherit an AzContext in your runbook
+        Disable-AzContextAutosave -Scope Process
 
-    if ($AzModuleOnly) {
-      #Connect-AzAccount `
-      #    -ServicePrincipal `
-      #    -TenantId $RunAsConnection.TenantId `
-      #    -ApplicationId $RunAsConnection.ApplicationId `
-      #    -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-      #    -Environment $AzureEnvironment
+        # Connect to Azure with system-assigned managed identity
+        $AzureContext = (Connect-AzAccount -Identity).context
 
-      #Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
-      # Ensures you do not inherit an AzContext in your runbook
-      Disable-AzContextAutosave -Scope Process
-
-      # Connect to Azure with system-assigned managed identity
-      $AzureContext = (Connect-AzAccount -Identity).context
-
-      # set and store context
-      $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
-      Select-AzSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
-      # Ensures you do not inherit an AzContext in your runbook
-      Disable-AzContextAutosave -Scope Process
+        # set and store context
+        $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
+        Select-AzSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
+      } else {
+        $AzureContext = (Connect-AzureRMAccount -Identity).context
+        Select-AzureRmSubscription -SubscriptionId $AzureContext.Subscription | Write-Verbose
+      }
     } else {
-      #Add-AzureRmAccount `
-      #    -ServicePrincipal `
-      #    -TenantId $RunAsConnection.TenantId `
-      #    -ApplicationId $RunAsConnection.ApplicationId `
-      #    -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-      #    -Environment $AzureEnvironment
+      Write-Output "Attempting access using RunAs account."
+      Write-Output "Logging in to Azure ($AzureEnvironment)."
 
-      $AzureContext = (Connect-AzureRMAccount -Identity).context
-      Write-Output $AzureContext.Subscription
-      Select-AzureRmSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
+      if (!$RunAsConnection.ApplicationId) {
+        $ErrorMessage = "Connection 'AzureRunAsConnection' is incompatible type."
+        throw $ErrorMessage
+      }
+
+      if ($AzModuleOnly) {
+        Connect-AzAccount `
+            -ServicePrincipal `
+            -TenantId $RunAsConnection.TenantId `
+            -ApplicationId $RunAsConnection.ApplicationId `
+            -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+            -Environment $AzureEnvironment
+
+        Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+
+        # Ensures you do not inherit an AzContext in your runbook
+        Disable-AzContextAutosave -Scope Process
+      } else {
+        Add-AzureRmAccount `
+            -ServicePrincipal `
+            -TenantId $RunAsConnection.TenantId `
+            -ApplicationId $RunAsConnection.ApplicationId `
+            -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+            -Environment $AzureEnvironment
+
+        Select-AzureRmSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+      }
     }
+
   } catch {
     #if (!$RunAsConnection) {
     #  $RunAsConnection | fl | Write-Output
