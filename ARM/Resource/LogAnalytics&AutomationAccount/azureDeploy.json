@@ -229,6 +229,25 @@
           }
         },
         {
+          "name": "Confirm-AzurePolicyCompliance",
+          "type": "runbooks",
+          "apiVersion": "2019-06-01",
+          "location": "[parameters('location')]",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "runbookType": "PowerShell",
+            "logProgress": false,
+            "logVerbose": false,
+            "description": "Queries and updates Log Analytics with the current state of the Azure Policy Compliance..",
+            "publishContentLink": {
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Confirm-AzurePolicyCompliance.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "version": "1.0.0.0"
+            }
+          }
+        },
+        {
           "name": "Update-AutomationAzureModulesForAccountSchedule",
           "type": "schedules",
           "apiVersion": "2021-04-01",
@@ -250,7 +269,7 @@
           }
         },
         {
-          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule'))]",
+          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule1'))]",
           "type": "jobSchedules",
           "apiVersion": "2021-04-01",
           "dependsOn": [
@@ -272,6 +291,21 @@
           }
         }
       ]
+    },
+    {
+      "name": "[guid(concat(resourceGroup().id, 'AAMSIAutomationContributorAssignment'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-08-01-preview",
+      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
+      "dependsOn": [
+        "[variables('automationAccountName')]"
+      ],
+      "properties": {
+        "description": "MSI granted Automation Contributor on Automation Account, to manage modules.",
+        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')]"
+      }
     },
     {
       "name": "diagnosticSettings",
