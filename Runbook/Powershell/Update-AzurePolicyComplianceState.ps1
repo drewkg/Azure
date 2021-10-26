@@ -19,6 +19,11 @@
   .PARAMETER AutomationAccountName
   The Azure Automation account name.
 
+  .PARAMETER AzureModuleClass
+  (Optional) The class of module that will be updated (AzureRM or Az)
+  If set to Az, this script will rely on only Az modules to update other modules.
+  Set this to Az if your runbooks use only Az modules to avoid conflicts.
+
   .PARAMETER AzureEnvironment
   (Optional) Azure environment name.
 
@@ -41,26 +46,23 @@ param(
 
 $ErrorActionPreference = "Continue"
 
-function Login-AzureAutomation([bool] $AzModuleOnly) {
+function Login-AzureAutomation() {
   try {
     $RunAsConnection = Get-AutomationConnection -Name "AzureRunAsConnection"
 
     if (!$RunAsConnection) {
       Write-Output "Invalid or missing RunAs connection, attempting access using a MSI."
-      if ($AzModuleOnly) {
-        # Ensures you do not inherit an AzContext in your runbook
-        Disable-AzContextAutosave -Scope Process
+      Write-Output "Logging in to Azure ($AzureEnvironment)."
 
-        # Connect to Azure with system-assigned managed identity
-        $AzureContext = (Connect-AzAccount -Identity).context
+      # Ensures you do not inherit an AzContext in your runbook
+      Disable-AzContextAutosave -Scope Process
 
-        # set and store context
-        $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
-        Select-AzSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
-      } else {
-        $AzureContext = (Connect-AzureRMAccount -Identity).context
-        Select-AzureRmSubscription -SubscriptionId $AzureContext.Subscription | Write-Verbose
-      }
+      # Connect to Azure with system-assigned managed identity
+      $AzureContext = (Connect-AzAccount -Identity).context
+
+      # set and store context
+      $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
+      Select-AzSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
     } else {
       Write-Output "Attempting access using RunAs account."
       Write-Output "Logging in to Azure ($AzureEnvironment)."
@@ -70,41 +72,26 @@ function Login-AzureAutomation([bool] $AzModuleOnly) {
         throw $ErrorMessage
       }
 
-      if ($AzModuleOnly) {
-        Connect-AzAccount `
-            -ServicePrincipal `
-            -TenantId $RunAsConnection.TenantId `
-            -ApplicationId $RunAsConnection.ApplicationId `
-            -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-            -Environment $AzureEnvironment
+      Connect-AzAccount `
+          -ServicePrincipal `
+          -TenantId $RunAsConnection.TenantId `
+          -ApplicationId $RunAsConnection.ApplicationId `
+          -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
+          -Environment $AzureEnvironment
 
-        Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
+      Select-AzSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
 
-        # Ensures you do not inherit an AzContext in your runbook
-        Disable-AzContextAutosave -Scope Process
-      } else {
-        Add-AzureRmAccount `
-            -ServicePrincipal `
-            -TenantId $RunAsConnection.TenantId `
-            -ApplicationId $RunAsConnection.ApplicationId `
-            -CertificateThumbprint $RunAsConnection.CertificateThumbprint `
-            -Environment $AzureEnvironment
-
-        Select-AzureRmSubscription -SubscriptionId $RunAsConnection.SubscriptionID  | Write-Verbose
-      }
+      # Ensures you do not inherit an AzContext in your runbook
+      Disable-AzContextAutosave -Scope Process
     }
 
   } catch {
-    #if (!$RunAsConnection) {
-    #  $RunAsConnection | fl | Write-Output
-      Write-Output $_.Exception
-    #  $ErrorMessage = "Connection 'AzureRunAsConnection' not found."
-    #  throw $ErrorMessage
-    #}
-
+    Write-Output $_.Exception
     throw $_.Exception
   }
 }
+
+$UseAzModule = $null
 
 if ($Login) {
   Login-AzureAutomation $UseAzModule
@@ -114,15 +101,14 @@ Write-Output "Querying Azure Resource Graph for Policy State"
 
 $KustoQuery = "
 policyresources
-| extend AssignmentScope = parse_json(properties).policyAssignmentScope
-| extend AssignmentName = tostring(parse_json(properties).policyAssignmentName)
+| extend AssignmentScope = tostring(parse_json(properties).policyAssignmentScope),
+         AssignmentName = tostring(parse_json(properties).policyAssignmentName)
 | where ['kind'] =='policystates'
 | summarize TotalResource = count(),
-    NotCompliant = countif(parse_json(properties).complianceState != 'Compliant')
-        by tostring(AssignmentName),
-        tostring(AssignmentScope),
-        subscriptionId
- | order by tostring(AssignmentName) asc
+            NotCompliant = countif(parse_json(properties).complianceState != 'Compliant')
+                by AssignmentName, AssignmentScope, subscriptionId
+| order by AssignmentName asc, subscriptionId asc
 "
-$result = Search-AzGraph -Query $KustoQuery -ManagementGroup 4b1b011c-6812-45a0-8112-f41550d0f0c9 | Formet-Table
-Write-Output $result
+
+$result = Search-AzGraph -Query $KustoQuery -ManagementGroup 4b1b011c-6812-45a0-8112-f41550d0f0c9
+Write-Output $result | Format-Table
