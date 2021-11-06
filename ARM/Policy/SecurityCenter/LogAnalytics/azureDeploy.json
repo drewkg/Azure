@@ -231,7 +231,7 @@
         },
         "policyDefinitions": [
           {
-            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'azuredefender-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'azuredefender-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "azuredefender-sub-deploy-policy",
             "parameters": {
               "appServiceTier": {
@@ -270,7 +270,7 @@
             }
           },
           {
-            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'autoprovisioning-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'autoprovisioning-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy",
             "parameters": {
               "autoProvisioningSetting": {
@@ -279,7 +279,7 @@
             }
           },
           {
-            "policyDefinitionId": "[format('/providers/Microsoft.Management/managementGroups/{0}/providers/Microsoft.Authorization/policyDefinitions/{1}', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2], 'workspace-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'workspace-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "workspace-sub-deploy-policy",
             "parameters": {
               "logAnalytics": {
