@@ -5,6 +5,8 @@ param (
 $ARMTTK_Releases = Invoke-RestMethod -Uri https://api.github.com/repos/Azure/arm-ttk/releases -Method Get
 $ARMTTK_DownloadLocation = $ARMTTK_Releases[0].assets.browser_download_url
 
+Write-Host "Using ARM TTK Version -" $ARMTTK_Releases[0].name
+
 # The commented line below will always get the latest version, currently the script attempts to detect the latest version, this detection may prove to be incorrect
 # $ARMTTK_DownloadLocation = "https://aka.ms/arm-ttk-latest"
 
