@@ -98,15 +98,35 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                       ]
                       logs: [
                         {
-                          category: 'DataPlaneRequests'
+                          category: 'Administrative'
                           enabled: true
                         }
                         {
-                          category: 'MongoRequests'
+                          category: 'Security'
                           enabled: true
                         }
                         {
-                          category: 'QueryRuntimeStatistics'
+                          category: 'ServiceHealth'
+                          enabled: true
+                        }
+                        {
+                          category: 'Alert'
+                          enabled: true
+                        }
+                        {
+                          category: 'Recommendation'
+                          enabled: true
+                        }
+                        {
+                          category: 'Policy'
+                          enabled: true
+                        }
+                        {
+                          category: 'Autoscale'
+                          enabled: true
+                        }
+                        {
+                          category: 'ResourceHealth'
                           enabled: true
                         }
                       ]
