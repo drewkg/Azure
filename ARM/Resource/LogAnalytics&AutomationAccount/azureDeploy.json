@@ -260,9 +260,34 @@
             "logVerbose": false,
             "description": "Queries and updates Log Analytics with the current state of the Azure Policy Compliance..",
             "publishContentLink": {
-              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Confirm-AzurePolicyCompliance.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AzurePolicyComplianceSate.ps1'), parameters('_artifactsLocationSasToken'))]",
               "version": "1.0.0.0"
             }
+          }
+        },
+        {
+          "name": "Update-AzurePolicyComplianceSateSchedule",
+          "type": "schedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "description": "Update-AzurePolicyComplianceSate Daily Schedule",
+            "advancedSchedule": {
+              "weekDays": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            },
+            "interval": "1",
+            "frequency": "Day",
+            "timezone": "UTC"
           }
         },
         {
@@ -283,7 +308,8 @@
               ]
             },
             "interval": "1",
-            "frequency": "Month"
+            "frequency": "Month",
+            "timezone": "UTC"
           }
         }/*,
         {
