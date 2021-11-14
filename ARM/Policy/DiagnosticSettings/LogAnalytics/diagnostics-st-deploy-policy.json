@@ -49,10 +49,6 @@
               "existenceCondition": {
                 "allOf": [
                   {
-                    "field": "Microsoft.Insights/diagnosticSettings/logs.enabled",
-                    "equals": "True"
-                  },
-                  {
                     "field": "Microsoft.Insights/diagnosticSettings/metrics.enabled",
                     "equals": "True"
                   },
