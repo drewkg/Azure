@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "diagnostics-sb-deploy-policy",
+      "name": "diagnostics-st-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Storage Account to a Log Analytics workspace",
