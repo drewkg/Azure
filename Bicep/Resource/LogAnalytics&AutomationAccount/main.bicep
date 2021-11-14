@@ -68,20 +68,6 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
   }
 }
 
-resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
-  location: location
-  plan: {
-    name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
-    publisher: 'Microsoft'
-    product: format('OMSGallery/{0}', 'SecurityCenterFree')
-    promotionCode: ''
-  }
-  properties: {
-    workspaceResourceId: logAnalyticsWorkspace_resource.id
-  }
-}
-
 resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
   location: location
@@ -113,6 +99,34 @@ resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solut
     containedResources: [
       resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('AzureAutomation({0})', logAnalyticsWorkspaceName))
     ]
+  }
+}
+
+resource solution_KeyVault_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: format('KeyVaultAnalytics({0})', logAnalyticsWorkspaceName)
+  location: location
+  plan: {
+    name: format('KeyVaultAnalytics({0})', logAnalyticsWorkspaceName)
+    publisher: 'Microsoft'
+    product: format('OMSGallery/{0}', 'KeyVaultAnalytics')
+    promotionCode: ''
+  }
+  properties: {
+    workspaceResourceId: logAnalyticsWorkspace_resource.id
+  }
+}
+
+resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
+  location: location
+  plan: {
+    name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
+    publisher: 'Microsoft'
+    product: format('OMSGallery/{0}', 'SecurityCenterFree')
+    promotionCode: ''
+  }
+  properties: {
+    workspaceResourceId: logAnalyticsWorkspace_resource.id
   }
 }
 
@@ -187,7 +201,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules@2021-04-01' = {
+  /*resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules@2021-04-01' = {
     name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
     properties: {
       parameters: {
@@ -201,7 +215,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
         name: UpdateAutomationAzureModulesForAccountSchedule.name
       }
     }
-  }
+  }*/
 }
 
 resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
