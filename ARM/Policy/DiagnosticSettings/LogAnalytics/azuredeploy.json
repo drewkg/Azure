@@ -65,6 +65,7 @@
         "diagnostics-sqlmi-deploy-policy",
         "diagnostics-sqlmidb-deploy-policy",
         "diagnostics-srch-deploy-policy",
+        "diagnostics-st-deploy-policy",
         "diagnostics-sub-deploy-policy",
         "diagnostics-traf-deploy-policy",
         "diagnostics-tsi-deploy-policy",

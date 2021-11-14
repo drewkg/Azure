@@ -3,10 +3,10 @@ targetScope = 'managementGroup'
 output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
-  name: 'diagnostics-cosmos-deploy-policy'
+  name: 'diagnostics-st-deploy-policy'
   properties: {
-    displayName: 'Deploy Diagnostics & Metrics for CosmosDB to a Log Analytics workspace'
-    description: 'Apply diagnostic & metric settings for CosmosDB to stream data to a Log Analytics workspace when any CosmosDB which is missing this diagnostic settings is created or updated.'
+    displayName: 'Deploy Diagnostics & Metrics for Storage Account to a Log Analytics workspace'
+    description: 'Apply diagnostic & metric settings for Storage Account to stream data to a Log Analytics workspace when any Storage Account which is missing this diagnostic settings is created or updated.'
     metadata: {
       category: 'Monitoring'
       version: '1.0.0.0'
@@ -35,7 +35,7 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
     policyRule: {
       if: {
         field: 'type'
-        equals: 'Microsoft.DocumentDB/databaseAccounts'
+        equals: 'Microsoft.Storage/storageAccounts'
       }
       then: {
         effect: 'deployIfNotExists'
@@ -46,10 +46,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
           ]
           existenceCondition: {
             allOf: [
-              {
-                field: 'Microsoft.Insights/diagnosticSettings/logs.enabled'
-                equals: 'True'
-              }
               {
                 field: 'Microsoft.Insights/diagnosticSettings/metrics.enabled'
                 equals: 'True'
@@ -82,52 +78,18 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                     name: '[parameters(\'profileName\')]'
                     type: 'Microsoft.Insights/diagnosticSettings'
                     apiVersion: '2021-05-01-preview'
-                    scope: '[resourceId(\'Microsoft.DocumentDB/databaseAccounts\', parameters(\'resourceName\'))]'
+                    scope: '[resourceId(\'Microsoft.Storage/storageAccounts\', parameters(\'resourceName\'))]'
                     properties: {
                       workspaceId: '[parameters(\'logAnalytics\')]'
                       metrics: [
                         {
-                          category: 'Requests'
+                          category: 'AllMetrics'
                           enabled: true
                           retentionPolicy: {
                             days: 0
                             enabled: false
                           }
                           timeGrain: null
-                        }
-                      ]
-                      logs: [
-                        {
-                          category: 'Administrative'
-                          enabled: true
-                        }
-                        {
-                          category: 'Security'
-                          enabled: true
-                        }
-                        {
-                          category: 'ServiceHealth'
-                          enabled: true
-                        }
-                        {
-                          category: 'Alert'
-                          enabled: true
-                        }
-                        {
-                          category: 'Recommendation'
-                          enabled: true
-                        }
-                        {
-                          category: 'Policy'
-                          enabled: true
-                        }
-                        {
-                          category: 'Autoscale'
-                          enabled: true
-                        }
-                        {
-                          category: 'ResourceHealth'
-                          enabled: true
                         }
                       ]
                     }
