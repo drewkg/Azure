@@ -1,9 +1,4 @@
 <#
-  Copyright (c) Microsoft Corporation. All rights reserved.
-  Licensed under the MIT License.
-#>
-
-<#
   .SYNOPSIS
   Update Azure PowerShell modules in an Azure Automation account.
 
@@ -41,7 +36,7 @@ param(
 
   [string] $AzureEnvironment = 'AzureCloud',
 
-  [bool] $Login = $true
+  [bool] $Login = $false
 )
 
 $ErrorActionPreference = "Continue"
@@ -91,10 +86,8 @@ function Login-AzureAutomation() {
   }
 }
 
-$UseAzModule = $null
-
 if ($Login) {
-  Login-AzureAutomation $UseAzModule
+  Login-AzureAutomation
 }
 
 Write-Output "Querying Azure Resource Graph for Policy State"
@@ -114,34 +107,23 @@ $result = Search-AzGraph -Query $KustoQuery -ManagementGroup 4b1b011c-6812-45a0-
 Write-Output $result | Format-Table
 
 
+$workspace = Get-AzOperationalInsightsWorkspace -Name platform-prod-uks-log -ResourceGroupName platform-prod-uks-rsg
+$keys = $workspace | Get-AzOperationalInsightsWorkspaceSharedKey
+
 # Replace with your Workspace ID
-$CustomerId = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+$CustomerId = $workspace.CustomerId
 
 # Replace with your Primary Key
-$SharedKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+$SharedKey = $keys.PrimarySharedKey
 
 # Specify the name of the record type that you'll be creating
-$LogType = "MyRecordType"
+$LogType = "PolicyComplianceState"
 
 # You can use an optional field to specify the timestamp from the data. If the time field is not specified, Azure Monitor assumes the time is the message ingestion time
-$TimeStampField = ""
-
+$TimeStampField = (Get-Date).ToUniversalTime()
 
 # Create two records with the same set of properties to create
-$json = @"
-[{  "StringValue": "MyString1",
-    "NumberValue": 42,
-    "BooleanValue": true,
-    "DateValue": "2019-09-12T20:00:00.625Z",
-    "GUIDValue": "9909ED01-A74C-4874-8ABF-D2678E3AE23D"
-},
-{   "StringValue": "MyString2",
-    "NumberValue": 43,
-    "BooleanValue": false,
-    "DateValue": "2019-09-12T20:00:00.625Z",
-    "GUIDValue": "8809ED01-A74C-4874-8ABF-D2678E3AE23D"
-}]
-"@
+$json = $result | ConvertTo-Json
 
 # Create the function to create the authorization signature
 Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
@@ -159,7 +141,6 @@ Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $metho
     $authorization = 'SharedKey {0}:{1}' -f $customerId,$encodedHash
     return $authorization
 }
-
 
 # Create the function to create and post the request
 Function Post-LogAnalyticsData($customerId, $sharedKey, $body, $logType)
@@ -188,7 +169,6 @@ Function Post-LogAnalyticsData($customerId, $sharedKey, $body, $logType)
 
     $response = Invoke-WebRequest -Uri $uri -Method $method -ContentType $contentType -Headers $headers -Body $body -UseBasicParsing
     return $response.StatusCode
-
 }
 
 # Submit the data to the API endpoint
