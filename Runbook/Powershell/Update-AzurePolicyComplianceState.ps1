@@ -29,14 +29,16 @@
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
 param(
   #[Parameter(Mandatory = $true)]
-  [string] $ResourceGroupName,
+  [string] $ResourceGroupName = 'platform-prod-uks-rsg',
 
   #[Parameter(Mandatory = $true)]
-  [string] $AutomationAccountName,
+  [string] $LogAnalyticsWorkspace = 'platform-prod-uks-log',
 
   [string] $AzureEnvironment = 'AzureCloud',
 
-  [bool] $Login = $false
+  [string] $RootManagementGroup = '4b1b011c-6812-45a0-8112-f41550d0f0c9',
+
+  [bool] $Login = $true
 )
 
 $ErrorActionPreference = "Continue"
@@ -103,11 +105,10 @@ policyresources
 | order by AssignmentName asc, subscriptionId asc
 "
 
-$result = Search-AzGraph -Query $KustoQuery -ManagementGroup 4b1b011c-6812-45a0-8112-f41550d0f0c9
+$result = Search-AzGraph -Query $KustoQuery -ManagementGroup $RootManagementGroup
 Write-Output $result | Format-Table
 
-
-$workspace = Get-AzOperationalInsightsWorkspace -Name platform-prod-uks-log -ResourceGroupName platform-prod-uks-rsg
+$workspace = Get-AzOperationalInsightsWorkspace -Name $LogAnalyticsWorkspace -ResourceGroupName $ResourceGroupName
 $keys = $workspace | Get-AzOperationalInsightsWorkspaceSharedKey
 
 # Replace with your Workspace ID
