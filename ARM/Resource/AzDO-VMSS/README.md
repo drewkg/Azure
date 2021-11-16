@@ -1,12 +1,13 @@
 # Introduction
 
-This repository holds the Azure Image Builder ARM templates and necessary scripts required to initialize the DriveTrain Azure DevOps Build Agents.
+This repository holds the Azure Image Builder ARM templates and necessary scripts required to an Azure DevOps Build Agent.
 
-Drivetrain has some specific requirements, mainly around specific versions of Powershell modules, because of this it is necessary to host managed Azure DevOps Agents created from specific images.  The Azure Image Builder Service is being used to create golden images, that can then be used to create VM's that are always identical between instances.
+In some situations the Azure DevOps hosted build agent is not sufficient, either the toolset is incompatable or there are extra requirements such as running under a defined identity or within a security boundry.
+
 
 # Getting Started
 
-See the information at [Azure Image Builder Service](https://github.com/danielsollondon/azvmimagebuilder) as an introduction.
+See the information at [Azure Image Builder Service](https://docs.microsoft.com/en-us/azure/virtual-machines/image-builder-overview) as an introduction.
 
 # Build and Test
 
