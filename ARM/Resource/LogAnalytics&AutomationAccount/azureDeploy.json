@@ -266,31 +266,6 @@
           }
         },
         {
-          "name": "Update-AzurePolicyComplianceSateSchedule",
-          "type": "schedules",
-          "apiVersion": "2021-04-01",
-          "dependsOn": [
-            "[variables('automationAccountName')]"
-          ],
-          "properties": {
-            "description": "Update-AzurePolicyComplianceSate Daily Schedule",
-            "advancedSchedule": {
-              "weekDays": [
-                "monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday",
-                "saturday",
-                "sunday"
-              ]
-            },
-            "interval": "1",
-            "frequency": "Day",
-            "timezone": "UTC"
-          }
-        },
-        {
           "name": "Update-AutomationAzureModulesForAccountSchedule",
           "type": "schedules",
           "apiVersion": "2021-04-01",
@@ -309,6 +284,31 @@
             },
             "interval": "1",
             "frequency": "Month",
+            "timezone": "UTC"
+          }
+        },
+        {
+          "name": "Update-AzurePolicyComplianceStateSchedule",
+          "type": "schedules",
+          "apiVersion": "2021-04-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "description": "Update-AzurePolicyComplianceState Daily Schedule",
+            "advancedSchedule": {
+              "weekDays": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            },
+            "interval": "1",
+            "frequency": "Day",
             "timezone": "UTC"
           }
         }/*,
