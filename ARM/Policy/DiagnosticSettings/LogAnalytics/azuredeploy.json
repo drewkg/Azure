@@ -68,6 +68,8 @@
         "diagnostics-st-deploy-policy",
         "diagnostics-st-blob-deploy-policy",
         "diagnostics-st-file-deploy-policy",
+        "diagnostics-st-queue-deploy-policy",
+        "diagnostics-st-table-deploy-policy",
         "diagnostics-sub-deploy-policy",
         "diagnostics-traf-deploy-policy",
         "diagnostics-tsi-deploy-policy",
