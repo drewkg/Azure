@@ -43,8 +43,12 @@ param resourceNameOverride object = {
   automationAccountName: format(namingConvention, environment, locationShortCodeOverride[location], 'aa')
 }
 
+@description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
+param baseTime string = utcNow('u')
+
 var logAnalyticsWorkspaceName = resourceNameOverride['logAnalyticsWorkspaceName']
 var automationAccountName = resourceNameOverride['automationAccountName']
+var scheduleStartDate = dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-dd')
 
 output Subscription string = subscription().subscriptionId
 output ResourceGroup string = resourceGroup().name
@@ -113,6 +117,9 @@ resource solution_KeyVault_resource 'Microsoft.OperationsManagement/solutions@20
   }
   properties: {
     workspaceResourceId: logAnalyticsWorkspace_resource.id
+    containedResources: [
+      resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('KeyVaultAnalytics({0})', logAnalyticsWorkspaceName))
+    ]
   }
 }
 
@@ -127,6 +134,9 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
   }
   properties: {
     workspaceResourceId: logAnalyticsWorkspace_resource.id
+    containedResources: [
+      resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('SecurityCenterFree({0})', logAnalyticsWorkspaceName))
+    ]
   }
 }
 
@@ -158,7 +168,7 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-04-01' = {
+resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-06-22' = {
   name: automationAccountName
   location: location
   identity: {
@@ -184,10 +194,25 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2021-04-01' = {
+  resource UpdateAzurePolicyComplianceState 'runbooks@2019-06-01' = {
+    name: 'Update-AzurePolicyComplianceState'
+    properties: {
+      runbookType: 'PowerShell'
+      logProgress: false
+      logVerbose: false
+      description: 'Update Azure PowerShell modules in an Azure Automation account.'
+      publishContentLink: {
+        uri: uri(_artifactsLocation, 'Runbook/Powershell/Update-AzurePolicyComplianceState.ps1${_artifactsLocationSasToken}')
+        version: '1.0.0.0'
+      }
+    }
+  }
+
+  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2019-06-01' = {
     name: 'Update-AutomationAzureModulesForAccountSchedule'
     properties: {
       description: 'Update-AutomationAzureModulesForAccount Monthly Schedule'
+      startTime: format('{0}T02:00:00Z', scheduleStartDate)
       advancedSchedule: {
         monthlyOccurrences: [
           {
@@ -196,8 +221,29 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
           }
         ]
       }
-      interval: '1'
       frequency: 'Month'
+      timeZone: 'Europe/London'
+    }
+  }
+
+  resource UpdateAzurePolicyComplianceStateSchedule 'schedules@2019-06-01' = {
+    name: 'Update-AzurePolicyComplianceStateSchedule'
+    properties: {
+      description: 'Update-AzurePolicyComplianceStateSchedule Monthly Schedule'
+      startTime: format('{0}T01:00:00Z', scheduleStartDate)
+      advancedSchedule: {
+        weekDays: [
+          'monday'
+          'tuesday'
+          'wednesday'
+          'thursday'
+          'friday'
+          'saturday'
+          'sunday'
+        ]
+      }
+      frequency: 'Day'
+      timeZone: 'Europe/London'
     }
   }
 
