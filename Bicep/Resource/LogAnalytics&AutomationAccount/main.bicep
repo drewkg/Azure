@@ -229,7 +229,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
   resource UpdateAzurePolicyComplianceStateSchedule 'schedules@2019-06-01' = {
     name: 'Update-AzurePolicyComplianceStateSchedule'
     properties: {
-      description: 'Update-AzurePolicyComplianceStateSchedule Monthly Schedule'
+      description: 'Update-AzurePolicyComplianceStateSchedule Daily Schedule'
       startTime: format('{0}T01:00:00Z', scheduleStartDate)
       advancedSchedule: {
         weekDays: [
