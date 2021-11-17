@@ -84,7 +84,7 @@
                         "name": "[[parameters('profileName')]",
                         "type": "Microsoft.Insights/diagnosticSettings",
                         "apiVersion": "2021-05-01-preview",
-                        "scope": "[[resourceId('Microsoft.Storage/storageAccounts/blobServices', split(parameters('resourceName'), '/')[0], split(parameters('resourceName'), '/')[1])]",
+                        "scope": "[[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('resourceName'), 'default')]",
                         "properties": {
                           "workspaceId": "[[parameters('logAnalytics')]",
                           "metrics": [
