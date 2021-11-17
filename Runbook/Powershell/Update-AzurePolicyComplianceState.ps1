@@ -83,7 +83,6 @@ function Login-AzureAutomation() {
       # Ensures you do not inherit an AzContext in your runbook
       Disable-AzContextAutosave -Scope Process
     }
-
   } catch {
     Write-Error $_.Exception
     throw $_.Exception
@@ -107,7 +106,7 @@ policyresources
 | order by AssignmentName asc, subscriptionId asc
 "
 
-$result = Search-AzGraph -Query $KustoQuery -ManagementGroup $RootManagementGroup
+$json = Search-AzGraph -Query $KustoQuery -ManagementGroup $RootManagementGroup | ConvertTo-Json
 
 $workspace = Get-AzOperationalInsightsWorkspace -Name $LogAnalyticsWorkspace -ResourceGroupName $ResourceGroupName
 $keys = $workspace | Get-AzOperationalInsightsWorkspaceSharedKey
@@ -123,9 +122,6 @@ $LogType = "PolicyComplianceState"
 
 # You can use an optional field to specify the timestamp from the data. If the time field is not specified, Azure Monitor assumes the time is the message ingestion time
 $TimeStampField = (Get-Date).ToUniversalTime()
-
-# Create two records with the same set of properties to create
-$json = $result | ConvertTo-Json
 
 # Create the function to create the authorization signature
 Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
