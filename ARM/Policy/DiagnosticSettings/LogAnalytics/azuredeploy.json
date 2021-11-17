@@ -67,6 +67,7 @@
         "diagnostics-srch-deploy-policy",
         "diagnostics-st-deploy-policy",
         "diagnostics-st-blob-deploy-policy",
+        "diagnostics-st-file-deploy-policy",
         "diagnostics-sub-deploy-policy",
         "diagnostics-traf-deploy-policy",
         "diagnostics-tsi-deploy-policy",
