@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "value": "https://raw.githubusercontent.com/drewkg/Azure/main/"
+      "value": "https://raw.githubusercontent.com/drewkg/Azure/feature/PolicyStateDetection/"
     },
     "location": {
       "value": "uksouth"

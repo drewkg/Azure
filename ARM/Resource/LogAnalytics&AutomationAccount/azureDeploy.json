@@ -67,11 +67,19 @@
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
       }
+    },
+    "baseTime": {
+      "type": "string",
+      "defaultValue": "[utcNow('u')]",
+      "metadata": {
+        "description": "Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default."
+      }
     }
   },
   "variables": {
     "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
-    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]"
+    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
+    "scheduleStartDate": "[dateTimeAdd(parameters('baseTime'), 'P1D', 'yyyy-MM-dd')]"
   },
   "resources": [
     {
@@ -157,7 +165,10 @@
         "promotionCode": ""
       },
       "properties": {
-        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
+        "workspaceResourceId": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+        "containedResources": [
+          "[resourceId('Microsoft.OperationalInsights/workspaces/views/', variables('logAnalyticsWorkspaceName'), format('KeyVaultAnalytics({0})', variables('logAnalyticsWorkspaceName')))]"
+        ]
       }
     },
     {
@@ -213,7 +224,7 @@
     {
       "name": "[variables('automationAccountName')]",
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2021-06-22",
       "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
@@ -247,7 +258,7 @@
           }
         },
         {
-          "name": "Confirm-AzurePolicyCompliance",
+          "name": "Update-AzurePolicyComplianceState",
           "type": "runbooks",
           "apiVersion": "2019-06-01",
           "location": "[parameters('location')]",
@@ -260,7 +271,7 @@
             "logVerbose": false,
             "description": "Queries and updates Log Analytics with the current state of the Azure Policy Compliance..",
             "publishContentLink": {
-              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Confirm-AzurePolicyCompliance.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AzurePolicyComplianceState.ps1'), parameters('_artifactsLocationSasToken'))]",
               "version": "1.0.0.0"
             }
           }
@@ -268,12 +279,13 @@
         {
           "name": "Update-AutomationAzureModulesForAccountSchedule",
           "type": "schedules",
-          "apiVersion": "2021-04-01",
+          "apiVersion": "2019-06-01",
           "dependsOn": [
             "[variables('automationAccountName')]"
           ],
           "properties": {
             "description": "Update-AutomationAzureModulesForAccount Monthly Schedule",
+            "startTime": "[format('{0}T02:00:00Z', variables('scheduleStartDate'))]",
             "advancedSchedule": {
               "monthlyOccurrences": [
                 {
@@ -282,14 +294,39 @@
                 }
               ]
             },
-            "interval": "1",
-            "frequency": "Month"
+            "frequency": "Month",
+            "timeZone": "Europe/London"
+          }
+        },
+        {
+          "name": "Update-AzurePolicyComplianceStateSchedule",
+          "type": "schedules",
+          "apiVersion": "2019-06-01",
+          "dependsOn": [
+            "[variables('automationAccountName')]"
+          ],
+          "properties": {
+            "description": "Update-AzurePolicyComplianceState Daily Schedule",
+            "startTime": "[format('{0}T01:00:00Z', variables('scheduleStartDate'))]",
+            "advancedSchedule": {
+              "weekDays": [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday"
+              ]
+            },
+            "frequency": "Day",
+            "timezone": "Europe/London"
           }
         }/*,
         {
           "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule1'))]",
           "type": "jobSchedules",
-          "apiVersion": "2021-04-01",
+          "apiVersion": "2019-06-01",
           "dependsOn": [
             "[variables('automationAccountName')]",
             "Update-AutomationAzureModulesForAccount",
@@ -323,6 +360,21 @@
         "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
         "principalType": "ServicePrincipal",
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')]"
+      }
+    },
+    {
+      "name": "[guid(concat(resourceGroup().id, 'AAMSILogAnalyticsContributorAssignment'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-08-01-preview",
+      "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
+      "dependsOn": [
+        "[variables('automationAccountName')]"
+      ],
+      "properties": {
+        "description": "MSI granted Log Analytics Contributor on Log Analytics Workspace, to query shared access keys.",
+        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]"
       }
     },
     {
