@@ -30,15 +30,16 @@
 
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
 param(
-  #[Parameter(Mandatory = $true)]
-  [string] $ResourceGroupName = 'platform-prod-uks-rsg',
+  [Parameter(Mandatory = $true)]
+  [string] $ResourceGroupName,
 
-  #[Parameter(Mandatory = $true)]
-  [string] $LogAnalyticsWorkspace = 'platform-prod-uks-log',
+  [Parameter(Mandatory = $true)]
+  [string] $LogAnalyticsWorkspace,
+
+  [Parameter(Mandatory = $true)]
+  [string] $RootManagementGroup,
 
   [string] $AzureEnvironment = 'AzureCloud',
-
-  [string] $RootManagementGroup = '4b1b011c-6812-45a0-8112-f41550d0f0c9',
 
   [bool] $Login = $true
 )
