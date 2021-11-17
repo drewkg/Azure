@@ -355,18 +355,18 @@
       }
     },
     {
-      "name": "[guid(concat(resourceGroup().id, 'AAMSILogAnalyticsReaderAssignment'))]",
+      "name": "[guid(concat(resourceGroup().id, 'AAMSILogAnalyticsContributorAssignment'))]",
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-08-01-preview",
-      "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('logAnalyticsWorkspaceName'))]",
+      "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
       "dependsOn": [
         "[variables('automationAccountName')]"
       ],
       "properties": {
-        "description": "MSI granted Reader on Log Analytics Workspace, to query access to custom logs.",
+        "description": "MSI granted Log Analytics Contributor on Log Analytics Workspace, to query shared access keys.",
         "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
         "principalType": "ServicePrincipal",
-        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]"
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]"
       }
     },
     {
