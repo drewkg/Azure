@@ -26,6 +26,8 @@
   (Optional) If $false, do not login to Azure.
 #>
 
+#Requires -Modules @{ ModuleName="AZ.ResourceGraph"; ModuleVersion="0.2.0" }
+
 [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseApprovedVerbs", "")]
 param(
   #[Parameter(Mandatory = $true)]
@@ -59,7 +61,7 @@ function Login-AzureAutomation() {
 
       # set and store context
       $AzureContext = Set-AzContext -SubscriptionName $AzureContext.Subscription -DefaultProfile $AzureContext
-      Select-AzSubscription -SubscriptionId $AzureContext.Subscription  | Write-Verbose
+      Select-AzSubscription -SubscriptionId $AzureContext.Subscription | Write-Verbose
     } else {
       Write-Output "Attempting access using RunAs account."
       Write-Output "Logging in to Azure ($AzureEnvironment)."
@@ -106,7 +108,6 @@ policyresources
 "
 
 $result = Search-AzGraph -Query $KustoQuery -ManagementGroup $RootManagementGroup
-Write-Output $result | Format-Table
 
 $workspace = Get-AzOperationalInsightsWorkspace -Name $LogAnalyticsWorkspace -ResourceGroupName $ResourceGroupName
 $keys = $workspace | Get-AzOperationalInsightsWorkspaceSharedKey
