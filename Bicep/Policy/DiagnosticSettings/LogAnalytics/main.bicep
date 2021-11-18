@@ -203,6 +203,22 @@ module DiagnosticsSTDeployPolicy './Modules/diagnostics-st-deploy-policy.bicep' 
   name: 'diagnostics-st-deploy-policy'
 }
 
+module DiagnosticsSTBlobDeployPolicy './Modules/diagnostics-st-blob-deploy-policy.bicep' = {
+  name: 'diagnostics-st-blob-deploy-policy'
+}
+
+module DiagnosticsSTFileDeployPolicy './Modules/diagnostics-st-file-deploy-policy.bicep' = {
+  name: 'diagnostics-st-File-deploy-policy'
+}
+
+module DiagnosticsSTQueueDeployPolicy './Modules/diagnostics-st-queue-deploy-policy.bicep' = {
+  name: 'diagnostics-st-queue-deploy-policy'
+}
+
+module DiagnosticsSTTableDeployPolicy './Modules/diagnostics-st-table-deploy-policy.bicep' = {
+  name: 'diagnostics-st-table-deploy-policy'
+}
+
 module DiagnosticsSUBDeployPolicy './Modules/diagnostics-sub-deploy-policy.bicep' = {
   name: 'diagnostics-sub-deploy-policy'
 }
@@ -292,6 +308,10 @@ module DiagnosticsLogAnalyticsPolicySet './Modules/diagnostics-loganalytics-depl
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSQLMIDBDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSRCHDBDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSTDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSTBlobDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSTFileDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSTQueueDeployPolicy.outputs.name)
+      extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSTTableDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsSUBDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsTRAFDeployPolicy.outputs.name)
       extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', DiagnosticsTSIDeployPolicy.outputs.name)
