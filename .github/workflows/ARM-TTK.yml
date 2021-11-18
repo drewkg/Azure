@@ -12,3 +12,4 @@ jobs:
           Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-ARMTTK.ps1
         shell: pwsh
+        fal
