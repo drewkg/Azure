@@ -7,8 +7,8 @@
       "name": "diagnostics-st-blob-deploy-policy",
       "apiVersion": "2019-09-01",
       "properties": {
-        "displayName": "Deploy Diagnostics & Metrics for Storage Account Blob Container to a Log Analytics workspace",
-        "description": "Apply diagnostic & metric settings for Storage Account Blob Container to stream data to a Log Analytics workspace when any Storage Account which is missing this diagnostic settings is created or updated.",
+        "displayName": "Deploy Diagnostics & Metrics for Storage Account Blob Services to a Log Analytics workspace",
+        "description": "Apply diagnostic & metric settings for Storage Account Blob Services to stream data to a Log Analytics workspace when any Storage Account which is missing this diagnostic settings is created or updated.",
         "metadata": {
           "category": "Monitoring",
           "version": "1.0.0.0"
