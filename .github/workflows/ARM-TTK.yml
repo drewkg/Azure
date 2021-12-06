@@ -2,12 +2,12 @@ name: learn-github-actions
 on: [push]
 jobs:
   Validate-ARM:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
 
-      - run: |
-          Write-host $PSVersionTable.PSVersion.Major $PSVersionTable.PSRemotingProtocolVersion.Minor
+      - name: Validate ARM Templates
+      run: |
           Set-PSRepository PSGallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-ARMTTK.ps1
