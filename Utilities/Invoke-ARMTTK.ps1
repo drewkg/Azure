@@ -22,4 +22,4 @@ Get-ChildItem -Path .\ARM\* -Include arm-ttk-tests.ps1 -Recurse -File | ForEach-
   Invoke-Pester -Script $_ -OutputFile (Join-Path -Path $outputPath -ChildPath ($_.Directory.Name + ".nunit")) -OutputFormat NUnitXml
 }
 
-Remove-Item ".\ARM-TTK" -Recurse
+Remove-Item ".\ARM-TTK" -Recurse -Force
