@@ -2,12 +2,13 @@ name: learn-github-actions
 on: [push]
 jobs:
   Validate-ARM:
+    name: Validate ARM
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
 
-      - name: Validate ARM Templates
-      run: |
+      - name: Invoke ARM TTK
+        run: |
           Set-PSRepository PSGallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-ARMTTK.ps1
