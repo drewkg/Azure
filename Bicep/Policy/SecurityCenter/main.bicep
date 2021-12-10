@@ -1,12 +1,5 @@
 targetScope = 'managementGroup'
 
-module getManagementGroupNameDeploy './Modules/empty.bicep' = {
-  // temporary fix
-  // this is a no-op to get the name of the managementGroup for the policyDefintion, i.e. the name of the mg for this deployment'
-  name: 'getManagementGroupName'
-  scope: managementGroup()
-}
-
 module AzureDefenderSubDeployPolicy './Modules/azureDefender-sub-deploy-policy.bicep' = {
   name: 'azureDefender-sub-deploy-policy'
 }
@@ -186,7 +179,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
     }
     policyDefinitions: [
       {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', AzureDefenderSubDeployPolicy.outputs.name)
+        policyDefinitionId: extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', AzureDefenderSubDeployPolicy.outputs.name)
         parameters: {
           appServiceTier: {
             value: '[parameters(\'appServiceTier\')]'
@@ -224,7 +217,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         }
       }
       {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', AutoProvisioningSubDeployPolicy.outputs.name)
+        policyDefinitionId: extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', AutoProvisioningSubDeployPolicy.outputs.name)
         parameters: {
           autoProvisioningSetting: {
             value: '[parameters(\'autoProvisioningSetting\')]'
@@ -232,7 +225,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2020-09-
         }
       }
       {
-        policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', WorkspaceSubDeployPolicy.outputs.name)
+        policyDefinitionId: extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', WorkspaceSubDeployPolicy.outputs.name)
         parameters: {
           logAnalytics: {
             value: '[parameters(\'logAnalytics\')]'

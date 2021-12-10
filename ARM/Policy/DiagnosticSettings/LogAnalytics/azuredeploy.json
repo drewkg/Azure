@@ -14,7 +14,7 @@
       "type": "string",
       "defaultValue": "[deployment().location]"
     },
-    "diagnosticPolicies": {
+    "policies": {
       "type": "array",
       "defaultValue": [
         "diagnostics-aa-deploy-policy",
@@ -84,24 +84,7 @@
   },
   "resources": [
     {
-      "name": "getManagementGroupName",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-01-01",
-      "location": "[parameters('location')]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "Inner"
-        },
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": [ ]
-        }
-      }
-    },
-    {
-      "name": "[parameters('diagnosticPolicies')[copyIndex()]]",
+      "name": "[parameters('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2019-08-01",
       "location": "[parameters('location')]",
@@ -109,12 +92,12 @@
         "mode": "Incremental",
         "parameters": { },
         "templateLink": {
-          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('diagnosticPolicies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
+          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('policies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
         }
       },
       "copy": {
-        "name": "diagnosticPolicies",
-        "count": "[length(parameters('diagnosticPolicies'))]"
+        "name": "policies",
+        "count": "[length(parameters('policies'))]"
       }
     },
     {
@@ -122,7 +105,7 @@
       "apiVersion": "2020-09-01",
       "name": "diagnostics-loganalytics-deploy-initiative",
       "dependsOn": [
-        "diagnosticPolicies"
+        "policies"
       ],
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace",
@@ -154,10 +137,10 @@
         "copy": [
           {
             "name": "policyDefinitions",
-            "count": "[length(parameters('diagnosticPolicies'))]",
+            "count": "[length(parameters('policies'))]",
             "input": {
-              "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', parameters('diagnosticPolicies')[copyIndex('policyDefinitions')])]",
-              "policyDefinitionReferenceId": "[parameters('diagnosticPolicies')[copyIndex('policyDefinitions')]]",
+              "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', parameters('policies')[copyIndex('policyDefinitions')])]",
+              "policyDefinitionReferenceId": "[parameters('policies')[copyIndex('policyDefinitions')]]",
               "parameters": {
                 "profileName": {
                   "value":  "[[[parameters('profileName')]"
