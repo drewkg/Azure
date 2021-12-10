@@ -32,102 +32,24 @@
   },
   "resources": [
     {
-      "name": "getManagementGroupName",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-01-01",
+      "name": "[substring(replace(guid(format('Security Center (MG {0})', managementGroup().name)), '-', ''), 0, 24)]",
+      "type": "Microsoft.Authorization/policyAssignments",
+      "apiVersion": "2021-06-01",
       "location": "[parameters('location')]",
+      "scope": "[tenantResourceId('Microsoft.Management/managementGroups', managementGroup().name)]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
       "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "Inner"
-        },
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": [ ]
-        }
-      }
-    },
-    {
-      "name": "SecurityCenterPolicyAssignment",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-01-01",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "getManagementGroupName"
-      ],
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "Inner"
-        },
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "parameters": {
-            "location": {
-              "type": "string"
-            },
-            "autoProvisioningSetting": {
-              "type": "string"
-            },
-            "ManagementGroupName": {
-              "type": "string"
-            },
-            "logAnalyticsSubscription": {
-              "type": "string"
-            },
-            "logAnalyticsResourceGroup": {
-              "type": "string"
-            },
-            "logAnalyticsWorkspace": {
-              "type": "string"
-            }
-          },
-          "resources": [
-            {
-              "name": "[substring(replace(guid(format('Security Center (MG {0})', parameters('ManagementGroupName'))), '-', ''), 0, 24)]",
-              "type": "Microsoft.Authorization/policyAssignments",
-              "apiVersion": "2021-06-01",
-              "location": "[parameters('location')]",
-              "scope": "[tenantResourceId('Microsoft.Management/managementGroups', managementGroup().name)]",
-              "identity": {
-                "type": "SystemAssigned"
-              },
-              "properties": {
-                "displayName": "[format('Security Center (MG {0})', parameters('ManagementGroupName'))]",
-                "description": "Applies Security Center Settings to an Azure Subscription.",
-                "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', parameters('ManagementGroupName')), 'Microsoft.Authorization/policySetDefinitions', 'securitycenter-deploy-initiative')]",
-                "parameters": {
-                  "autoProvisioningSetting": {
-                    "value": "[parameters('autoProvisioningSetting')]"
-                  },
-                  "logAnalytics": {
-                    "value": "[concat('/subscriptions/', parameters('logAnalyticsSubscription'), '/resourceGroups/', parameters('logAnalyticsResourceGroup'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('logAnalyticsWorkspace'))]"
-                  }
-                }
-              }
-            }
-          ]
-        },
+        "displayName": "[format('Security Center (MG {0})', managementGroup().name)]",
+        "description": "Applies Security Center Settings to an Azure Subscription.",
+        "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroup().name), 'Microsoft.Authorization/policySetDefinitions', 'securitycenter-deploy-initiative')]",
         "parameters": {
-          "location": {
-            "value": "[parameters('location')]"
-          },
           "autoProvisioningSetting": {
             "value": "[parameters('autoProvisioningSetting')]"
           },
-          "ManagementGroupName": {
-            "value": "[split(reference('getManagementGroupName', '2021-01-01', 'Full').scope, '/')[2]]"
-          },
-          "logAnalyticsSubscription": {
-            "value": "[parameters('logAnalyticsSubscription')]"
-          },
-          "logAnalyticsResourceGroup": {
-            "value": "[parameters('logAnalyticsResourceGroup')]"
-          },
-          "logAnalyticsWorkspace": {
-            "value": "[parameters('logAnalyticsWorkspace')]"
+          "logAnalytics": {
+            "value": "[concat('/subscriptions/', parameters('logAnalyticsSubscription'), '/resourceGroups/', parameters('logAnalyticsResourceGroup'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('logAnalyticsWorkspace'))]"
           }
         }
       }
