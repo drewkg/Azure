@@ -23,7 +23,7 @@ resource SecurityCenterAssignmentName 'Microsoft.Authorization/policyAssignments
   properties: {
     displayName: format('Security Center (MG {0})', managementGroup().name)
     description: 'Applies Security Center Settings to an Azure Subscription.'
-    policyDefinitionId: extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroup().name), 'Microsoft.Authorization/policySetDefinitions', 'securitycenter-deploy-initiative')
+    policyDefinitionId: extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', 'securitycenter-deploy-initiative')
     parameters: {
       autoProvisioningSetting: {
         value: autoProvisioningSetting

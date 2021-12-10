@@ -25,23 +25,6 @@
   },
   "resources": [
     {
-      "name": "getManagementGroupName",
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-01-01",
-      "location": "[parameters('location')]",
-      "properties": {
-        "expressionEvaluationOptions": {
-          "scope": "inner"
-        },
-        "mode": "Incremental",
-        "template": {
-          "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
-          "contentVersion": "1.0.0.0",
-          "resources": []
-        }
-      }
-    },
-    {
       "name": "[parameters('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-01-01",
@@ -62,7 +45,6 @@
       "apiVersion": "2020-09-01",
       "name": "securitycenter-deploy-initiative",
       "dependsOn": [
-        "getManagementGroupName",
         "policies"
       ],
       "properties": {
@@ -231,7 +213,7 @@
         },
         "policyDefinitions": [
           {
-            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'azuredefender-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'azuredefender-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "azuredefender-sub-deploy-policy",
             "parameters": {
               "appServiceTier": {
@@ -270,7 +252,7 @@
             }
           },
           {
-            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'autoprovisioning-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'autoprovisioning-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "autoprovisioning-sub-deploy-policy",
             "parameters": {
               "autoProvisioningSetting": {
@@ -279,7 +261,7 @@
             }
           },
           {
-            "policyDefinitionId": "[extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', split(reference('getManagementGroupName', '2020-10-01', 'Full').scope, '/')[2]), 'Microsoft.Authorization/policyDefinitions', 'workspace-sub-deploy-policy')]",
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'workspace-sub-deploy-policy')]",
             "policyDefinitionReferenceId": "workspace-sub-deploy-policy",
             "parameters": {
               "logAnalytics": {
