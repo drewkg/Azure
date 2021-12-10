@@ -8,7 +8,14 @@
     },
     "autoProvisioningSetting": {
       "type": "string",
-      "defaultValue": "Off"
+      "defaultValue": "Off",
+      "allowedValues": [
+        "On",
+        "Off"
+      ],
+      "metadata": {
+        "description": "Enables / Disables the Auto Provisioning of the Log Analytics Agent for Azure VM's. Defaults to 'Off'"
+      }
     },
     "logAnalyticsSubscription": {
       "type": "string",
@@ -83,7 +90,7 @@
               "type": "Microsoft.Authorization/policyAssignments",
               "apiVersion": "2021-06-01",
               "location": "[parameters('location')]",
-              "scope": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('ManagementGroupName'))]",
+              "scope": "[tenantResourceId('Microsoft.Management/managementGroups', managementGroup().name)]",
               "identity": {
                 "type": "SystemAssigned"
               },
