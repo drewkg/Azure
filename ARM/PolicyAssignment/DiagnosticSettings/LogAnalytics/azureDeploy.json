@@ -19,9 +19,12 @@
       "defaultValue": ""
     }
   },
+  "variables": {
+    "policyAssignmentName": "[substring(replace(guid(format('Diagnostics & Metrics (MG {0})', managementGroup().name)), '-', ''), 0, 24)]"
+  },
   "resources": [
     {
-      "name": "[substring(replace(guid(format('Diagnostics & Metrics (MG {0})', managementGroup().name)), '-', ''), 0, 24)]",
+      "name": "[variables('policyAssignmentName')]",
       "type": "Microsoft.Authorization/policyAssignments",
       "apiVersion": "2021-06-01",
       "location": "[parameters('location')]",
@@ -38,6 +41,19 @@
             "value": "[concat('/subscriptions/', parameters('logAnalyticsSubscription'), '/resourceGroups/', parameters('logAnalyticsResourceGroup'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('logAnalyticsWorkspace'))]"
           }
         }
+      }
+    },
+    {
+      "name": "[guid(format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "dependsOn": [
+        "[variables('policyAssignmentName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+        "principalId": "[reference(tenantResourceId('Microsoft.Authorization/policyAssignments', variables('policyAssignmentName')), '2021-06-01', 'Full').identity.principalId]",
+        "scope": "[managementGroup().id]"
       }
     }
   ]

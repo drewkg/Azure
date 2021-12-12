@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: TempalteValidation
 on: [push]
 jobs:
   Validate-ARM:
@@ -12,4 +12,17 @@ jobs:
           Set-PSRepository PSGallery -InstallationPolicy trusted
           Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-ARMTTK.ps1
+        shell: pwsh
+
+  Validate-Bicep:
+    name: Validate BICEP
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Invoke BICEP Build
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy trusted
+          Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
+          ./Utilities/Invoke-BicepBuild.ps1
         shell: pwsh
