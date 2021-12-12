@@ -39,7 +39,7 @@ resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignme
   name: guid(format('Security Center (MG {0}) Contributor Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+    roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
     principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
   }
 }
@@ -48,7 +48,7 @@ resource SecurityCenterSecurityAdminRBACName 'Microsoft.Authorization/roleAssign
   name: guid(format('Security Center (MG {0}) Security Admin Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/fb1c8493-542b-48eb-b624-b4c8fea62acd'
+    roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'fb1c8493-542b-48eb-b624-b4c8fea62acd')
     principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
   }
 }

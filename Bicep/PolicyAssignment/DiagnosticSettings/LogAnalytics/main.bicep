@@ -29,7 +29,7 @@ resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments
   name: guid(format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {
-    roleDefinitionId: '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+    roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
     principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', diagnosticsAssignmentName.name), '2021-06-01', 'Full').identity.principalId
   }
 }
