@@ -1,4 +1,4 @@
-name: TempalteValidation
+name: TemplateValidation
 on: [push]
 jobs:
   Validate-ARM:
