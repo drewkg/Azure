@@ -4,7 +4,7 @@
 	"parameters": {
     "_artifactsLocation": {
       "type": "String",
-      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]",
+      "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
         "description": "URI to artifacts location"
       }
@@ -66,7 +66,7 @@
             "logVerbose": false,
             "description": "Hello World Runbook",
             "publishContentLink": {
-              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Script/HelloWorld.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('Script/HelloWorld.ps1', parameters('_artifactsLocationSasToken')))]",
               "version": "1.0.0.0"
             }
           }
