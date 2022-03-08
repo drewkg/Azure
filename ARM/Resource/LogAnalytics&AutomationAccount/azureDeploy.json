@@ -4,7 +4,7 @@
   "parameters": {
     "_artifactsLocation": {
       "type": "String",
-      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]",
+      "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
         "description": "URI to artifacts location"
       }
@@ -252,7 +252,7 @@
             "logVerbose": false,
             "description": "Update Azure PowerShell modules in an Azure Automation account.",
             "publishContentLink": {
-              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AutomationAzureModulesForAccount.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('Runbook/Powershell/Update-AutomationAzureModulesForAccount.ps1', parameters('_artifactsLocationSasToken')))]",
               "version": "1.0.0.0"
             }
           }
@@ -271,7 +271,7 @@
             "logVerbose": false,
             "description": "Queries and updates Log Analytics with the current state of the Azure Policy Compliance..",
             "publishContentLink": {
-              "uri": "[concat(uri(parameters('_artifactsLocation'), 'Runbook/Powershell/Update-AzurePolicyComplianceState.ps1'), parameters('_artifactsLocationSasToken'))]",
+              "uri": "[uri(parameters('_artifactsLocation'), concat('Runbook/Powershell/Update-AzurePolicyComplianceState.ps1', parameters('_artifactsLocationSasToken')))]",
               "version": "1.0.0.0"
             }
           }

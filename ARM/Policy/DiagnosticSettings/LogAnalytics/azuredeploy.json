@@ -4,7 +4,7 @@
   "parameters": {
     "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "[substring(deployment().properties.templateLink.uri, 0, lastIndexOf(deployment().properties.templateLink.uri, '/'))]"
+      "defaultValue": "[deployment().properties.templateLink.uri]"
     },
     "_artifactsLocationSasToken": {
       "type": "securestring",
@@ -92,7 +92,7 @@
         "mode": "Incremental",
         "parameters": { },
         "templateLink": {
-          "uri": "[format('{0}{1}.json{2}', parameters('_artifactsLocation'), parameters('policies')[copyIndex()], parameters('_artifactsLocationSasToken'))]"
+          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', parameters('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
         }
       },
       "copy": {
