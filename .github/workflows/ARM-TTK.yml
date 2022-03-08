@@ -1,5 +1,16 @@
 name: TemplateValidation
-on: [push]
+on:
+  pull:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '30 0 * * 1'
+      branches:
+        - main
+  workflow_dispatch:
 jobs:
   Validate-ARM:
     name: Validate ARM
