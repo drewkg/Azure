@@ -35,7 +35,7 @@ resource SecurityCenterAssignmentName 'Microsoft.Authorization/policyAssignments
   }
 }
 
-resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   name: guid(format('Security Center (MG {0}) Contributor Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {
@@ -44,7 +44,7 @@ resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignme
   }
 }
 
-resource SecurityCenterSecurityAdminRBACName 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource SecurityCenterSecurityAdminRBACName 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   name: guid(format('Security Center (MG {0}) Security Admin Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {

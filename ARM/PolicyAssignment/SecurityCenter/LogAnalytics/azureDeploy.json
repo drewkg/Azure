@@ -60,7 +60,7 @@
     {
       "name": "[guid(format('Security Center (MG {0}) Contributor Assignment', managementGroup().id))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-04-01-preview",
+      "apiVersion": "2020-10-01-preview",
       "dependsOn": [
         "[variables('policyAssignmentName')]"
       ],
@@ -73,7 +73,7 @@
     {
       "name": "[guid(format('Security Center (MG {0}) Security Admin Assignment', managementGroup().id))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-04-01-preview",
+      "apiVersion": "2020-10-01-preview",
       "dependsOn": [
         "[variables('policyAssignmentName')]"
       ],
