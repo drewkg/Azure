@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "_artifactsLocation": {
-      "type": "String",
+      "type": "string",
       "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
         "description": "URI to artifacts location"
