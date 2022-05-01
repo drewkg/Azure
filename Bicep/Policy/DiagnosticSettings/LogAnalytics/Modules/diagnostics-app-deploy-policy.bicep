@@ -118,10 +118,6 @@ resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
                           enabled: true
                         }
                         {
-                          category: 'AppServiceFileAuditLogs'
-                          enabled: true
-                        }
-                        {
                           category: 'AppServiceAuditLogs'
                           enabled: true
                         }
