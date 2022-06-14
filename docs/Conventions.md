@@ -12,7 +12,7 @@ All Azure resources need to have a unique name, at least within the tenant, ther
 \<Environment> - The environment beign deployed, e.g. tst, Int, Prd.\
 \<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth.\
 \<ResourceType> - A short code for the Azure resource, see below.\
-\<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services.
+\<Instance> - An optional 3 or 4 digit instance number where there will be multiple resources e.g. multiple App Services.
 
 ### Policy & Initiatives
 
@@ -25,7 +25,7 @@ Policy - The word Policy to denote an Azure Policy.
 
 ## Locations
 
-See [Locations](./Locations.md) for more information, and a list of known locations plus their short codes.
+See [Azure Locations](./Locations.md) for more information, and a list of known locations plus their short codes.
 
 ## Azure Resources
 
