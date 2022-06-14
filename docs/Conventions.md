@@ -25,7 +25,7 @@ Policy - The word Policy to denote an Azure Policy.
 
 ## Locations
 
-See [Locations](./docs/Locations.md) for more information, and a list of known locations plus their short codes.
+See [Locations](./Locations.md) for more information, and a list of known locations plus their short codes.
 
 ## Azure Resources
 
