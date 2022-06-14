@@ -2,17 +2,17 @@
 
 ## Resource Naming
 
-All Azure resources need to have a unique name, at leats within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
+All Azure resources need to have a unique name, at least within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
 
 ### Resources
 
-\<Application>-\<Environment>-\<AzureRegion>-\<Instance>-\<ResourceType>
+\<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<Instance>
 
 \<Application> - A Short code for the application.\
 \<Environment> - The environment beign deployed, e.g. tst, Int, Prd.\
 \<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth.\
-\<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services.\
-\<ResourceType> - A short code for the Azure resource, see below.
+\<ResourceType> - A short code for the Azure resource, see below.\
+\<Instance> - An optional 3 digit instance number where there will be multiple resources e.g. multiple App Services.
 
 ### Policy & Initiatives
 
@@ -25,9 +25,7 @@ Policy - The word Policy to denote an Azure Policy.
 
 ## Locations
 
-Location | Location Short Code
--------- | -------------------
-UK South | uks
+See [Locations](./docs/Locations.md) for more information, and a list of known locations plus their short codes.
 
 ## Azure Resources
 
