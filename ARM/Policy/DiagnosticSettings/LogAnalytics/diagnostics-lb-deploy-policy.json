@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-lb-deploy-policy",
-      "apiVersion": "2019-09-01",
+      "apiVersion": "2021-06-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Load Balancers to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Load Balancers to stream data to a Log Analytics workspace when any Load Balancers which is missing this diagnostic settings is created or updated.",
