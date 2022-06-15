@@ -34,32 +34,32 @@
               },
               {
                 "not": {
-                  "allOf": {
-                    "allOf": [
-                      {
-                        "field": "name",
-                        "like": "*-rg"
-                      },
-                      {
-                        "value": "[[length(split(field('name'), '-'))]",
-                        "match": "4"
-                      }
-                    ],
-                    "anyOf": [
-                      {
-                        "value": "[[split(field('name'), '-')[3]]",
-                        "match": "??"
-                      },
-                      {
-                        "value": "[[split(field('name'), '-')[3]]",
-                        "match": "???"
-                      },
-                      {
-                        "value": "[[split(field('name'), '-')[3]]",
-                        "match": "????"
-                      }
-                    ]
-                  }
+                  "allOf": [
+                    {
+                      "field": "name",
+                      "like": "*-rg"
+                    },
+                    {
+                      "value": "[[length(split(field('name'), '-'))]",
+                      "match": "4"
+                    },
+                    {
+                      "anyOf": [
+                        {
+                          "value": "[[split(field('name'), '-')[3]]",
+                          "match": "??"
+                        },
+                        {
+                          "value": "[[split(field('name'), '-')[3]]",
+                          "match": "???"
+                        },
+                        {
+                          "value": "[[split(field('name'), '-')[3]]",
+                          "match": "????"
+                        }
+                      ]
+                    }
+                  ]
                 }
               }
             ]
