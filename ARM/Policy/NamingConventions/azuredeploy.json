@@ -47,8 +47,8 @@
         "policies"
       ],
       "properties": {
-        "displayName": "Audit Azure Resource Name",
-        "description": "Audit Azure Resource Naming Convention.",
+        "displayName": "Audit Azure Resource Name's",
+        "description": "Audit Azure Resource Naming Convention against all resources contained within a Subscription.",
         "policyType": "Custom",
         "metadata": {
           "category": "Guardrail",
@@ -57,11 +57,16 @@
         "parameters": {
           "policyAction": {
             "type": "string",
+            "defaultValue": "Audit",
             "metadata": {
               "displayName": "Policy Action",
               "description": "The default action of the policy, allowable actions include None, Audit or Deny. Default is Audit."
             },
-            "defaultValue": "Audit"
+            "allowedValues": [
+              "None",
+              "Audit",
+              "Deny"
+            ]
           }
         },
         "copy": [

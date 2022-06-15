@@ -46,15 +46,15 @@
                     {
                       "anyOf": [
                         {
-                          "value": "[[split(field('name'), '-')[3]]",
+                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-'), 3), split(field('name'), '-')[3], ''])]",
                           "match": "??"
                         },
                         {
-                          "value": "[[split(field('name'), '-')[3]]",
+                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-'), 3), split(field('name'), '-')[3], ''])]",
                           "match": "???"
                         },
                         {
-                          "value": "[[split(field('name'), '-')[3]]",
+                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-'), 3), split(field('name'), '-')[3], ''])]",
                           "match": "????"
                         }
                       ]
