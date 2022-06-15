@@ -48,20 +48,20 @@
       ],
       "properties": {
         "displayName": "Audit Azure Resource Name",
-        "description": "Audit Axure Resource Naming Convention.",
+        "description": "Audit Azure Resource Naming Convention.",
         "policyType": "Custom",
         "metadata": {
-          "category": "Monitoring",
+          "category": "Guardrail",
           "version": "1.0.0"
         },
         "parameters": {
           "policyAction": {
             "type": "string",
             "metadata": {
-              "displayName": "Profile name",
-              "description": "The diagnostic settings profile name"
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include None, Audit or Deny. Default is Audit."
             },
-            "defaultValue": "setbypolicy_logAnalytics"
+            "defaultValue": "Audit"
           }
         },
         "copy": [

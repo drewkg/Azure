@@ -7,7 +7,7 @@
       "name": "name-rg-audit-policy",
       "apiVersion": "2021-06-01",
       "properties": {
-        "displayName": "Naming Convention for Resource groups",
+        "displayName": "Naming Convention for Resource Groups",
         "description": "<Insert Description Here>",
         "metadata": {
           "category": "Guardrail",
