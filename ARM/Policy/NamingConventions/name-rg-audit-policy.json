@@ -33,6 +33,10 @@
                 "equals": "Microsoft.Resources/subscriptions/resourcegroups"
               },
               {
+                "field": "tags[Name_Convention]",
+                "exists": "true"
+              },
+              {
                 "not": {
                   "allOf": [
                     {
