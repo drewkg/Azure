@@ -35,48 +35,6 @@
               {
                 "field": "tags[Name_Convention]",
                 "exists": "false"
-              },
-              {
-                "anyOf": [
-                  {
-                    "field": "tags[Name_Convention]",
-                    "match": "Microsoft"
-                  },
-                  {
-                    "field": "tags[Name_Convention]",
-                    "match": "Objects.V1"
-                  }
-                ]
-              },
-              {
-                "not": {
-                  "allOf": [
-                    {
-                      "field": "name",
-                      "like": "*-rg"
-                    },
-                    {
-                      "value": "[[length(split(field('name'), '-'))]",
-                      "match": "4"
-                    },
-                    {
-                      "anyOf": [
-                        {
-                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
-                          "match": "??"
-                        },
-                        {
-                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
-                          "match": "???"
-                        },
-                        {
-                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
-                          "match": "????"
-                        }
-                      ]
-                    }
-                  ]
-                }
               }
             ]
           },
