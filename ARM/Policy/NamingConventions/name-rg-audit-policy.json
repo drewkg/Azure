@@ -17,11 +17,11 @@
         "parameters": {
           "policyAction": {
             "type": "string",
+            "defaultValue": "Audit",
             "metadata": {
               "displayName": "Policy Action",
               "description": "The default action of the policy, allowable actions include None, Audit or Deny. Default is Audit."
-            },
-            "defaultValue": "Audit"
+            }
           }
         },
         "policyType": "Custom",
@@ -35,6 +35,18 @@
               {
                 "field": "tags[Name_Convention]",
                 "exists": "true"
+              },
+              {
+                "anyOf": [
+                  {
+                    "field": "tags[Name_Convention]",
+                    "match": "Microsoft"
+                  },
+                  {
+                    "field": "tags[Name_Convention]",
+                    "match": "Objects.V1"
+                  }
+                ]
               },
               {
                 "not": {
