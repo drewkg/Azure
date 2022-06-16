@@ -34,7 +34,7 @@
               },
               {
                 "field": "tags[Name_Convention]",
-                "exists": "false"
+                "exists": "true"
               }
             ]
           },
