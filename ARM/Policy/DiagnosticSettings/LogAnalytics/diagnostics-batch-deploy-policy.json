@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-batch-deploy-policy",
-      "apiVersion": "2019-09-01",
+      "apiVersion": "2021-06-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Batch Accounts to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Batch Account to stream to a Log Analytics workspace when any Batch Account which is missing this diagnostic settings is created or updated.",
