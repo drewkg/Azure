@@ -33,8 +33,54 @@
                 "equals": "Microsoft.Resources/subscriptions/resourcegroups"
               },
               {
-                "field": "tags[Name_Convention]",
-                "exists": "true"
+                "not": {
+                  "anyOf": [
+                    {
+                      "field": "tags['Name_Convention']",
+                      "equals": "Exempt"
+                    },
+                    {
+                      "field": "tags['Name_Convention']",
+                      "equals": "Microsoft"
+                    },
+                    {
+                      "allOf": [
+                        {
+                          "field": "tags['Name_Convention']",
+                          "equals": "Objects.V1"
+                        },
+                        {
+                          "field": "name",
+                          "like": "*-rg"
+                        },
+                        {
+                          "value": "[[length(split(field('name'), '-'))]",
+                          "match": "4"
+                        },
+                        {
+                          "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
+                          "notMatch": "glb"
+                        },
+                        {
+                          "anyOf": [
+                            {
+                              "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
+                              "match": "??"
+                            },
+                            {
+                              "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
+                              "match": "???"
+                            },
+                            {
+                              "value": "[[if(greaterOrEquals(length(split(field('name'), '-')), 3), split(field('name'), '-')[2], '')]",
+                              "match": "????"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
               }
             ]
           },
