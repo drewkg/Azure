@@ -46,7 +46,7 @@
     {
       "name": "[guid(format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2022-04-01",
       "dependsOn": [
         "[variables('policyAssignmentName')]"
       ],
