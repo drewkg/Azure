@@ -46,8 +46,8 @@ param resourceNameOverride object = {
 @description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
 param baseTime string = utcNow('u')
 
-var logAnalyticsWorkspaceName = resourceNameOverride['logAnalyticsWorkspaceName']
-var automationAccountName = resourceNameOverride['automationAccountName']
+var logAnalyticsWorkspaceName = resourceNameOverride.logAnalyticsWorkspaceName
+var automationAccountName = resourceNameOverride.automationAccountName
 var scheduleStartDate = dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-dd')
 
 output Subscription string = subscription().subscriptionId
@@ -55,7 +55,7 @@ output ResourceGroup string = resourceGroup().name
 output LogAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
 output AutomationAccountName string = automationAccountName
 
-resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
+resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   properties: {

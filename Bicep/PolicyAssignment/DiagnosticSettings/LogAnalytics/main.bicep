@@ -25,7 +25,7 @@ resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@20
   }
 }
 
-resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id))
   scope: managementGroup()
   properties: {
