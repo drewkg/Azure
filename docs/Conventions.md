@@ -4,35 +4,37 @@
 
 All Azure resources need to have a unique name, at least within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
 
-### Resource Groups
-
-\<Application>-\<Environment>-\<AzureRegion>-rg
-
-\<Application> - A Short code for the application.\
-\<Environment> - The environment beign deployed, e.g. tst, Int, Prd.\
-\<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth.\
-rg - The letters rg to denote an Azure Resource Group.
-
-### Resources
-
-\<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<Instance>
-
-\<Application> - A Short code for the application.\
-\<Environment> - The environment beign deployed, e.g. tst, Int, Prd.\
-\<AzureRegion> - A short code for the Azure Region e.g. uks for uksouth.\
-\<ResourceType> - A short code for the Azure resource, see below.\
-\<Instance> - An optional 3 or 4 digit instance number where there will be multiple resources e.g. multiple App Services.
-
 ### Policy & Initiatives
 
-\<Group>-\<ResourceType>-\<Action>-Policy
+Azure Policies should use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
 
-Azure Policies should be use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
+> \<Group>-\<ResourceType>-\<Action>-\<ResourceType>
 
 \<Group> - The grouping of the Policy.\
 \<ResourceType> - A short code for the Azure resource the policy affects.\
-\<Action> - The main action of the Policy, e.g. Deploy if not Exsists.\
-Policy - The word Policy to denote an Azure Policy.
+\<Action> - The most restrictive action of the Policy, e.g. Deny or Deploy if not Exists.\
+\<ResourceType> - A short code for the Azure resource, see below.\
+
+### Management Groups & Subscriptions
+
+> \<Purpose>-\<\* Environment>-\<* AzureRegion>-\<ResourceType>\
+> \* - denotes an optional field
+
+\<Purpose> - A Short code for the purpose of the management group or subscription.\
+\<Environment> - Optional, the environment beign deployed if the container only contains resources for a single environment, e.g. Test, Int, Prod.\
+\<AzureRegion> - Optional, a short code for the Azure Region if the only contains resources for a single region, e.g. uks for uksouth.\
+\<ResourceType> - A short code for the Azure resource, see below.\
+
+### Resource Groups & Resources
+
+> \<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<* Instance>\
+> \* - denotes an optional field
+
+\<Application> - A Short code for the application.\
+\<Environment> - The environment beign deployed, e.g. Test, Int, Prod.\
+\<AzureRegion> - A short code for the Azure Region, e.g. uks for uksouth.\
+\<ResourceType> - A short code for the Azure resource, see below.\
+\<Instance> - Optional, a 3 or 4 digit instance number where there will be multiple resources e.g. multiple App Services. Does not apply for **Resource Groups**
 
 ## Locations
 
