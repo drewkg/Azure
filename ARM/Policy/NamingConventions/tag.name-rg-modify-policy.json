@@ -69,7 +69,7 @@
               },
               {
                 "field": "tags['Name_Convention']",
-                "notIin": "[[parameters('allowedConventions')]"
+                "notIn": "[[parameters('allowedConventions')]"
               }
             ]
           },
