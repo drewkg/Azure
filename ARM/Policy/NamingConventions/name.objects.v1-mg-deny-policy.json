@@ -1,0 +1,71 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "name.objects.v1-rg-deny-policy",
+      "apiVersion": "2021-06-01",
+      "properties": {
+        "displayName": "Enforce Ov1 Naming Convention for Management Groups",
+        "description": "Checks the name of a Management Group against the Objects (V1) Naming Convention.",
+        "metadata": {
+          "category": "Guardrail",
+          "version": "1.0.0.0"
+        },
+        "mode": "All",
+        "parameters": {
+          "policyAction": {
+            "type": "String",
+            "defaultValue": "Audit",
+            "metadata": {
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Deny. Default is Audit."
+            },
+            "allowedValues": [
+              "Disabled",
+              "Audit",
+              "Deny"
+            ]
+          }
+        },
+        "policyType": "Custom",
+        "policyRule": {
+          "if": {
+            "allOf": [
+              {
+                "field": "type",
+                "equals": "	Microsoft.Management/managementGroups"
+              },
+              {
+                "field": "tags['Name_Convention']",
+                "equals": "Objects.V1"
+              },
+              {
+                "not": {
+                  "allOf": [
+                    {
+                      "field": "name",
+                      "like": "*-mg"
+                    },
+                    {
+                      "value": "[[length(split(field('name'), '-'))]",
+                      "greaterOrEquals": "2"
+                    },
+                    {
+                      "value": "[[length(split(field('name'), '-'))]",
+                      "lessOrEquals": "4"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "then": {
+            "effect": "[[parameters('policyAction')]"
+          }
+        }
+      }
+    }
+  ]
+}

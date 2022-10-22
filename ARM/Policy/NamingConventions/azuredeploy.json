@@ -17,7 +17,10 @@
     "policies": {
       "type": "array",
       "defaultValue": [
-        "name-rg-audit-policy"
+        "tag.name-rg-modify-policy",
+        "name.objects.v1-mg-deny-policy",
+        "name.objects.v1-sub-deny-policy",
+        "name.objects.v1-rg-deny-policy"
       ]
     }
   },
@@ -55,31 +58,103 @@
           "version": "1.0.0"
         },
         "parameters": {
-          "policyAction": {
+          "tagPolicyAction": {
             "type": "string",
             "defaultValue": "Audit",
             "metadata": {
               "displayName": "Policy Action",
-              "description": "The default action of the policy, allowable actions include None, Audit or Deny. Default is Audit."
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Modify. Default is Audit."
             },
             "allowedValues": [
-              "None",
+              "Disabled",
+              "Audit",
+              "Modify"
+            ]
+          },
+          "allowedConventions": {
+            "type": "array",
+            "defaultValue": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ],
+            "metadata": {
+              "displayName": "Allowed Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ]
+          },
+          "defaultConvention": {
+            "type": "string",
+            "defaultValue": "Objects.V1",
+            "metadata": {
+              "displayName": "Default Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ]
+          },
+          "namePolicyAction": {
+            "type": "string",
+            "defaultValue": "Audit",
+            "metadata": {
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Deny. Default is Audit."
+            },
+            "allowedValues": [
+              "Disabled",
               "Audit",
               "Deny"
             ]
           }
         },
-        "copy": [
+        "policyDefinitions": [
           {
-            "name": "policyDefinitions",
-            "count": "[length(parameters('policies'))]",
-            "input": {
-              "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', parameters('policies')[copyIndex('policyDefinitions')])]",
-              "policyDefinitionReferenceId": "[parameters('policies')[copyIndex('policyDefinitions')]]",
-              "parameters": {
-                "policyAction": {
-                  "value":  "[[[parameters('policyAction')]"
-                }
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'tag.name-rg-modify-policy')]",
+            "policyDefinitionReferenceId": "tag.name-rg-modify-policy",
+            "parameters": {
+              "policyAction": {
+                "value":  "[[[parameters('tagPolicyAction')]"
+              },
+              "allowedConventions": {
+                "value":  "[[[parameters('allowedConventions')]"
+              },
+              "defaultConvention": {
+                "value":  "[[[parameters('defaultConvention')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-mg-deny-policy')]",
+            "policyDefinitionReferenceId": "name.objects.v1-mg-deny-policy",
+            "parameters": {
+              "policyAction": {
+                "value":  "[[[parameters('namePolicyAction')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-sub-deny-policy')]",
+            "policyDefinitionReferenceId": "name.objects.v1-sub-deny-policy",
+            "parameters": {
+              "policyAction": {
+                "value":  "[[[parameters('namePolicyAction')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-rg-deny-policy')]",
+            "policyDefinitionReferenceId": "name.objects.v1-rg-deny-policy",
+            "parameters": {
+              "policyAction": {
+                "value":  "[[[parameters('namePolicyAction')]"
               }
             }
           }
