@@ -121,15 +121,15 @@
             "policyDefinitionReferenceId": "tag.name-rg-modify-policy",
             "parameters": {
               "policyAction": {
-                "value": "[[[parameters('tagPolicyAction')]"
+                "value": "[[parameters('tagPolicyAction')]"
               },
               "allowedConventions": {
                 "value": [
-                  "[[[parameters('allowedConventions')]"
+                  "[[parameters('allowedConventions')]"
                 ]
               },
               "defaultConvention": {
-                "value": "[[[parameters('defaultConvention')]"
+                "value": "[[parameters('defaultConvention')]"
               }
             }
           },
@@ -138,7 +138,7 @@
             "policyDefinitionReferenceId": "name.objects.v1-mg-deny-policy",
             "parameters": {
               "policyAction": {
-                "value": "[[[parameters('namePolicyAction')]"
+                "value": "[[parameters('namePolicyAction')]"
               }
             }
           },
@@ -147,7 +147,7 @@
             "policyDefinitionReferenceId": "name.objects.v1-sub-deny-policy",
             "parameters": {
               "policyAction": {
-                "value": "[[[parameters('namePolicyAction')]"
+                "value": "[[parameters('namePolicyAction')]"
               }
             }
           },
@@ -156,7 +156,7 @@
             "policyDefinitionReferenceId": "name.objects.v1-rg-deny-policy",
             "parameters": {
               "policyAction": {
-                "value": "[[[parameters('namePolicyAction')]"
+                "value": "[[parameters('namePolicyAction')]"
               }
             }
           }
