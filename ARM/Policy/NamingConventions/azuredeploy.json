@@ -124,9 +124,7 @@
                 "value": "[[parameters('tagPolicyAction')]"
               },
               "allowedConventions": {
-                "value": [
-                  "[[parameters('allowedConventions')]"
-                ]
+                "value": "[[parameters('allowedConventions')]"
               },
               "defaultConvention": {
                 "value": "[[parameters('defaultConvention')]"
