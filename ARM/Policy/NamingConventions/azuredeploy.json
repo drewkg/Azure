@@ -13,20 +13,20 @@
     "location": {
       "type": "string",
       "defaultValue": "[deployment().location]"
-    },
-    "policies": {
-      "type": "array",
-      "defaultValue": [
-        "tag.name-rg-modify-policy",
-        "name.objects.v1-mg-deny-policy",
-        "name.objects.v1-sub-deny-policy",
-        "name.objects.v1-rg-deny-policy"
-      ]
     }
+  },
+  "variables": {
+    "policies": [
+      "tag.name-sub-modify-policy",
+      "tag.name-rg-modify-policy",
+      "name.objects.v1-mg-deny-policy",
+      "name.objects.v1-sub-deny-policy",
+      "name.objects.v1-rg-deny-policy"
+    ]
   },
   "resources": [
     {
-      "name": "[parameters('policies')[copyIndex()]]",
+      "name": "[variables('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
@@ -34,12 +34,12 @@
         "mode": "Incremental",
         "parameters": { },
         "templateLink": {
-          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', parameters('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
+          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', variables('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
         }
       },
       "copy": {
         "name": "policies",
-        "count": "[length(parameters('policies'))]"
+        "count": "[length(variables('policies'))]"
       }
     },
     {
@@ -116,6 +116,21 @@
           }
         },
         "policyDefinitions": [
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'tag.name-rg-modify-policy')]",
+            "policyDefinitionReferenceId": "tag.name-sub-modify-policy",
+            "parameters": {
+              "policyAction": {
+                "value": "[[parameters('tagPolicyAction')]"
+              },
+              "allowedConventions": {
+                "value": "[[parameters('allowedConventions')]"
+              },
+              "defaultConvention": {
+                "value": "[[parameters('defaultConvention')]"
+              }
+            }
+          },
           {
             "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'tag.name-rg-modify-policy')]",
             "policyDefinitionReferenceId": "tag.name-rg-modify-policy",

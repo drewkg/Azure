@@ -1,0 +1,95 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "name": "tag.name-sub-modify-policy",
+      "apiVersion": "2021-06-01",
+      "properties": {
+        "displayName": "Add a naming convention tag on subscriptions",
+        "description": "Adds the naming convention tag and value to a subscription is created or updated. Existing subscriptions can be remediated by triggering a remediation task.",
+        "metadata": {
+          "category": "Tags",
+          "version": "1.0.0.0"
+        },
+        "mode": "All",
+        "policyType": "Custom",
+        "parameters": {
+          "policyAction": {
+            "type": "string",
+            "defaultValue": "Audit",
+            "metadata": {
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Modify. Default is Audit."
+            },
+            "allowedValues": [
+              "Disabled",
+              "Audit",
+              "Modify"
+            ]
+          },
+          "allowedConventions": {
+            "type": "array",
+            "defaultValue": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ],
+            "metadata": {
+              "displayName": "Allowed Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ]
+          },
+          "defaultConvention": {
+            "type": "string",
+            "defaultValue": "Objects.V1",
+            "metadata": {
+              "displayName": "Default Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ]
+          }
+        },
+        "policyRule": {
+          "if": {
+            "allOf": [
+              {
+                "field": "type",
+                "equals": "Microsoft.Resources/subscriptions"
+              },
+              {
+                "field": "tags['Name_Convention']",
+                "notIn": "[[parameters('allowedConventions')]"
+              }
+            ]
+          },
+          "then": {
+            "effect": "[[parameters('policyAction')]",
+            "details": {
+              "roleDefinitionIds": [
+                "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+              ],
+              "operations": [
+                {
+                  "operation": "add",
+                  "field": "tags['Name_Convention']",
+                  "value": "[[parameters('defaultConvention')]"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}
