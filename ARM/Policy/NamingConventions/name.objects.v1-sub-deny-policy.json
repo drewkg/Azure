@@ -4,7 +4,7 @@
   "resources": [
     {
       "type": "Microsoft.Authorization/policyDefinitions",
-      "name": "name.objects.v1-rg-deny-policy",
+      "name": "name.objects.v1-sub-deny-policy",
       "apiVersion": "2021-06-01",
       "properties": {
         "displayName": "Enforce Ov1 Naming Convention for Subscriptions",
