@@ -13,7 +13,7 @@ Azure Policies should use a separate convention as they not only affect a resouc
 \<Group> - The grouping of the Policy.\
 \<ResourceType> - A short code for the Azure resource the policy affects.\
 \<Action> - The most restrictive action of the Policy, e.g. Deny or Deploy if not Exists.\
-\<ResourceType> - A short code for the Azure resource, see below.\
+\<ResourceType> - A short code for the Azure resource, see below.
 
 ### Management Groups & Subscriptions
 
@@ -21,7 +21,7 @@ Azure Policies should use a separate convention as they not only affect a resouc
 > \* - denotes an optional field
 
 \<Purpose> - A Short code for the purpose of the management group or subscription.\
-\<Environment> - Optional, the environment beign deployed if the container only contains resources for a single environment, e.g. Test, Int, Prod.\
+\<Environment> - Optional, the environment being deployed if the container only contains resources for a single environment, e.g. Test, Int, Prod.\
 \<AzureRegion> - Optional, a short code for the Azure Region if the only contains resources for a single region, e.g. uks for uksouth.\
 \<ResourceType> - A short code for the Azure resource, see below.\
 
