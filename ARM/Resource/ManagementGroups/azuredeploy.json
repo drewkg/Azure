@@ -1,0 +1,93 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "rootManagementGroup": {
+      "type": "string",
+			"defaultValue": "[tenant().tenantId]",
+      "metadata": {
+        "description":  "The root management group for creating the structure."
+      }
+    }
+  },
+  "variables": {
+    "CorporateId": "[guid(concat(parameters('rootManagementGroup'), '-Corporate'))]",
+    "SandboxId": "[guid(concat(parameters('rootManagementGroup'), '-Sandbox'))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('SandboxId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "properties": {
+        "displayName": "Sandbox",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('rootManagementGroup'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('CorporateId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "properties": {
+        "displayName": "Corporate",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('rootManagementGroup'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[guid('Architecture')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('SandboxId')]"
+      ],
+      "properties": {
+        "displayName": "Architecture",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('SandboxId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[guid('PolicyDeployment')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('SandboxId')]"
+      ],
+      "properties": {
+        "displayName": "PolicyDeployment",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('SandboxId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[guid('Core Services')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('CorporateId')]"
+      ],
+      "properties": {
+        "displayName": "Core Services",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('CorporateId'))]"
+          }
+        }
+      }
+    }
+  ]
+}
