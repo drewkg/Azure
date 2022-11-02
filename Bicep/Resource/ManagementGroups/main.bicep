@@ -3,7 +3,9 @@ targetScope = 'tenant'
 @description('The root management group for creating the structure. Defaults to the tenant Id.')
 param rootManagementGroup string = tenant().tenantId
 
-var CorporateId = guid('${rootManagementGroup}-Corporate')
+param ItermediateMgName string = 'Objects'
+
+var CorporateId = guid('${rootManagementGroup}-${ItermediateMgName}')
 var PlatformId = guid('${CorporateId}-Platform')
 var ManagementId = guid('${PlatformId}-Management')
 var LandingZonesId = guid('${CorporateId}-LandingZones')
@@ -20,7 +22,7 @@ resource CorporateMGResource 'Microsoft.Management/managementGroups@2021-04-01' 
   name: CorporateId
   scope: tenant()
   properties: {
-    displayName: 'Objects'
+    displayName: ItermediateMgName
     details: {
       parent: {
         id: RootMGResource.id
