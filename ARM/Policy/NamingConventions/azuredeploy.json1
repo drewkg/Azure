@@ -27,7 +27,7 @@
   },
   "resources": [
     {
-      "name": "[variables('policies')[copyIndex()]]",
+      "name": "[variables('tags')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2021-01-01",
       "location": "[parameters('location')]",
@@ -52,7 +52,7 @@
         "mode": "Incremental",
         "parameters": { },
         "templateLink": {
-          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', variables('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
+          "uri": "[uri(parameters('_artifactsLocation'), format('Objects.V1/{0}.json{1}', variables('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
         }
       },
       "copy": {
