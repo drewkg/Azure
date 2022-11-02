@@ -4,17 +4,6 @@
 
 All Azure resources need to have a unique name, at least within the tenant, there is a reason for this and its to do with Managed Service Identity.  Additionally some resource names also need to be unique globally, like storage accounts or app services.  Where possible within this repo we have used the same extension at the end of all the resource name.
 
-### Policy & Initiatives
-
-Azure Policies should use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
-
-> \<Group>-\<ResourceType>-\<Action>-\<ResourceType>
-
-\<Group> - The grouping of the Policy.\
-\<ResourceType> - A short code for the Azure resource the policy affects.\
-\<Action> - The most restrictive action of the Policy, e.g. Deny or Deploy if not Exists.\
-\<ResourceType> - A short code for the Azure resource, see below.
-
 ### Management Groups & Subscriptions
 
 > \<Purpose>-\<\* Environment>-\<* AzureRegion>-\<ResourceType>\
@@ -25,7 +14,20 @@ Azure Policies should use a separate convention as they not only affect a resouc
 \<AzureRegion> - Optional, a short code for the Azure Region if the only contains resources for a single region, e.g. uks for uksouth.\
 \<ResourceType> - A short code for the Azure resource, see below.\
 
+### Policy & Initiatives
+
+Azure Policies use a separate convention as they not only affect a resouce type but have an action as well.  The convention I have adopted is as below.
+
+> \<Group>-\<ResourceType>-\<Action>-\<ResourceType>
+
+\<Group> - The grouping of the Policy.\
+\<ResourceType> - A short code for the Azure resource the policy affects.\
+\<Action> - The most restrictive action of the Policy, e.g. Deny or Deploy if not Exists.\
+\<ResourceType> - A short code for the Azure resource, see below.
+
 ### Resource Groups & Resources
+
+Except for the resources listed in teh exclusions, all Azure resources should use the following naming convention.
 
 > \<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<* Instance>\
 > \* - denotes an optional field
@@ -35,6 +37,10 @@ Azure Policies should use a separate convention as they not only affect a resouc
 \<AzureRegion> - A short code for the Azure Region, e.g. uks for uksouth.\
 \<ResourceType> - A short code for the Azure resource, see below.\
 \<Instance> - Optional, a 3 or 4 digit instance number where there will be multiple resources e.g. multiple App Services. Does not apply for **Resource Groups**
+
+#### Exclusions
+
+* Storage Accounts
 
 ## Locations
 

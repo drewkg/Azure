@@ -16,15 +16,33 @@
     }
   },
   "variables": {
-    "policies": [
+    "tags": [
       "tag.name-sub-modify-policy",
-      "tag.name-rg-modify-policy",
-      "name.objects.v1-mg-deny-policy",
+      "tag.name-rg-modify-policy"
+    ],
+    "policies": [
       "name.objects.v1-sub-deny-policy",
       "name.objects.v1-rg-deny-policy"
     ]
   },
   "resources": [
+    {
+      "name": "[variables('policies')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": { },
+        "templateLink": {
+          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', variables('tags')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
+        }
+      },
+      "copy": {
+        "name": "tags",
+        "count": "[length(variables('tags'))]"
+      }
+    },
     {
       "name": "[variables('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
@@ -47,6 +65,7 @@
       "apiVersion": "2021-06-01",
       "name": "name-audit-initiative",
       "dependsOn": [
+        "tags",
         "policies"
       ],
       "properties": {
@@ -75,7 +94,6 @@
             "type": "array",
             "defaultValue": [
               "Exempt",
-              "Microsoft",
               "Objects.V1"
             ],
             "metadata": {
@@ -84,7 +102,6 @@
             },
             "allowedValues": [
               "Exempt",
-              "Microsoft",
               "Objects.V1"
             ]
           },
@@ -97,7 +114,6 @@
             },
             "allowedValues": [
               "Exempt",
-              "Microsoft",
               "Objects.V1"
             ]
           },
@@ -143,15 +159,6 @@
               },
               "defaultConvention": {
                 "value": "[[parameters('defaultConvention')]"
-              }
-            }
-          },
-          {
-            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-mg-deny-policy')]",
-            "policyDefinitionReferenceId": "name.objects.v1-mg-deny-policy",
-            "parameters": {
-              "policyAction": {
-                "value": "[[parameters('namePolicyAction')]"
               }
             }
           },
