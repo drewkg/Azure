@@ -1,0 +1,188 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "_artifactsLocation": {
+      "type": "string",
+      "defaultValue": "[deployment().properties.templateLink.uri]"
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "defaultValue": ""
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[deployment().location]"
+    }
+  },
+  "variables": {
+    "tags": [
+      "tag.name-sub-modify-policy",
+      "tag.name-rg-modify-policy"
+    ],
+    "policies": [
+      "name.objects.v1-sub-deny-policy",
+      "name.objects.v1-rg-deny-policy"
+    ]
+  },
+  "resources": [
+    {
+      "name": "[variables('tags')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": { },
+        "templateLink": {
+          "uri": "[uri(parameters('_artifactsLocation'), format('{0}.json{1}', variables('tags')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
+        }
+      },
+      "copy": {
+        "name": "tags",
+        "count": "[length(variables('tags'))]"
+      }
+    },
+    {
+      "name": "[variables('policies')[copyIndex()]]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2021-01-01",
+      "location": "[parameters('location')]",
+      "properties": {
+        "mode": "Incremental",
+        "parameters": { },
+        "templateLink": {
+          "uri": "[uri(parameters('_artifactsLocation'), format('Objects.V1/{0}.json{1}', variables('policies')[copyIndex()], parameters('_artifactsLocationSasToken')))]"
+        }
+      },
+      "copy": {
+        "name": "policies",
+        "count": "[length(variables('policies'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/policySetDefinitions",
+      "apiVersion": "2021-06-01",
+      "name": "name-audit-initiative",
+      "dependsOn": [
+        "tags",
+        "policies"
+      ],
+      "properties": {
+        "displayName": "Audit Azure Resource Name's",
+        "description": "Audit Azure Resource Naming Convention against all resources contained within a Subscription.",
+        "policyType": "Custom",
+        "metadata": {
+          "category": "Guardrail",
+          "version": "1.0.0"
+        },
+        "parameters": {
+          "tagPolicyAction": {
+            "type": "string",
+            "defaultValue": "Audit",
+            "metadata": {
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Modify. Default is Audit."
+            },
+            "allowedValues": [
+              "Disabled",
+              "Audit",
+              "Modify"
+            ]
+          },
+          "allowedConventions": {
+            "type": "array",
+            "defaultValue": [
+              "Exempt",
+              "Objects.V1"
+            ],
+            "metadata": {
+              "displayName": "Allowed Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Microsoft",
+              "Objects.V1"
+            ]
+          },
+          "defaultConvention": {
+            "type": "string",
+            "defaultValue": "Objects.V1",
+            "metadata": {
+              "displayName": "Default Convention",
+              "description": "The default value for the Naming Convention Tag, default is 'Objects.V1'."
+            },
+            "allowedValues": [
+              "Exempt",
+              "Objects.V1"
+            ]
+          },
+          "namePolicyAction": {
+            "type": "string",
+            "defaultValue": "Audit",
+            "metadata": {
+              "displayName": "Policy Action",
+              "description": "The default action of the policy, allowable actions include Disabled, Audit or Deny. Default is Audit."
+            },
+            "allowedValues": [
+              "Disabled",
+              "Audit",
+              "Deny"
+            ]
+          }
+        },
+        "policyDefinitions": [
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'tag.name-sub-modify-policy')]",
+            "policyDefinitionReferenceId": "tag.name-sub-modify-policy",
+            "parameters": {
+              "policyAction": {
+                "value": "[[parameters('tagPolicyAction')]"
+              },
+              "allowedConventions": {
+                "value": "[[parameters('allowedConventions')]"
+              },
+              "defaultConvention": {
+                "value": "[[parameters('defaultConvention')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'tag.name-rg-modify-policy')]",
+            "policyDefinitionReferenceId": "tag.name-rg-modify-policy",
+            "parameters": {
+              "policyAction": {
+                "value": "[[parameters('tagPolicyAction')]"
+              },
+              "allowedConventions": {
+                "value": "[[parameters('allowedConventions')]"
+              },
+              "defaultConvention": {
+                "value": "[[parameters('defaultConvention')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-sub-deny-policy')]",
+            "policyDefinitionReferenceId": "name.objects.v1-sub-deny-policy",
+            "parameters": {
+              "policyAction": {
+                "value": "[[parameters('namePolicyAction')]"
+              }
+            }
+          },
+          {
+            "policyDefinitionId": "[extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policyDefinitions', 'name.objects.v1-rg-deny-policy')]",
+            "policyDefinitionReferenceId": "name.objects.v1-rg-deny-policy",
+            "parameters": {
+              "policyAction": {
+                "value": "[[parameters('namePolicyAction')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
