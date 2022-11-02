@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+  "contentVersion": "1.1.0.0",
   "parameters": {
     "_artifactsLocation": {
       "type": "string",
@@ -15,21 +15,38 @@
     },
 		"location": {
 			"type": "string",
-			"defaultValue": "uksouth",
+			"defaultValue": "UKSouth",
 			"metadata": {
 				"description": "The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account."
 			},
       "allowedValues": [
-        "eastus",
-        "westus2",
-        "canadacentral",
-        "australiasoutheast",
-        "southeastasia",
-        "centralindia",
-        "japaneast",
-        "uksouth",
-        "westeurope",
-        "usgovvirginia"
+        "EastUS",
+        "EastUS2",
+        "WestUS",
+        "WestUS2",
+        "NorthCentralUS",
+        "CentralUS",
+        "SouthCentralUS",
+        "WestCentralUS",
+        "BrazilSouth",
+        "CanadaCentral",
+        "ChinaEast23",
+        "EastAsia",
+        "SouthEastAsia",
+        "CentralIndia",
+        "JapanEast",
+        "AustraliaEast",
+        "AustraliaSouthEast",
+        "KoreaCentral",
+        "NorwayEast",
+        "NorthEurope",
+        "WestEurope",
+        "FranceCentral",
+        "UKSouth",
+        "SwitzerlandNorth",
+        "UAENorth",
+        "USGovVirginia",
+        "USGovArizona3"
       ]
 		},
     "environment": {
