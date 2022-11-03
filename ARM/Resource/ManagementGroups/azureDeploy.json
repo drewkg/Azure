@@ -1,0 +1,177 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "rootManagementGroup": {
+      "type": "string",
+			"defaultValue": "[tenant().tenantId]",
+      "metadata": {
+        "description":  "The root management group for creating the structure. Defaults to the tenant Id."
+      }
+    },
+    "itermediateMgName": {
+      "type": "string",
+      "defaultValue": "Objects",
+      "metadata": {
+        "description": ""
+      }
+    }
+  },
+  "variables": {
+    "CorporateId": "[guid(format('{0}-{1}', parameters('rootManagementGroup'), parameters('itermediateMgName')))]",
+    "PlatformId": "[guid(format('{0}-Platform', variables('CorporateId')))]",
+    "ConnectivityId": "[guid(format('{0}-Connectivity', variables('PlatformId')))]",
+    "IdentityId": "[guid(format('{0}-Identity', variables('PlatformId')))]",
+    "ManagementId": "[guid(format('{0}-Management', variables('PlatformId')))]",
+    "LandingZonesId": "[guid(format('{0}-LandingZones', variables('CorporateId')))]",
+    "CorpLandingZonesId": "[guid(format('{0}-CorpLandingZones', variables('LandingZonesId')))]",
+    "OnlineLandingZonesId": "[guid(format('{0}-OnlineLandingZones', variables('LandingZonesId')))]",
+    "SandboxId": "[guid(format('{0}-Sandbox', parameters('rootManagementGroup')))]"
+  },
+  "resources": [
+    {
+      "name": "[variables('CorporateId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "properties": {
+        "displayName": "[parameters('itermediateMgName')]",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', parameters('rootManagementGroup'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('PlatformId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('CorporateId')]"
+      ],
+      "properties": {
+        "displayName": "Platform",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('CorporateId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('ConnectivityId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('PlatformId')]"
+      ],
+      "properties": {
+        "displayName": "Connectivity",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('PlatformId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('IdentityId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('PlatformId')]"
+      ],
+      "properties": {
+        "displayName": "Identity",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('PlatformId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('ManagementId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('PlatformId')]"
+      ],
+      "properties": {
+        "displayName": "Management",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('PlatformId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('LandingZonesId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('CorporateId')]"
+      ],
+      "properties": {
+        "displayName": "Landing Zones",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('CorporateId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('CorpLandingZonesId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('LandingZonesId')]"
+      ],
+      "properties": {
+        "displayName": "Corp",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('LandingZonesId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('OnlineLandingZonesId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('LandingZonesId')]"
+      ],
+      "properties": {
+        "displayName": "Online",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('LandingZonesId'))]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('SandboxId')]",
+      "type": "Microsoft.Management/managementGroups",
+      "apiVersion": "2021-04-01",
+      "dependsOn": [
+        "[variables('CorporateId')]"
+      ],
+      "properties": {
+        "displayName": "Sandbox",
+        "details": {
+          "parent": {
+            "id": "[tenantResourceId('Microsoft.Management/managementGroups', variables('CorporateId'))]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+
+  }
+}
