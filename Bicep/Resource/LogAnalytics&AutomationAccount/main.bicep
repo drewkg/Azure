@@ -6,18 +6,34 @@ param _artifactsLocationSasToken string = ''
 
 @description('The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account.')
 @allowed([
-  'eastus'
-  'westus2'
-  'canadacentral'
-  'australiasoutheast'
-  'southeastasia'
-  'centralindia'
-  'japaneast'
-  'uksouth'
-  'westeurope'
-  'usgovvirginia'
+  'EastUS'
+  'EastUS2'
+  'WestUS'
+  'WestUS2'
+  'NorthCentralUS'
+  'CentralUS'
+  'SouthCentralUS'
+  'WestCentralUS'
+  'BrazilSouth'
+  'CanadaCentral'
+  'EastAsia'
+  'SouthEastAsia'
+  'CentralIndia'
+  'JapanEast'
+  'AustraliaEast'
+  'AustraliaSouthEast'
+  'KoreaCentral'
+  'NorwayEast'
+  'NorthEurope'
+  'WestEurope'
+  'FranceCentral'
+  'UKSouth'
+  'SwitzerlandNorth'
+  'UAENorth'
+  'USGovVirginia'
+  'USGovArizona3'
 ])
-param location string = 'uksouth'
+param location string = 'UKSouth'
 
 param environment string = 'test'
 
@@ -25,16 +41,30 @@ param environment string = 'test'
 param namingConvention string = 'platform-{0}-{1}-{2}'
 
 param locationShortCodeOverride object = {
-  eastus: 'eus'
-  westus2: 'wus'
-  canadacentral: 'cc'
-  australiasoutheast: 'ase'
-  southeastasia: 'sea'
-  centralindia: 'ci'
-  japaneast: 'je'
-  uksouth: 'uks'
-  westeurope: 'weu'
-  usgovvirginia: 'usgv'
+  EastUS: 'eus'
+  EastUS2: 'eus2'
+  WestUS: 'wus'
+  WestUS2: 'wus2'
+  NorthCentralUS: 'ncus'
+  CentralUS: 'cus'
+  SouthCentralUS: 'scus'
+  WestCentralUS: 'wcus'
+  BrazilSouth: 'bso'
+  CanadaCentral: 'cc'
+  EastAsia: 'ea'
+  SouthEastAsia: 'sea'
+  CentralIndia: 'ci'
+  JapanEast: 'je'
+  AustraliaEast: 'aue'
+  AustraliaSouthEast: 'ause'
+  KoreaCentral: 'krc'
+  NorwayEast: 'nwe'
+  NorthEurope: 'neu'
+  WestEurope: 'weu'
+  FranceCentral: 'frc'
+  UKSouth: 'uks'
+  SwitzerlandNorth: 'szn'
+  UAENorth: 'uan'
 }
 
 @description('Object to allow the overriding of the default naming convention, by specifying the name of each individual resources. If used then all resources need to be defined.')
@@ -46,8 +76,9 @@ param resourceNameOverride object = {
 @description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
 param baseTime string = utcNow('u')
 
-var logAnalyticsWorkspaceName = resourceNameOverride.logAnalyticsWorkspaceName
 var automationAccountName = resourceNameOverride.automationAccountName
+var automationAccountLocation = (location == 'EastUS') ? 'EastUS2' : (location == 'EastUS2') ? 'EastUS' : location
+var logAnalyticsWorkspaceName = resourceNameOverride.logAnalyticsWorkspaceName
 var scheduleStartDate = dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-dd')
 
 output Subscription string = subscription().subscriptionId
@@ -64,6 +95,7 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
     }
     retentionInDays: 30
   }
+
   resource linkedService_resource 'linkedServices@2020-08-01' = {
     name: 'Automation'
     properties: {
@@ -170,7 +202,7 @@ resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/d
 
 resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-06-22' = {
   name: automationAccountName
-  location: location
+  location: automationAccountLocation
   identity: {
     type: 'SystemAssigned'
   }

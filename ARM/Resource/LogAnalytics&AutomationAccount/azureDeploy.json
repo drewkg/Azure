@@ -30,7 +30,6 @@
         "WestCentralUS",
         "BrazilSouth",
         "CanadaCentral",
-        "ChinaEast23",
         "EastAsia",
         "SouthEastAsia",
         "CentralIndia",
@@ -44,9 +43,7 @@
         "FranceCentral",
         "UKSouth",
         "SwitzerlandNorth",
-        "UAENorth",
-        "USGovVirginia",
-        "USGovArizona3"
+        "UAENorth"
       ]
 		},
     "environment": {
@@ -63,16 +60,30 @@
     "locationShortCodeOverride": {
       "type": "object",
       "defaultValue": {
-        "eastus": "eus",
-        "westus2": "wus",
-        "canadacentral": "cac",
-        "australiasoutheast": "ase",
-        "southeastasia": "sea",
-        "centralindia": "cid",
-        "japaneast": "jpe",
-        "uksouth": "uks",
-        "westeurope": "weu",
-        "usgovvirginia": "usgv"
+        "EastUS": "eus",
+        "EastUS2": "eus2",
+        "WestUS": "wus",
+        "WestUS2": "wus2",
+        "NorthCentralUS": "ncus",
+        "CentralUS": "cus",
+        "SouthCentralUS": "scus",
+        "WestCentralUS": "wcus",
+        "BrazilSouth": "bso",
+        "CanadaCentral": "cc",
+        "EastAsia": "ea",
+        "SouthEastAsia": "sea",
+        "CentralIndia": "ci",
+        "JapanEast": "je",
+        "AustraliaEast": "aue",
+        "AustraliaSouthEast": "ause",
+        "KoreaCentral": "krc",
+        "NorwayEast": "nwe",
+        "NorthEurope": "neu",
+        "WestEurope": "weu",
+        "FranceCentral": "frc",
+        "UKSouth": "uks",
+        "SwitzerlandNorth": "szn",
+        "UAENorth": "uan"
       }
     },
     "resourceNameOverride": {
@@ -94,8 +105,9 @@
     }
   },
   "variables": {
-    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
     "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
+    "automationAccountLocation": "[if(equals(parameters('location'), 'EastUS'), 'EastUS2', if(equals(parameters('location'), 'EastUS2'), 'EastUS', parameters('location')))]",
+    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
     "scheduleStartDate": "[dateTimeAdd(parameters('baseTime'), 'P1D', 'yyyy-MM-dd')]"
   },
   "resources": [
@@ -150,7 +162,7 @@
       "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
-      "location": "[parameters('location')]",
+      "location": "[variables('automationAccountLocation')]",
       "dependsOn": [
         "[variables('logAnalyticsWorkspaceName')]"
       ],
