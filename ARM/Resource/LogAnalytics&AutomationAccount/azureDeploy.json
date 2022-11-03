@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
+  "contentVersion": "1.1.0.0",
   "parameters": {
     "_artifactsLocation": {
       "type": "string",
@@ -15,21 +15,35 @@
     },
 		"location": {
 			"type": "string",
-			"defaultValue": "uksouth",
+			"defaultValue": "UKSouth",
 			"metadata": {
 				"description": "The location of the resources created, this is limited to only the locations that support linked Log Analytics and Automation Account."
 			},
       "allowedValues": [
-        "eastus",
-        "westus2",
-        "canadacentral",
-        "australiasoutheast",
-        "southeastasia",
-        "centralindia",
-        "japaneast",
-        "uksouth",
-        "westeurope",
-        "usgovvirginia"
+        "EastUS",
+        "EastUS2",
+        "WestUS",
+        "WestUS2",
+        "NorthCentralUS",
+        "CentralUS",
+        "SouthCentralUS",
+        "WestCentralUS",
+        "BrazilSouth",
+        "CanadaCentral",
+        "EastAsia",
+        "SouthEastAsia",
+        "CentralIndia",
+        "JapanEast",
+        "AustraliaEast",
+        "AustraliaSouthEast",
+        "KoreaCentral",
+        "NorwayEast",
+        "NorthEurope",
+        "WestEurope",
+        "FranceCentral",
+        "UKSouth",
+        "SwitzerlandNorth",
+        "UAENorth"
       ]
 		},
     "environment": {
@@ -46,23 +60,37 @@
     "locationShortCodeOverride": {
       "type": "object",
       "defaultValue": {
-        "eastus": "eus",
-        "westus2": "wus",
-        "canadacentral": "cac",
-        "australiasoutheast": "ase",
-        "southeastasia": "sea",
-        "centralindia": "cid",
-        "japaneast": "jpe",
-        "uksouth": "uks",
-        "westeurope": "weu",
-        "usgovvirginia": "usgv"
+        "EastUS": "eus",
+        "EastUS2": "eus2",
+        "WestUS": "wus",
+        "WestUS2": "wus2",
+        "NorthCentralUS": "ncus",
+        "CentralUS": "cus",
+        "SouthCentralUS": "scus",
+        "WestCentralUS": "wcus",
+        "BrazilSouth": "bso",
+        "CanadaCentral": "cc",
+        "EastAsia": "ea",
+        "SouthEastAsia": "sea",
+        "CentralIndia": "ci",
+        "JapanEast": "je",
+        "AustraliaEast": "aue",
+        "AustraliaSouthEast": "ause",
+        "KoreaCentral": "krc",
+        "NorwayEast": "nwe",
+        "NorthEurope": "neu",
+        "WestEurope": "weu",
+        "FranceCentral": "frc",
+        "UKSouth": "uks",
+        "SwitzerlandNorth": "szn",
+        "UAENorth": "uan"
       }
     },
     "resourceNameOverride": {
       "type": "object",
       "defaultValue": {
         "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'log')]",
-        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'aa')]"
+        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), if(equals(parameters('location'), 'EastUS'), parameters('locationShortCodeOverride')['EastUS2'], if(equals(parameters('location'), 'EastUS2'), parameters('locationShortCodeOverride')['EastUS'], parameters('locationShortCodeOverride')[parameters('location')])), 'aa')]"
       },
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
@@ -77,8 +105,9 @@
     }
   },
   "variables": {
-    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
     "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
+    "automationAccountLocation": "[if(equals(parameters('location'), 'EastUS'), 'EastUS2', if(equals(parameters('location'), 'EastUS2'), 'EastUS', parameters('location')))]",
+    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
     "scheduleStartDate": "[dateTimeAdd(parameters('baseTime'), 'P1D', 'yyyy-MM-dd')]"
   },
   "resources": [
@@ -133,7 +162,7 @@
       "name": "[format('AzureAutomation({0})', variables('logAnalyticsWorkspaceName'))]",
       "type": "Microsoft.OperationsManagement/solutions",
       "apiVersion": "2015-11-01-preview",
-      "location": "[parameters('location')]",
+      "location": "[variables('automationAccountLocation')]",
       "dependsOn": [
         "[variables('logAnalyticsWorkspaceName')]"
       ],
