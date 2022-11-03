@@ -2,11 +2,11 @@
 
 ## Introduction
 
-This Bicep template deploys a set of management groups, as outlined by the [Microsoft Azure CLoud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/).
+This Bicep template deploys a set of management groups, as outlined by the [Microsoft Azure Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/).
 
-The Management groups, deployed are outlined within [Resource Organization Management Groups](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-management-groups).  The actual structure is visualized [here](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/media/sub-org.png).
+The Management groups, deployed are outlined within [Resource Organization Management Groups](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/resource-org-management-groups).
 
-[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fdrewkg%2FAzure%2F%2FARM%2FResource%2FManagementGroups%2FazureDeploy.json)
+The actual structure is visualized in this image ![here](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/media/sub-org.png).
 
 ## Notes
 

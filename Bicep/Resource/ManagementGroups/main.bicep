@@ -3,10 +3,13 @@ targetScope = 'tenant'
 @description('The root management group for creating the structure. Defaults to the tenant Id.')
 param rootManagementGroup string = tenant().tenantId
 
-param ItermediateMgName string = 'Objects'
+@description('')
+param itermediateMgName string = 'Objects'
 
-var CorporateId = guid('${rootManagementGroup}-${ItermediateMgName}')
+var CorporateId = guid('${rootManagementGroup}-${itermediateMgName}')
 var PlatformId = guid('${CorporateId}-Platform')
+var ConnectivityId = guid('${PlatformId}-Connectivity')
+var IdentityId = guid('${PlatformId}-Identity')
 var ManagementId = guid('${PlatformId}-Management')
 var LandingZonesId = guid('${CorporateId}-LandingZones')
 var CorpLandingZonesId = guid('${LandingZonesId}-CorpLandingZones')
@@ -22,7 +25,7 @@ resource CorporateMGResource 'Microsoft.Management/managementGroups@2021-04-01' 
   name: CorporateId
   scope: tenant()
   properties: {
-    displayName: ItermediateMgName
+    displayName: itermediateMgName
     details: {
       parent: {
         id: RootMGResource.id
@@ -44,14 +47,40 @@ resource PlatformMGResource 'Microsoft.Management/managementGroups@2021-04-01' =
   }
 }
 
+resource ConnectivityMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+  name: ConnectivityId
+  scope: tenant()
+  properties: {
+    displayName: 'Management'
+    details: {
+      parent: {
+        id: PlatformMGResource.id
+      }
+    }
+  }
+}
+
+resource IdentityMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+  name: IdentityId
+  scope: tenant()
+  properties: {
+    displayName: 'Identity'
+    details: {
+      parent: {
+        id: PlatformMGResource.id
+      }
+    }
+  }
+}
+
 resource ManagementMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: ManagementId
   scope: tenant()
   properties: {
-    displayName: 'Platform'
+    displayName: 'Management'
     details: {
       parent: {
-        id: CorporateMGResource.id
+        id: PlatformMGResource.id
       }
     }
   }
@@ -103,7 +132,7 @@ resource SandboxMGResource 'Microsoft.Management/managementGroups@2021-04-01' = 
     displayName: 'Sandbox'
     details: {
       parent: {
-        id: RootMGResource.id
+        id: CorporateMGResource.id
       }
     }
   }
