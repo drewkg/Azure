@@ -90,7 +90,7 @@
       "type": "object",
       "defaultValue": {
         "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'log')]",
-        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'aa')]"
+        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), if(equals(parameters('location'), 'EastUS'), parameters('locationShortCodeOverride')['EastUS2'], if(equals(parameters('location'), 'EastUS2'), parameters('locationShortCodeOverride')['EastUS'], parameters('locationShortCodeOverride')[parameters('location')])), 'aa')]"
       },
       "metadata": {
         "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."

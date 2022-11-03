@@ -70,7 +70,7 @@ param locationShortCodeOverride object = {
 @description('Object to allow the overriding of the default naming convention, by specifying the name of each individual resources. If used then all resources need to be defined.')
 param resourceNameOverride object = {
   logAnalyticsWorkspaceName: format(namingConvention, environment, locationShortCodeOverride[location], 'log')
-  automationAccountName: format(namingConvention, environment, locationShortCodeOverride[location], 'aa')
+  automationAccountName: format(namingConvention, environment, (location == 'EastUS') ? locationShortCodeOverride['EastUS2'] : (location == 'EastUS2') ? locationShortCodeOverride['EastUS'] :  locationShortCodeOverride[location], 'aa')
 }
 
 @description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
