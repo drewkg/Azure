@@ -16,15 +16,6 @@
         "description": "Size of VMs in the VM Scale Set."
       }
     },
-    "instanceCount": {
-      "type": "int",
-      "metadata": {
-        "description": "Number of VM instances (100 or less)."
-      },
-      "defaultValue": 0,
-      "minValue": 0,
-      "maxValue": 100
-    },
     "adminUsername": {
       "type": "string",
       "defaultValue": "vmssadmin",
@@ -138,7 +129,7 @@
       },
       "sku": {
         "name": "[parameters('vmSku')]",
-        "capacity": "[parameters('instanceCount')]"
+        "capacity": 0
       },
       "properties": {
         "overprovision": false,
