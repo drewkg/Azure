@@ -40,7 +40,9 @@ Except for the resources listed in teh exclusions, all Azure resources should us
 
 #### Exclusions
 
-* Storage Accounts
+* Azure Compute Library - name must contain only English letters, numbers, underscores, and periods. The name cannot begin or end with underscores or periods.
+* Storage Accounts - name must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+* Role Assignments - name must be a guid.
 
 ## Locations
 
@@ -120,7 +122,7 @@ Batch Account | Microsoft.Batch/batchAccounts | batch
 Cloud service | Microsoft.Compute/cloudServices | cld
 Disk encryption set | Microsoft.Compute/diskEncryptionSets | des
 Function app | Microsoft.Web/sites | func
-Gallery | Microsoft.Compute/galleries | gal
+Compute Gallery | Microsoft.Compute/galleries | gal
 Managed disk (OS) | Microsoft.Compute/disks | osdisk
 Managed disk (data) | Microsoft.Compute/disks | disk
 Notification Hubs | Microsoft.NotificationHubs/namespaces/notificationHubs | ntf
