@@ -9,6 +9,16 @@
         "description": "Location of the resources to be created, defaults to the resource group location."
       }
     },
+    "features": {
+      "type": "object",
+      "defaultValue": {
+        "HubVNet": false,
+        "CustomImages": false
+      },
+      "metadata": {
+        "description": "Object defining which optional resources to deploy, defaults to only features supported by standalone deployments."
+      }
+    },
     "vmSku": {
       "type": "string",
       "defaultValue": "Standard_DS2_v2",
@@ -30,26 +40,24 @@
         "description": "Admin password for all the scaleset VMs"
       }
     },
-    "virtualNetworkAddressRange": {
-      "type": "string",
-      "metadata": {
-        "Description": "The address range of the new VNET in CIDR format"
-      },
-      "defaultValue": "10.10.0.0/16"
-    },
-    "agentPoolSubnetRange": {
-      "type": "string",
-      "metadata": {
-        "Description": "The address range of the build agent scaleset subnet created in the new VNET"
-      },
-      "defaultValue": "10.10.0.0/24"
+    "virtualNetworkTopology": {
+      "type": "object",
+      "defaultValue": {
+        "AddressRange": "10.10.0.0/16",
+        "ImageBuilder": "10.10.0.0/24",
+        "AzDOAgents-Win2019": "10.10.1.0/24"
+      }
     }
   },
   "variables": {
+    "userAssignedIdentityName": "AzDOAgents-ImageBuilder-prod-uks-uai",
     "nsgName": "AzDOAgents-prod-uks-nsg",
     "vnetName": "AzDOAgents-prod-uks-vnet",
-    "subnetName": "AzDOAgents-Win2019-prod-uks-snet",
+    "Win2019SubnetName": "AzDOAgents-Win2019-prod-uks-snet",
+    "ImageBuilderSubNetName": "AzDOAgents-ImageBuilder-prod-uks-snet",
     "vmssName": "AzDOAgents-Win2019-prod-uks-vmss",
+    "computeGalleryName": "AzDOAgentsuksgal",
+    "storageAccountName": "azdoagentuksst",
     "imageReference": {
                         "publisher": "MicrosoftWindowsServer",
                         "offer": "WindowsServer",
@@ -59,9 +67,44 @@
   },
   "resources": [
     {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "name": "[variables('userAssignedIdentityName')]",
+      "apiVersion": "2018-11-30",
+      "location": "[parameters('location')]",
+      "condition": "[parameters('features').CustomImages]"
+    },
+    {
+      "name": "[guid(concat(resourceGroup().name, '-AzDOAgents-ImageBuilder-Contributor'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "condition": "[parameters('features').CustomImages]",
+      "dependsOn": [
+        "[variables('userAssignedIdentityName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+        "principalId": "[reference(variables('userAssignedIdentityName'), '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
+      "name": "[guid(concat(resourceGroup().name, '-AzDOAgents-ImageBuilder-BlobReader'))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "condition": "[parameters('features').CustomImages]",
+      "dependsOn": [
+        "[variables('userAssignedIdentityName')]"
+      ],
+      "properties": {
+        "roleDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/roleDefinitions/', 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
+        "principalId": "[reference(variables('userAssignedIdentityName'), '2018-11-30').principalId]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
       "name": "[variables('nsgName')]",
       "type": "Microsoft.Network/networkSecurityGroups",
-      "apiVersion": "2019-08-01",
+      "apiVersion": "2022-05-01",
       "location": "[parameters('location')]",
       "comments": "Simple Network Security Group for subnet [variables('subnetName')]",
       "tags": {
@@ -88,7 +131,7 @@
     {
       "name": "[variables('vnetName')]",
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2019-11-01",
+      "apiVersion": "2022-05-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('nsgName')]"
@@ -99,14 +142,23 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[parameters('virtualNetworkAddressRange')]"
+            "[parameters('virtualNetworkTopology')['AddressRange']]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('subnetName')]",
+            "name": "[variables('ImageBuilderSubNetName')]",
             "properties": {
-              "addressPrefix": "[parameters('agentPoolSubnetRange')]",
+              "addressPrefix": "[parameters('virtualNetworkTopology')['ImageBuilder']]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+              }
+            }
+          },
+          {
+            "name": "[variables('Win2019SubnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('virtualNetworkTopology')['AzDOAgents-Win2019']]",
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
               }
@@ -116,9 +168,81 @@
       }
     },
     {
+      "type": "Microsoft.Compute/galleries",
+      "apiVersion": "2022-03-03",
+      "name": "[variables('computeGalleryName')]",
+      "location": "[parameters('l]ocation')]",
+      "condition": "[parameters('features').CustomImages]",
+      "properties": { }
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2022-05-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[parameters('Location')]",
+      "condition": "[parameters('features').CustomImages]",
+      "sku": {
+        "name": "Standard_LRS",
+        "tier": "Standard"
+      },
+      "kind": "StorageV2",
+      "properties": {
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow"
+        },
+        "supportsHttpsTrafficOnly": true,
+        "encryption": {
+          "services": {
+            "file": {
+              "keyType": "Account",
+              "enabled": true
+            },
+            "blob": {
+              "keyType": "Account",
+              "enabled": true
+            }
+          },
+          "keySource": "Microsoft.Storage"
+        },
+        "accessTier": "Hot"
+      },
+      "resources": [
+        {
+          "type": "blobServices",
+          "apiVersion": "2022-05-01",
+          "name": "default",
+          "condition": "[parameters('features').CustomImages]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+          ],
+          "properties": {
+            "deleteRetentionPolicy": {
+              "enabled": false
+            }
+          },
+          "resources": [
+            {
+              "type": "containers",
+              "apiVersion": "2022-05-01",
+              "name": "vmextensions",
+              "condition": "[parameters('features').CustomImages]",
+              "dependsOn": [
+                "default",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+              ],
+              "properties": {
+                "publicAccess": "None"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "[variables('vmssName')]",
       "type": "Microsoft.Compute/virtualMachineScaleSets",
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2022-08-01",
       "location": "[parameters('location')]",
       "dependsOn": [
         "[variables('vnetName')]"
@@ -145,7 +269,7 @@
             "imageReference": "[variables('imageReference')]"
           },
           "osProfile": {
-            "computerNamePrefix": "[variables('VMssName')]",
+            "computerNamePrefix": "Win2019",
             "adminUsername": "[parameters('adminUsername')]",
             "adminPassword": "[parameters('adminPassword')]",
             "windowsConfiguration": {
@@ -159,12 +283,14 @@
                 "name": "nic",
                 "properties": {
                   "primary": true,
+                  "disableTcpStateTracking": false,
+                  "enableAcceleratedNetworking": false,
                   "ipConfigurations": [
                     {
                       "name": "ipconfig",
                       "properties": {
                         "subnet": {
-                          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]"
+                          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('Win2019SubnetName'))]"
                         }
                       }
                     }
