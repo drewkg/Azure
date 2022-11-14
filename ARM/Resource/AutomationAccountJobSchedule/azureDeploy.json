@@ -73,7 +73,7 @@
         },
         {
           "type": "schedules",
-          "apiVersion": "2021-04-01",
+          "apiVersion": "2022-08-08",
           "name": "RunbookSchedule",
           "dependsOn": [
             "[variables('automationAccountName')]"

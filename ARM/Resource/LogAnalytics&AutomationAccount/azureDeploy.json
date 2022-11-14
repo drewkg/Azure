@@ -308,7 +308,7 @@
         {
           "name": "Update-AutomationAzureModulesForAccountSchedule",
           "type": "schedules",
-          "apiVersion": "2019-06-01",
+          "apiVersion": "2022-08-08",
           "dependsOn": [
             "[variables('automationAccountName')]"
           ],
@@ -330,7 +330,7 @@
         {
           "name": "Update-AzurePolicyComplianceStateSchedule",
           "type": "schedules",
-          "apiVersion": "2019-06-01",
+          "apiVersion": "2022-08-08",
           "dependsOn": [
             "[variables('automationAccountName')]"
           ],
