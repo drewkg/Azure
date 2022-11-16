@@ -41,6 +41,7 @@ resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignme
   properties: {
     roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
     principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -50,5 +51,6 @@ resource SecurityCenterSecurityAdminRBACName 'Microsoft.Authorization/roleAssign
   properties: {
     roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'fb1c8493-542b-48eb-b624-b4c8fea62acd')
     principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }

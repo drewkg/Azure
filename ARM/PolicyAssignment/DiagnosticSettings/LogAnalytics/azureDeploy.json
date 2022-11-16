@@ -53,6 +53,7 @@
       "properties": {
         "roleDefinitionId": "[tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
         "principalId": "[reference(tenantResourceId('Microsoft.Authorization/policyAssignments', variables('policyAssignmentName')), '2021-06-01', 'Full').identity.principalId]",
+        "principalType": "ServicePrincipal",
         "scope": "[managementGroup().id]"
       }
     }
