@@ -28,7 +28,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookName_resource 'runbooks@2019-06-01' = {
+  resource runbookName_resource 'runbooks@2022-08-08' = {
     name: 'HelloWorldRunbook'
     location: location
     properties: {
@@ -43,7 +43,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookSchedule_resource 'schedules@2019-06-01' = {
+  resource runbookSchedule_resource 'schedules@2022-08-08' = {
     name: 'RunbookSchedule'
     properties: {
       description: 'Basic Schedule'

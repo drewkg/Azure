@@ -29,7 +29,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbook_resource 'runbooks@2018-06-30' = {
+  resource runbook_resource 'runbooks@2022-08-08' = {
     name: runbookName_var
     location: location
     properties: {

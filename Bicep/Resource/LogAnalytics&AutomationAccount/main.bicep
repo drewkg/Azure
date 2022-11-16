@@ -212,7 +212,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccount 'runbooks@2019-06-01' = {
+  resource UpdateAutomationAzureModulesForAccount 'runbooks@2022-08-08' = {
     name: 'Update-AutomationAzureModulesForAccount'
     properties: {
       runbookType: 'PowerShell'
@@ -226,7 +226,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAzurePolicyComplianceState 'runbooks@2019-06-01' = {
+  resource UpdateAzurePolicyComplianceState 'runbooks@2022-08-08' = {
     name: 'Update-AzurePolicyComplianceState'
     properties: {
       runbookType: 'PowerShell'
@@ -240,7 +240,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2019-06-01' = {
+  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2022-08-08' = {
     name: 'Update-AutomationAzureModulesForAccountSchedule'
     properties: {
       description: 'Update-AutomationAzureModulesForAccount Monthly Schedule'
