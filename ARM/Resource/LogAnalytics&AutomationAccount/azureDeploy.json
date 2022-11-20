@@ -379,7 +379,7 @@
     {
       "name": "[guid(concat(resourceGroup().id, 'AAMSIAutomationContributorAssignment'))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-08-01-preview",
+      "apiVersion": "2022-04-01",
       "scope": "[resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName'))]",
       "dependsOn": [
         "[variables('automationAccountName')]"
@@ -394,7 +394,7 @@
     {
       "name": "[guid(concat(resourceGroup().id, 'AAMSILogAnalyticsContributorAssignment'))]",
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-08-01-preview",
+      "apiVersion": "2022-04-01",
       "scope": "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]",
       "dependsOn": [
         "[variables('automationAccountName')]"

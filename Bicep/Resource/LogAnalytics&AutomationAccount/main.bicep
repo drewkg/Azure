@@ -70,7 +70,7 @@ param locationShortCodeOverride object = {
 @description('Object to allow the overriding of the default naming convention, by specifying the name of each individual resources. If used then all resources need to be defined.')
 param resourceNameOverride object = {
   logAnalyticsWorkspaceName: format(namingConvention, environment, locationShortCodeOverride[location], 'log')
-  automationAccountName: format(namingConvention, environment, (location == 'EastUS') ? locationShortCodeOverride['EastUS2'] : (location == 'EastUS2') ? locationShortCodeOverride['EastUS'] :  locationShortCodeOverride[location], 'aa')
+  automationAccountName: format(namingConvention, environment, (location == 'EastUS') ? locationShortCodeOverride.EastUS2 : (location == 'EastUS2') ? locationShortCodeOverride.EastUS :  locationShortCodeOverride[location], 'aa')
 }
 
 @description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
@@ -96,7 +96,7 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
     retentionInDays: 30
   }
 
-  resource linkedService_resource 'linkedServices@2020-08-01' = {
+  resource automationLinkedService 'linkedServices@2020-08-01' = {
     name: 'Automation'
     properties: {
       resourceId: automationAccount_resource.id
@@ -172,7 +172,7 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
   }
 }
 
-resource diagnosticSettings_LogAnalyticsWorkspace_resource 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: logAnalyticsWorkspace_resource
   properties: {
@@ -296,7 +296,29 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
   }*/
 }
 
-resource diagnosticSettings_automationAccount_resource 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+resource AutomationContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(format('{0}{1}', resourceGroup().id, 'AAMSIAutomationContributorAssignment'))
+  scope: automationAccount_resource
+  properties: {
+    description: 'MSI granted Automation Contributor on Automation Account, to manage modules.'
+    principalId: automationAccount_resource.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')
+  }
+}
+
+resource LogAnalyticsContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(format('{0}{1}', resourceGroup().id, 'AAMSILogAnalyticsContributorAssignment'))
+  scope: logAnalyticsWorkspace_resource
+  properties: {
+    description: 'MSI granted Log Analytics Contributor on Log Analytics Workspace, to query shared access keys.'
+    principalId: automationAccount_resource.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
+  }
+}
+
+resource AutomationDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: automationAccount_resource
   properties: {
