@@ -4,7 +4,7 @@
   "parameters": {
     "rootManagementGroup": {
       "type": "string",
-			"defaultValue": "[tenant().tenantId]",
+			"defaultValue": "[managementGroup().name]",
       "metadata": {
         "description":  "The root management group for creating the structure. Defaults to the tenant Id."
       }
@@ -13,7 +13,7 @@
       "type": "string",
       "defaultValue": "Objects",
       "metadata": {
-        "description": ""
+        "description": "The intermediate Management Group, to prevent deployments to the Tenant Root Group."
       }
     }
   },
@@ -170,8 +170,5 @@
         }
       }
     }
-  ],
-  "outputs": {
-
-  }
+  ]
 }
