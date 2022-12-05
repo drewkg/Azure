@@ -15,6 +15,13 @@
       "metadata": {
         "description": "The intermediate Management Group, to prevent deployments to the Tenant Root Group."
       }
+    },
+    "secureTenant": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Defines if the tenant root group is configured for new Azure Subscriptions, defaults to 'false'"
+      }
     }
   },
   "variables": {
@@ -29,6 +36,19 @@
     "SandboxId": "[guid(format('{0}-Sandbox', parameters('rootManagementGroup')))]"
   },
   "resources": [
+    {
+      "name": "rootManagementGroup/default",
+      "type": "Microsoft.Management/managementGroups/settings",
+      "apiVersion": "2021-04-01",
+      "condition": "[parameters('secureTenant')]",
+      "dependsOn": [
+        "[variables('SandboxId')]"
+      ],
+      "properties": {
+        "defaultManagementGroup": "[variables('SandboxId')]",
+        "requireAuthorizationForGroupCreation": true
+      }
+    },
     {
       "name": "[variables('CorporateId')]",
       "type": "Microsoft.Management/managementGroups",

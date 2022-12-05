@@ -3,8 +3,11 @@ targetScope = 'tenant'
 @description('The root management group for creating the structure. Defaults to the tenant Id.')
 param rootManagementGroup string = tenant().tenantId
 
-@description('')
+@description('The intermediate Management Group, to prevent deployments to the Tenant Root Group.')
 param itermediateMgName string = 'Objects'
+
+@description('Defines if the tenant root group is configured for new Azure Subscriptions, defaults to \'false\'')
+param secureTenant bool = false
 
 var CorporateId = guid('${rootManagementGroup}-${itermediateMgName}')
 var PlatformId = guid('${CorporateId}-Platform')
@@ -19,6 +22,14 @@ var SandboxId = guid('${rootManagementGroup}-Sandbox')
 resource RootMGResource 'Microsoft.Management/managementGroups@2021-04-01' existing = {
   name: rootManagementGroup
   scope: tenant()
+}
+
+resource RootMGSettings 'Microsoft.Management/managementGroups/settings@2021-04-01' = if (secureTenant) {
+  name: 'rootManagementGroup/default'
+  properties: {
+    defaultManagementGroup: SandboxMGResource.id
+    requireAuthorizationForGroupCreation: true
+  }
 }
 
 resource CorporateMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
