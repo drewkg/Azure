@@ -55,7 +55,7 @@ resource appServicePlanName 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource appServiceName 'Microsoft.Web/sites@2018-11-01' = {
+resource appServiceName 'Microsoft.Web/sites@2022-03-01' = {
   name: appServiceName_var
   location: location
   kind: 'app'
@@ -92,7 +92,7 @@ resource appServiceName 'Microsoft.Web/sites@2018-11-01' = {
   }
 }
 
-resource appServiceName_web 'Microsoft.Web/sites/config@2018-11-01' = {
+resource appServiceName_web 'Microsoft.Web/sites/config@2022-03-01' = {
   name: '${appServiceName.name}/web'
   properties: {
     numberOfWorkers: 1
@@ -159,7 +159,7 @@ resource appServiceName_web 'Microsoft.Web/sites/config@2018-11-01' = {
   }
 }
 
-resource appServiceName_appsettings 'Microsoft.Web/sites/config@2020-09-01' = {
+resource appServiceName_appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
   name: '${appServiceName.name}/appsettings'
   properties: {
     APPINSIGHTS_INSTRUMENTATIONKEY: reference(applicationInsightsName.id, '2020-02-02').InstrumentationKey
@@ -178,7 +178,7 @@ resource appServiceName_appsettings 'Microsoft.Web/sites/config@2020-09-01' = {
   }
 }
 
-resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2018-11-01' = {
+resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-03-01' = {
   name: '${appServiceName.name}/${appServiceName_var}.azurewebsites.net'
   properties: {
     siteName: appServiceName_var
