@@ -32,7 +32,7 @@ module ApplicationInsightsDashboard './nested_ApplicationInsightsDashboard.bicep
   }
 }
 
-resource appServicePlanName 'Microsoft.Web/serverfarms@2018-02-01' = {
+resource appServicePlanName 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: appServicePlanName_var
   location: location
   sku: {
