@@ -33,7 +33,7 @@ Except for the resources listed in teh exclusions, all Azure resources should us
 > \* - denotes an optional field
 
 \<Application> - A Short code for the application.\
-\<Environment> - The environment beign deployed, e.g. Test, Int, Prod.\
+\<Environment> - The environment being deployed, e.g. Test, Int, Prod.\
 \<AzureRegion> - A short code for the Azure Region, e.g. uks for uksouth.\
 \<ResourceType> - A short code for the Azure resource, see below.\
 \<Instance> - Optional, a 3 or 4 digit instance number where there will be multiple resources e.g. multiple App Services. Does not apply for **Resource Groups**
