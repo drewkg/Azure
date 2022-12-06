@@ -1,17 +1,27 @@
-@description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
-@minLength(1)
-@maxLength(16)
-param application string = 'Demo'
-
-@description('The environment tag to provide unique resources between test / production and ephemeral environments.')
-param environment string = 'ObjInt'
+@description('The environment tag to provide unique resources between production / integration or ephemeral environments.')
+@allowed([
+  'Ephemeral'
+  'Integration'
+  'Production'
+])
+param environment string = 'Ephemeral'
 
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
-var applicationInsightsName = '${application}-${environment}-${location}-appi'
-var appServiceName = '${application}-${environment}-${location}-as'
-var appServicePlanName = '${application}-${environment}-${location}-asp'
+@description('Utilized in Ephemeral Environments to generate a unqiue key for every environment, if performing a redeployment care should be taken to ensure this is unique.')
+param ephemeralKey string = guid(resourceGroup().id)
+
+@description('The application name, as defined within the Azure naming convention, to allow easy resource identification and grouping.')
+param application string = 'demo'
+
+var locationShortCode = {
+  'UK South': 'uks'
+}
+
+var applicationInsightsName = '${application}-${environment}-${locationShortCode}-appi'
+var appServiceName = '${application}-${environment}-${locationShortCode}-as'
+var appServicePlanName = '${application}-${environment}-${locationShortCode}-asp'
 
 resource ApplicationInsightsName 'microsoft.insights/components@2020-02-02' = {
   name: applicationInsightsName
@@ -27,7 +37,7 @@ resource ApplicationInsightsName 'microsoft.insights/components@2020-02-02' = {
   }
 }
 
-module ApplicationInsightsDashboard './nested_ApplicationInsightsDashboard.bicep' = {
+module ApplicationInsightsDashboard './ApplicationInsightsDashboard.bicep' = {
   name: 'ApplicationInsightsDashboard'
   params: {
     applicationInsightsDashboardName: '${reference(ApplicationInsightsName.id, '2020-02-02', 'Full').properties.AppId}-dashboard'
