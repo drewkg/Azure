@@ -27,7 +27,7 @@
     {
       "name": "[parameters('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-01-01",
+      "apiVersion": "2021-04-01",
       "location": "[parameters('location')]",
       "properties": {
         "mode": "Incremental",
