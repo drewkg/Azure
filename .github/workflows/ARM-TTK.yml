@@ -16,7 +16,7 @@ jobs:
     name: Validate ARM
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Invoke ARM TTK
         run: |
@@ -29,7 +29,7 @@ jobs:
     name: Validate BICEP
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Invoke BICEP Build
         run: |
