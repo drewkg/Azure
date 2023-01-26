@@ -2,11 +2,20 @@
 	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
+		"application": {
+			"type": "string",
+			"defaultValue": "demo",
+			"minLength": 1,
+			"maxLength": 15,
+			"metadata": {
+				"description": "The application prefix, used within resource naming to ensure grouping of resources within the Azure portal."
+			}
+		},
 		"environment": {
 			"type": "string",
 			"defaultValue": "ObjInt",
 			"metadata": {
-				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
+				"description": "The environment tag to provide unique resources between test / production and ephemeral environments."
 			}
 		},
 		"location": {
@@ -19,14 +28,14 @@
 	},
 	"variables": {
 		"environment": "[parameters('environment')]",
-		"applicationInsightsName": "[format('demo-{0}-{1}-appi', variables('environment'), parameters('location'))]",
-		"appServiceName": "[format('demo-{0}-{1}-asp', variables('environment'), parameters('location'))]",
-		"appServicePlanName": "[format('demo-{0}-{1}-as', variables('environment'), parameters('location'))]"
+		"applicationInsightsName": "[format('{0}-{1}-{2}-appi', parameters('application'), variables('environment'), parameters('location'))]",
+		"appServiceName": "[format('{0}-{1}-{2}-asp', parameters('application'), variables('environment'), parameters('location'))]",
+		"appServicePlanName": "[format('{0}-{1}-{2}-as', parameters('application'), variables('environment'), parameters('location'))]"
 	},
 	"resources": [
 		{
 			"name": "[variables('applicationInsightsName')]",
-			"type": "microsoft.insights/components",
+			"type": "Microsoft.Insights/components",
 			"apiVersion": "2020-02-02",
 			"location": "[parameters('Location')]",
 			"kind": "web",

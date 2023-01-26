@@ -1,3 +1,8 @@
+@description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
+@minLength(1)
+@maxLength(16)
+param application string = 'Demo'
+
 @description('The environment tag to provide unique resources between test / production and ephemeral environments.')
 param environment string = 'ObjInt'
 
@@ -89,7 +94,6 @@ resource AppServiceName 'Microsoft.Web/sites@2023-12-01' = {
   identity: {
     type: 'SystemAssigned'
   }
-}
 
 resource appServiceName_web 'Microsoft.Web/sites/config@2023-12-01' = {
   name: 'web'
@@ -127,37 +131,32 @@ resource appServiceName_web 'Microsoft.Web/sites/config@2023-12-01' = {
         physicalPath: 'site\\wwwroot'
         preloadEnabled: true
       }
-    ]
-    loadBalancing: 'LeastRequests'
-    experiments: {
-      rampUpRules: []
+      autoHealEnabled: false
+      localMySqlEnabled: false
+      ipSecurityRestrictions: [
+        {
+          ipAddress: 'Any'
+          action: 'Allow'
+          priority: 1
+          name: 'Allow all'
+          description: 'Allow all access'
+        }
+      ]
+      scmIpSecurityRestrictions: [
+        {
+          ipAddress: 'Any'
+          action: 'Allow'
+          priority: 1
+          name: 'Allow all'
+          description: 'Allow all access'
+        }
+      ]
+      scmIpSecurityRestrictionsUseMain: false
+      http20Enabled: false
+      minTlsVersion: '1.2'
+      ftpsState: 'Disabled'
     }
-    autoHealEnabled: false
-    localMySqlEnabled: false
-    ipSecurityRestrictions: [
-      {
-        ipAddress: 'Any'
-        action: 'Allow'
-        priority: 1
-        name: 'Allow all'
-        description: 'Allow all access'
-      }
-    ]
-    scmIpSecurityRestrictions: [
-      {
-        ipAddress: 'Any'
-        action: 'Allow'
-        priority: 1
-        name: 'Allow all'
-        description: 'Allow all access'
-      }
-    ]
-    scmIpSecurityRestrictionsUseMain: false
-    http20Enabled: false
-    minTlsVersion: '1.2'
-    ftpsState: 'Disabled'
   }
-}
 
 resource appServiceName_appsettings 'Microsoft.Web/sites/config@2023-12-01' = {
   name: 'appsettings'
@@ -177,7 +176,6 @@ resource appServiceName_appsettings 'Microsoft.Web/sites/config@2023-12-01' = {
     XDT_MicrosoftApplicationInsights_Java: '1'
     XDT_MicrosoftApplicationInsights_NodeJS: '1'
   }
-}
 
 resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2023-12-01' = {
   name: '${appServiceName}.azurewebsites.net'
