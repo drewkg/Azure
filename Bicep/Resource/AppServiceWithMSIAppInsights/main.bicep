@@ -1,11 +1,3 @@
-@description('The environment tag to provide unique resources between production / integration or ephemeral environments.')
-@allowed([
-  'Ephemeral'
-  'Integration'
-  'Production'
-])
-param environment string = 'Ephemeral'
-
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
@@ -67,17 +59,17 @@ resource AppServiceName 'Microsoft.Web/sites@2023-12-01' = {
     enabled: true
     hostNameSslStates: [
       {
-        name: '${appServiceName}.azurewebsites.net'
+        name: '${AppServiceName}.azurewebsites.net'
         sslState: 'Disabled'
         hostType: 'Standard'
       }
       {
-        name: '${appServiceName}.scm.azurewebsites.net'
+        name: '${AppServiceName}.scm.azurewebsites.net'
         sslState: 'Disabled'
         hostType: 'Repository'
       }
     ]
-    serverFarmId: AppServicePlanName.id
+    serverFarmId: AppServicePlan.id
     reserved: false
     isXenon: false
     hyperV: false
