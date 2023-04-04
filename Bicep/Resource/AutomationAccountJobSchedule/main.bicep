@@ -19,7 +19,7 @@ var applicationInsightsName_var = 'demo-${environment_var}-${location}-aa'
 var add10Minutes = dateTimeAdd(baseTime, 'P10M')
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2019-06-01' = {
+resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
   name: applicationInsightsName_var
   location: location
   properties: {
@@ -28,7 +28,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookName_resource 'runbooks@2022-08-08' = {
+  resource runbookName_resource 'runbooks' = {
     name: 'HelloWorldRunbook'
     location: location
     properties: {
@@ -43,7 +43,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookSchedule_resource 'schedules@2022-08-08' = {
+  resource runbookSchedule_resource 'schedules' = {
     name: 'RunbookSchedule'
     properties: {
       description: 'Basic Schedule'
@@ -55,7 +55,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource jobSchedules 'jobSchedules@2019-06-01' = {
+  resource jobSchedules 'jobSchedules' = {
     name: guid('HelloWorldJobSchedule')
     properties: {
       runbook: {

@@ -20,7 +20,7 @@ var runbookName_var = 'webhook-${environment_var}-${location}-runbook'
 var webhookName_var = 'webhook-${environment_var}-${location}-wh'
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
+resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
   name: automationAccountName_var
   location: location
   properties: {
@@ -29,7 +29,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbook_resource 'runbooks@2022-08-08' = {
+  resource runbook_resource 'runbooks' = {
     name: runbookName_var
     location: location
     properties: {

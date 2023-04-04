@@ -200,7 +200,7 @@ resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2021-06-22' = {
+resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
   name: automationAccountName
   location: automationAccountLocation
   identity: {
@@ -212,7 +212,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccount 'runbooks@2022-08-08' = {
+  resource UpdateAutomationAzureModulesForAccount 'runbooks' = {
     name: 'Update-AutomationAzureModulesForAccount'
     properties: {
       runbookType: 'PowerShell'
@@ -226,7 +226,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAzurePolicyComplianceState 'runbooks@2022-08-08' = {
+  resource UpdateAzurePolicyComplianceState 'runbooks' = {
     name: 'Update-AzurePolicyComplianceState'
     properties: {
       runbookType: 'PowerShell'
@@ -240,7 +240,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules@2022-08-08' = {
+  resource UpdateAutomationAzureModulesForAccountSchedule 'schedules' = {
     name: 'Update-AutomationAzureModulesForAccountSchedule'
     properties: {
       description: 'Update-AutomationAzureModulesForAccount Monthly Schedule'
@@ -258,7 +258,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAzurePolicyComplianceStateSchedule 'schedules@2019-06-01' = {
+  resource UpdateAzurePolicyComplianceStateSchedule 'schedules' = {
     name: 'Update-AzurePolicyComplianceStateSchedule'
     properties: {
       description: 'Update-AzurePolicyComplianceStateSchedule Daily Schedule'
