@@ -253,7 +253,7 @@
     {
       "name": "[variables('automationAccountName')]",
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2021-06-22",
+      "apiVersion": "2022-08-08",
       "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
@@ -386,7 +386,7 @@
       ],
       "properties": {
         "description": "MSI granted Automation Contributor on Automation Account, to manage modules.",
-        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
+        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2022-08-08', 'Full').identity.principalId]",
         "principalType": "ServicePrincipal",
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')]"
       }
@@ -401,7 +401,7 @@
       ],
       "properties": {
         "description": "MSI granted Log Analytics Contributor on Log Analytics Workspace, to query shared access keys.",
-        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2021-04-01', 'Full').identity.principalId]",
+        "principalId": "[reference(resourceId('Microsoft.Automation/automationAccounts', variables('automationAccountName')), '2022-08-08', 'Full').identity.principalId]",
         "principalType": "ServicePrincipal",
         "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')]"
       }

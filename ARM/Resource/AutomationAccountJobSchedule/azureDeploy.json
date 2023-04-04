@@ -43,7 +43,7 @@
 	"resources": [
     {
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2022-08-08",
       "name": "[variables('automationAccountName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -88,7 +88,7 @@
         },
         {
           "type": "jobSchedules",
-          "apiVersion": "2021-04-01",
+          "apiVersion": "2022-08-08",
           "name": "[guid('HelloWorldJobSchedule')]",
           "dependsOn": [
             "[variables('automationAccountName')]",
