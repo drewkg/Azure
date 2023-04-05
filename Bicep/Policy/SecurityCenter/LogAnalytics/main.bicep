@@ -1,14 +1,14 @@
 targetScope = 'managementGroup'
 
-module AzureDefenderSubDeployPolicy './Modules/azureDefender-sub-deploy-policy.bicep' = {
+module AzureDefenderSubDeployPolicy '../Modules/azureDefender-sub-deploy-policy.bicep' = {
   name: 'azureDefender-sub-deploy-policy'
 }
 
-module AutoProvisioningSubDeployPolicy './Modules/autoprovisioning-sub-deploy-policy.bicep' = {
+module AutoProvisioningSubDeployPolicy '../Modules/autoprovisioning-sub-deploy-policy.bicep' = {
   name: 'autoprovisioning-sub-deploy-policy'
 }
 
-module WorkspaceSubDeployPolicy './Modules/workspace-sub-deploy-policy.bicep' = {
+module WorkspaceSubDeployPolicy '../Modules/workspace-sub-deploy-policy.bicep' = {
   name: 'workspace-sub-deploy-policy'
 }
 
