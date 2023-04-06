@@ -13,7 +13,7 @@ module WorkspaceSubDeployPolicy '../Modules/workspace-sub-deploy-policy.bicep' =
 }
 
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
-  name: 'diagnostics-loganalytics-deploy-initiative'
+  name: 'securitycenter-deploy-initiative'
   properties: {
     displayName: 'Deploy Configurations for Azure Security Center to a Subscription'
     description: 'Apply configurations of Azure Security Center to a Subscription when the settings are missing or incorrect.'
