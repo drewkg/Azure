@@ -214,6 +214,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
 
   resource UpdateAutomationAzureModulesForAccount 'runbooks' = {
     name: 'Update-AutomationAzureModulesForAccount'
+    location: location
     properties: {
       runbookType: 'PowerShell'
       logProgress: false
@@ -228,6 +229,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
 
   resource UpdateAzurePolicyComplianceState 'runbooks' = {
     name: 'Update-AzurePolicyComplianceState'
+    location: location
     properties: {
       runbookType: 'PowerShell'
       logProgress: false
