@@ -175,6 +175,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2021-06-
           strongType: 'omsWorkspace'
           assignPermissions: true
         }
+        defaultValue: ''
       }
     }
     policyDefinitions: [
