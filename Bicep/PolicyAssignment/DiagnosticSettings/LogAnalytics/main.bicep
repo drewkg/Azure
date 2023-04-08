@@ -7,7 +7,7 @@ param logAnalyticsResourceGroup string = ''
 param logAnalyticsWorkspace string = ''
 
 resource ContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' existing = {
-  name: 'Contributor'
+  name: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
   scope: tenant()
 }
 
