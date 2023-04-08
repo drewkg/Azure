@@ -41,7 +41,7 @@ resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@20
 }
 
 resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id)
+  name: format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().name)
   scope: managementGroup()
   properties: {
     roleDefinitionId: ContributorRole.id
