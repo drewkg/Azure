@@ -34,14 +34,14 @@ resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@20
     policyDefinitionId: DiagnosticInitiative.id
     parameters: {
       logAnalytics: {
-        value: LogAnalyticsWorkspace
+        value: LogAnalyticsWorkspace.id
       }
     }
   }
 }
 
 resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().name)
+  name: 'Diagnostics & Metrics (MG ${managementGroup().name}) Contributor Assignment'
   scope: managementGroup()
   properties: {
     roleDefinitionId: ContributorRole.id
