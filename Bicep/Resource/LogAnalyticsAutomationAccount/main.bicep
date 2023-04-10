@@ -273,36 +273,45 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules' = {
-    name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
-    properties: {
-      parameters: {
-        ResourceGroupName: resourceGroup().name
-        AutomationAccountName: automationAccount_resource.name
-      }
-      runbook: {
-        name: UpdateAutomationAzureModulesForAccount.name
-      }
-      schedule: {
-        name: UpdateAutomationAzureModulesForAccountSchedule.name
-      }
-    }
-  }
+//  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules' = {
+//    name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
+//    properties: {
+//      parameters: {
+//        ResourceGroupName: resourceGroup().name
+//        AutomationAccountName: automationAccount_resource.name
+//      }
+//      runbook: {
+//        name: UpdateAutomationAzureModulesForAccount.name
+//      }
+//      schedule: {
+//        name: UpdateAutomationAzureModulesForAccountSchedule.name
+//      }
+//    }
+//  }
 
-  resource UpdateAzurePolicyComplianceStateJobSchedule 'jobSchedules' = {
-    name: guid('${resourceGroup().id}/UpdateAzurePolicyComplianceStateJobSchedule')
-    properties: {
-      parameters: {
-        ResourceGroupName: resourceGroup().name
-        AutomationAccountName: automationAccount_resource.name
-      }
-      runbook: {
-        name: UpdateAzurePolicyComplianceState.name
-      }
-      schedule: {
-        name: UpdateAzurePolicyComplianceStateSchedule.name
-      }
-    }
+//  resource UpdateAzurePolicyComplianceStateJobSchedule 'jobSchedules' = {
+//    name: guid('${resourceGroup().id}/UpdateAzurePolicyComplianceStateJobSchedule')
+//    properties: {
+//      parameters: {
+//        ResourceGroupName: resourceGroup().name
+//        AutomationAccountName: automationAccount_resource.name
+//      }
+//      runbook: {
+//        name: UpdateAzurePolicyComplianceState.name
+//      }
+//      schedule: {
+//        name: UpdateAzurePolicyComplianceStateSchedule.name
+//      }
+//    }
+//  }
+}
+
+module UpdateAutomationAzureModulesForAccountJobSchedule 'jobschedule.bicep' = {
+  name: 'UpdateAutomationAzureModulesForAccountJobSchedule'
+  params: {
+    automationAccount: automationAccount_resource.name
+    runbook: automationAccount_resource::UpdateAutomationAzureModulesForAccount.name
+    schedule: automationAccount_resource::UpdateAutomationAzureModulesForAccountSchedule.name
   }
 }
 
