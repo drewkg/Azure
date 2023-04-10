@@ -287,6 +287,22 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
       }
     }
   }
+
+  resource UpdateAzurePolicyComplianceStateJobSchedule 'jobSchedules' = {
+    name: guid('${resourceGroup().id}/UpdateAzurePolicyComplianceStateJobSchedule')
+    properties: {
+      parameters: {
+        ResourceGroupName: resourceGroup().name
+        AutomationAccountName: automationAccount_resource.name
+      }
+      runbook: {
+        name: UpdateAzurePolicyComplianceState.name
+      }
+      schedule: {
+        name: UpdateAzurePolicyComplianceStateSchedule.name
+      }
+    }
+  }
 }
 
 resource AutomationContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
