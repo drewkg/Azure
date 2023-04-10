@@ -258,6 +258,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
       }
       frequency: 'Month'
       timeZone: 'Europe/London'
+      interval: any(1)
     }
   }
 
