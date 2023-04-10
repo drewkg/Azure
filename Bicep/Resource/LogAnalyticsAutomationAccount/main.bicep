@@ -282,7 +282,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     }
   }
 
-  /*resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules@2021-04-01' = {
+  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules' = {
     name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
     properties: {
       parameters: {
@@ -296,7 +296,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
         name: UpdateAutomationAzureModulesForAccountSchedule.name
       }
     }
-  }*/
+  }
 }
 
 resource AutomationContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
