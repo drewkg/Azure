@@ -7,7 +7,7 @@ param schedule string
 
 resource UpdateAutomationAzureModulesForAccountJobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2022-08-08' = {
 #disable-next-line use-stable-resource-identifiers
-  name: name
+  name: '${automationAccount}/${name}'
   properties: {
     parameters: {
       ResourceGroupName: resourceGroup().name
