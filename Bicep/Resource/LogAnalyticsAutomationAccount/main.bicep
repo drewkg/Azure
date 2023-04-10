@@ -266,19 +266,9 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     properties: {
       description: 'Update-AzurePolicyComplianceStateSchedule Daily Schedule'
       startTime: format('{0}T01:00:00Z', scheduleStartDate)
-      advancedSchedule: {
-        weekDays: [
-          'monday'
-          'tuesday'
-          'wednesday'
-          'thursday'
-          'friday'
-          'saturday'
-          'sunday'
-        ]
-      }
       frequency: 'Day'
       timeZone: 'Europe/London'
+      interval: any(1)
     }
   }
 
