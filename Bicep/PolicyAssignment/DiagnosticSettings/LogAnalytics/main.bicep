@@ -6,7 +6,7 @@ param logAnalyticsSubscription string = ''
 param logAnalyticsResourceGroup string = ''
 param logAnalyticsWorkspace string = ''
 
-resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@2024-05-01' = {
   name: substring(replace(guid(format('Diagnostics & Metrics (MG {0})', managementGroup().name)), '-', ''), 0, 24)
   location: location
   scope: managementGroup()
@@ -30,7 +30,7 @@ resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments
   scope: managementGroup()
   properties: {
     roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-    principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', diagnosticsAssignmentName.name), '2021-06-01', 'Full').identity.principalId
+    principalId: diagnosticsAssignmentName.identity.principalId
     principalType: 'ServicePrincipal'
   }
 }

@@ -13,7 +13,7 @@ param logAnalyticsSubscription string = ''
 param logAnalyticsResourceGroup string = ''
 param logAnalyticsWorkspace string = ''
 
-resource SecurityCenterAssignmentName 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource SecurityCenterAssignmentName 'Microsoft.Authorization/policyAssignments@2024-05-01' = {
   name: substring(replace(guid(format('Security Center (MG {0})', managementGroup().name)), '-', ''), 0, 24)
   location: location
   scope: managementGroup()
@@ -40,7 +40,7 @@ resource SecurityCenterContributorRBACName 'Microsoft.Authorization/roleAssignme
   scope: managementGroup()
   properties: {
     roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-    principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
+    principalId: SecurityCenterAssignmentName.identity.principalId
     principalType: 'ServicePrincipal'
   }
 }
@@ -50,7 +50,7 @@ resource SecurityCenterSecurityAdminRBACName 'Microsoft.Authorization/roleAssign
   scope: managementGroup()
   properties: {
     roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'fb1c8493-542b-48eb-b624-b4c8fea62acd')
-    principalId: reference(resourceId('Microsoft.Authorization/policyAssignments', SecurityCenterAssignmentName.name), '2021-06-01', 'Full').identity.principalId
+    principalId: SecurityCenterAssignmentName.identity.principalId
     principalType: 'ServicePrincipal'
   }
 }
