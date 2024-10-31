@@ -7,7 +7,7 @@ param applicationInsightsName string
 @description('The location of the resources created, excluding \'Global\'.')
 param resourceLocation string
 
-resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@2020-09-01-preview' = {
+resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@2022-12-01-preview' = {
   name: applicationInsightsDashboardName
   location: resourceLocation
   properties: {
@@ -33,11 +33,14 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
                   value: '1.0'
                 }
               ]
+#disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/AspNetOverviewPinnedPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'id'
                 type: 'ApplicationInsights'
               }
+#disable-next-line BCP037
               defaultMenuItemId: 'overview'
             }
           }
