@@ -14,14 +14,13 @@ param location string = resourceGroup().location
 @description('Base time for all calcuations, default is Now() in UTC')
 param baseTime string = utcNow('u')
 
-var environment_var = environment
-var automationAccountName_var = 'webhook-${environment_var}-${location}-aa'
-var runbookName_var = 'webhook-${environment_var}-${location}-runbook'
-var webhookName_var = 'webhook-${environment_var}-${location}-wh'
+var automationAccountName = 'webhook-${environment}-${location}-aa'
+var runbookName = 'webhook-${environment}-${location}-runbook'
+var webhookName = 'webhook-${environment}-${location}-wh'
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
-  name: automationAccountName_var
+resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2023-11-01' = {
+  name: automationAccountName
   location: location
   properties: {
     sku: {
@@ -30,7 +29,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 
   resource runbook_resource 'runbooks' = {
-    name: runbookName_var
+    name: runbookName
     location: location
     properties: {
       runbookType: 'PowerShell'
@@ -45,12 +44,12 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 
   resource automationAccountName_webhookName 'webhooks@2015-10-31' = {
-    name: webhookName_var
+    name: webhookName
     properties: {
       isEnabled: true
       expiryTime: add3Years
       runbook: {
-        name: runbookName_var
+        name: runbookName
       }
     }
     dependsOn: [
@@ -59,4 +58,4 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 }
 
-output webhookUri string = reference(webhookName_var).uri
+output webhookUri string = automationAccountName_resource::automationAccountName_webhookName.properties.uri
