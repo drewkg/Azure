@@ -5,7 +5,7 @@ param _artifactsLocation string = deployment().properties.templateLink.uri
 @description('SAS Token as a Query String')
 param _artifactsLocationSasToken string = ''
 
-@description('Base time for all calcuations, default is Now() in UTC')
+@description('Base time for all calculations, default is Now() in UTC')
 param baseTime string = utcNow('u')
 
 @description('The environment tag to provide unique resources between test / production and ephemeral environments.')
@@ -14,13 +14,12 @@ param environment string = 'ObjInt'
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
-var environment_var = environment
-var applicationInsightsName_var = 'demo-${environment_var}-${location}-aa'
+var automationAccountName = 'demo-${environment}-${location}-aa'
 var add10Minutes = dateTimeAdd(baseTime, 'P10M')
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
-  name: applicationInsightsName_var
+resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2023-11-01' = {
+  name: automationAccountName
   location: location
   properties: {
     sku: {
@@ -28,7 +27,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookName_resource 'runbooks' = {
+  resource runbookName 'runbooks' = {
     name: 'HelloWorldRunbook'
     location: location
     properties: {
@@ -43,7 +42,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource runbookSchedule_resource 'schedules' = {
+  resource runbookSchedule 'schedules' = {
     name: 'RunbookSchedule'
     properties: {
       description: 'Basic Schedule'
@@ -59,10 +58,10 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     name: guid('HelloWorldJobSchedule')
     properties: {
       runbook: {
-        name: runbookName_resource.name
+        name: runbookName.name
       }
       schedule: {
-        name: runbookSchedule_resource.name
+        name: runbookSchedule.name
       }
     }
   }
