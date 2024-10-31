@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "azuredefender-sub-deploy-policy",
-      "apiVersion": "2019-09-01",
+      "apiVersion": "2023-04-01",
       "properties": {
         "displayName": "Configure Azure Defender Plans",
         "description": "Configures Azure Defender Plans to an Azure Subscription.'",
