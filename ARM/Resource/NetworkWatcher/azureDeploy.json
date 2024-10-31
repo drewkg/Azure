@@ -61,7 +61,7 @@
     {
       "name": "[format('demo-general-{0}-nw', parameters('Locations')[copyIndex()])]",
       "type": "Microsoft.Network/networkWatchers",
-      "apiVersion": "2022-05-01",
+      "apiVersion": "2024-01-01",
       "location": "[parameters('Locations')[copyIndex()]]",
       "properties": { },
       "copy": {
