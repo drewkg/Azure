@@ -86,7 +86,7 @@ output ResourceGroup string = resourceGroup().name
 output LogAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
 output AutomationAccountName string = automationAccountName
 
-resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   properties: {
@@ -172,6 +172,7 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
   }
 }
 
+#disable-next-line use-recent-api-versions
 resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: logAnalyticsWorkspace_resource
@@ -200,7 +201,7 @@ resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2022-08-08' = {
+resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2023-11-01' = {
   name: automationAccountName
   location: automationAccountLocation
   identity: {
@@ -318,6 +319,7 @@ resource LogAnalyticsContributor 'Microsoft.Authorization/roleAssignments@2022-0
   }
 }
 
+#disable-next-line use-recent-api-versions
 resource AutomationDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
   scope: automationAccount_resource

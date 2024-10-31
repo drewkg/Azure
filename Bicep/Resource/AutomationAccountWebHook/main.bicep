@@ -43,7 +43,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
     }
   }
 
-  resource automationAccountName_webhookName 'webhooks@2015-10-31' = {
+  resource automationAccountName_webhookName 'webhooks@2023-05-15-preview' = {
     name: webhookName
     properties: {
       isEnabled: true

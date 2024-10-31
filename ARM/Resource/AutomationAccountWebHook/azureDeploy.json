@@ -79,7 +79,7 @@
         {
           "name": "[variables('webhookName')]",
           "type": "webhooks",
-          "apiVersion": "2018-06-30",
+          "apiVersion": "2023-05-15-preview",
           "dependsOn": [
             "[variables('automationAccountName')]",
             "[variables('runbookName')]"
