@@ -19,12 +19,12 @@ var CorpLandingZonesId = guid('${LandingZonesId}-CorpLandingZones')
 var OnlineLandingZonesId = guid('${LandingZonesId}-OnlineLandingZones')
 var SandboxId = guid('${rootManagementGroup}-Sandbox')
 
-resource RootMGResource 'Microsoft.Management/managementGroups@2021-04-01' existing = {
+resource RootMGResource 'Microsoft.Management/managementGroups@2023-04-01' existing = {
   name: rootManagementGroup
   scope: tenant()
 }
 
-resource RootMGSettings 'Microsoft.Management/managementGroups/settings@2021-04-01' = if (secureTenant) {
+resource RootMGSettings 'Microsoft.Management/managementGroups/settings@2023-04-01' = if (secureTenant) {
   name: 'rootManagementGroup/default'
   properties: {
     defaultManagementGroup: SandboxMGResource.id
@@ -32,7 +32,7 @@ resource RootMGSettings 'Microsoft.Management/managementGroups/settings@2021-04-
   }
 }
 
-resource CorporateMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource CorporateMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: CorporateId
   scope: tenant()
   properties: {
@@ -45,7 +45,7 @@ resource CorporateMGResource 'Microsoft.Management/managementGroups@2021-04-01' 
   }
 }
 
-resource PlatformMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource PlatformMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: PlatformId
   scope: tenant()
   properties: {
@@ -58,7 +58,7 @@ resource PlatformMGResource 'Microsoft.Management/managementGroups@2021-04-01' =
   }
 }
 
-resource ConnectivityMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource ConnectivityMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: ConnectivityId
   scope: tenant()
   properties: {
@@ -71,7 +71,7 @@ resource ConnectivityMGResource 'Microsoft.Management/managementGroups@2021-04-0
   }
 }
 
-resource IdentityMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource IdentityMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: IdentityId
   scope: tenant()
   properties: {
@@ -84,7 +84,7 @@ resource IdentityMGResource 'Microsoft.Management/managementGroups@2021-04-01' =
   }
 }
 
-resource ManagementMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource ManagementMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: ManagementId
   scope: tenant()
   properties: {
@@ -97,7 +97,7 @@ resource ManagementMGResource 'Microsoft.Management/managementGroups@2021-04-01'
   }
 }
 
-resource LandingZonesMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource LandingZonesMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: LandingZonesId
   scope: tenant()
   properties: {
@@ -110,7 +110,7 @@ resource LandingZonesMGResource 'Microsoft.Management/managementGroups@2021-04-0
   }
 }
 
-resource CorporateLandingZonesMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource CorporateLandingZonesMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: CorpLandingZonesId
   scope: tenant()
   properties: {
@@ -123,7 +123,7 @@ resource CorporateLandingZonesMGResource 'Microsoft.Management/managementGroups@
   }
 }
 
-resource OnlineLandingZonesMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource OnlineLandingZonesMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: OnlineLandingZonesId
   scope: tenant()
   properties: {
@@ -136,7 +136,7 @@ resource OnlineLandingZonesMGResource 'Microsoft.Management/managementGroups@202
   }
 }
 
-resource SandboxMGResource 'Microsoft.Management/managementGroups@2021-04-01' = {
+resource SandboxMGResource 'Microsoft.Management/managementGroups@2023-04-01' = {
   name: SandboxId
   scope: tenant()
   properties: {

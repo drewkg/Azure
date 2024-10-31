@@ -39,7 +39,7 @@
     {
       "name": "rootManagementGroup/default",
       "type": "Microsoft.Management/managementGroups/settings",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "condition": "[parameters('secureTenant')]",
       "dependsOn": [
         "[variables('SandboxId')]"
@@ -52,7 +52,7 @@
     {
       "name": "[variables('CorporateId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "properties": {
         "displayName": "[parameters('itermediateMgName')]",
         "details": {
@@ -65,7 +65,7 @@
     {
       "name": "[variables('PlatformId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('CorporateId')]"
       ],
@@ -81,7 +81,7 @@
     {
       "name": "[variables('ConnectivityId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('PlatformId')]"
       ],
@@ -97,7 +97,7 @@
     {
       "name": "[variables('IdentityId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('PlatformId')]"
       ],
@@ -113,7 +113,7 @@
     {
       "name": "[variables('ManagementId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('PlatformId')]"
       ],
@@ -129,7 +129,7 @@
     {
       "name": "[variables('LandingZonesId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('CorporateId')]"
       ],
@@ -145,7 +145,7 @@
     {
       "name": "[variables('CorpLandingZonesId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('LandingZonesId')]"
       ],
@@ -161,7 +161,7 @@
     {
       "name": "[variables('OnlineLandingZonesId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('LandingZonesId')]"
       ],
@@ -177,7 +177,7 @@
     {
       "name": "[variables('SandboxId')]",
       "type": "Microsoft.Management/managementGroups",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2023-04-01",
       "dependsOn": [
         "[variables('CorporateId')]"
       ],
