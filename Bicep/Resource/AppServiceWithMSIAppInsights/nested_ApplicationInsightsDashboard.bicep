@@ -68,10 +68,12 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/ProactiveDetectionAsyncPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
               }
+#disable-next-line BCP037
               defaultMenuItemId: 'ProactiveDetection'
             }
           }
@@ -99,6 +101,7 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/QuickPulseButtonSmallPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
@@ -138,6 +141,7 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/AvailabilityNavButtonPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
@@ -177,6 +181,7 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/AppMapButtonPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
@@ -233,6 +238,7 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/UsageUsersOverviewPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
@@ -294,11 +300,14 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/CuratedBladeFailuresPinnedPart'
+#disable-next-line BCP037
               isAdapter: true
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ResourceId'
                 type: 'ApplicationInsights'
               }
+#disable-next-line BCP037
               defaultMenuItemId: 'failures'
             }
           }
@@ -357,11 +366,14 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/CuratedBladePerformancePinnedPart'
+#disable-next-line BCP037
               isAdapter: true
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ResourceId'
                 type: 'ApplicationInsights'
               }
+#disable-next-line BCP037
               defaultMenuItemId: 'performance'
             }
           }
@@ -447,10 +459,12 @@ resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@
               ]
 #disable-next-line BCP036
               type: 'Extension/AppInsightsExtension/PartType/MetricsExplorerBladePinnedPart'
+#disable-next-line BCP037
               asset: {
                 idInputName: 'ComponentId'
                 type: 'ApplicationInsights'
               }
+#disable-next-line BCP037
               defaultMenuItemId: 'browser'
             }
           }
