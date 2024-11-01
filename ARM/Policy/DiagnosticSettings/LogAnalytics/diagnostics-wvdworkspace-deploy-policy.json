@@ -6,7 +6,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-wvdworkspace-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Windows Virtual Desktop Workspaces to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Windows Virtual Desktop Workspaces to stream data to a Log Analytics workspace when any Windows Virtual Desktop Workspaces which is missing this diagnostic settings is created or updated.",

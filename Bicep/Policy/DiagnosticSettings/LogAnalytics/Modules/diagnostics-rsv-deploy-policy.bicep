@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 
 output name string = policy.name
 
-resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
+resource policy 'Microsoft.Authorization/policyDefinitions@2024-05-01' = {
   name: 'diagnostics-rsv-deploy-policy'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Recovery Services Vault to a Log Analytics workspace'

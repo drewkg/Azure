@@ -21,6 +21,12 @@
         },
         "simplify-interpolation": {
           "level": "error"
+        },
+        "use-recent-api-versions": {
+          "level": "error"
+        },
+        "outputs-should-not-contain-secrets": {
+          "level": "error"
         }
       }
     }

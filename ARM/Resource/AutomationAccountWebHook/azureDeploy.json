@@ -49,7 +49,7 @@
     {
       "name": "[variables('automationAccountName')]",
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2022-08-08",
+      "apiVersion": "2023-11-01",
       "location": "[parameters('location')]",
       "properties": {
         "sku": {
@@ -60,7 +60,7 @@
         {
           "name": "[variables('runbookName')]",
           "type": "runbooks",
-          "apiVersion": "2022-08-08",
+          "apiVersion": "2023-11-01",
           "location": "[parameters('location')]",
           "dependsOn": [
             "[variables('automationAccountName')]"
@@ -79,7 +79,7 @@
         {
           "name": "[variables('webhookName')]",
           "type": "webhooks",
-          "apiVersion": "2018-06-30",
+          "apiVersion": "2023-11-01",
           "dependsOn": [
             "[variables('automationAccountName')]",
             "[variables('runbookName')]"

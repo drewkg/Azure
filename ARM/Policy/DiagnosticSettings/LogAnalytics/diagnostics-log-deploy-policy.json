@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-log-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Log Analytics to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Log Analytics to stream data to a Log Analytics workspace when any Log Analytics which is missing this diagnostic settings is created or updated.",

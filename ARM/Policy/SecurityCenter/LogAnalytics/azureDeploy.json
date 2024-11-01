@@ -27,7 +27,7 @@
     {
       "name": "[parameters('policies')[copyIndex()]]",
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2024-03-01",
       "location": "[parameters('location')]",
       "properties": {
         "mode": "Incremental",
@@ -42,7 +42,7 @@
     },
     {
       "type": "Microsoft.Authorization/policySetDefinitions",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "name": "securitycenter-deploy-initiative",
       "dependsOn": [
         "policies"

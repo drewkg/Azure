@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 
 output name string = policy.name
 
-resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
+resource policy 'Microsoft.Authorization/policyDefinitions@2024-05-01' = {
   name: 'azuredefender-sub-deploy-policy'
   properties: {
     displayName: 'Configure Azure Defender Plans'

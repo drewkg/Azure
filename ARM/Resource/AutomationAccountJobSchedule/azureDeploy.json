@@ -38,12 +38,13 @@
   	"variables": {
 		"environment": "[parameters('environment')]",
 		"automationAccountName": "[format('demo-{0}-{1}-aa', variables('environment'), parameters('location'))]",
+    "add10Minutes": "[dateTimeAdd(parameters('baseTime'), 'P10M')]",
     "add3Years": "[dateTimeAdd(parameters('baseTime'), 'P3Y')]"
 	},
 	"resources": [
     {
       "type": "Microsoft.Automation/automationAccounts",
-      "apiVersion": "2022-08-08",
+      "apiVersion": "2023-11-01",
       "name": "[variables('automationAccountName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -54,7 +55,7 @@
       "resources": [
         {
           "type": "runbooks",
-          "apiVersion": "2022-08-08",
+          "apiVersion": "2023-11-01",
           "name": "HelloWorldRunbook",
           "location": "[parameters('location')]",
           "dependsOn": [
@@ -73,13 +74,14 @@
         },
         {
           "type": "schedules",
-          "apiVersion": "2022-08-08",
+          "apiVersion": "2023-11-01",
           "name": "RunbookSchedule",
           "dependsOn": [
             "[variables('automationAccountName')]"
           ],
           "properties": {
             "description": "Basic Schedule",
+            "startTime": "[variables('add10Minutes')]",
             "expiryTime": "[variables('add3Years')]",
             "frequency": "Day",
             "interval": 1,
@@ -88,7 +90,7 @@
         },
         {
           "type": "jobSchedules",
-          "apiVersion": "2022-08-08",
+          "apiVersion": "2023-11-01",
           "name": "[guid('HelloWorldJobSchedule')]",
           "dependsOn": [
             "[variables('automationAccountName')]",

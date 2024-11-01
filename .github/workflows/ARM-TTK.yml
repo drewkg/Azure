@@ -16,12 +16,10 @@ jobs:
     name: Validate ARM
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Invoke ARM TTK
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy trusted
-          Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-ARMTTK.ps1
         shell: pwsh
 
@@ -29,11 +27,9 @@ jobs:
     name: Validate BICEP
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Invoke BICEP Build
         run: |
-          Set-PSRepository PSGallery -InstallationPolicy trusted
-          Install-Module -Name Pester -RequiredVersion 4.10.1 -confirm:$false -Force
           ./Utilities/Invoke-BicepBuild.ps1
         shell: pwsh

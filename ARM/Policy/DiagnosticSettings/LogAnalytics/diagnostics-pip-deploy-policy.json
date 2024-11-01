@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-pip-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Public IP Addresse to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Public IP Addresse to stream data to a Log Analytics workspace when any Public IP Addresse which is missing this diagnostic settings is created or updated.",

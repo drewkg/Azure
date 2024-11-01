@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-wvdhostpool-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Virtual Desktop Host Pools to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Virtual Desktop Host Pools to stream data to a Log Analytics workspace when any Virtual Desktop Host Pools which is missing this diagnostic settings is created or updated.",

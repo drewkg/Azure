@@ -13,7 +13,7 @@ Write-Host "Using ARM TTK Version -" $ARMTTK_Releases[0].name
 
 New-Item -Path ".\ARM-TTK" -ItemType Directory -Force | Out-Null
 Invoke-WebRequest -Uri $ARMTTK_DownloadLocation -OutFile ".\ARM-TTK\ARM-TTK.zip"
-Expand-Archive -Path ".\ARM-TTK\ARM-TTK.zip" -DestinationPath ".\ARM-TTK" -Force
+Expand-Archive -Path ".\ARM-TTK\ARM-TTK.zip" -DestinationPath "." -Force
 
 Import-Module ".\ARM-TTK\arm-ttk\arm-ttk.psd1" -Force
 Import-Module -Name Pester -MaximumVersion 4.10.1

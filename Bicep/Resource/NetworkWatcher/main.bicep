@@ -48,7 +48,7 @@ param Locations array = [
   'uksouth'
 ]
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2022-05-01' = [for location in Locations: {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2024-01-01' = [for location in Locations: {
   name: 'demo-general-${location}-nw'
   location: location
   properties: {}

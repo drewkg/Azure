@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 
 param policyDefinitionId array
 
-resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2021-06-01' = {
+resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2024-05-01' = {
   name: 'diagnostics-loganalytics-deploy-initiative'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Azure Resource to a Log Analytics workspace'

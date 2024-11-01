@@ -4,13 +4,12 @@ param environment string = 'ObjInt'
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
-var environment_var = environment
-var applicationInsightsName_var = 'demo-${environment_var}-${location}-appi'
-var appServiceName_var = 'demo-${environment_var}-${location}-as'
-var appServicePlanName_var = 'demo-${environment_var}-${location}-asp'
+var applicationInsightsName = 'demo-${environment}-${location}-appi'
+var appServiceName = 'demo-${environment}-${location}-as'
+var appServicePlanName = 'demo-${environment}-${location}-asp'
 
-resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
-  name: applicationInsightsName_var
+resource ApplicationInsightsName 'Microsoft.Insights/components@2020-02-02' = {
+  name: applicationInsightsName
   location: location
   kind: 'web'
   properties: {
@@ -26,14 +25,14 @@ resource applicationInsightsName 'microsoft.insights/components@2020-02-02' = {
 module ApplicationInsightsDashboard './nested_ApplicationInsightsDashboard.bicep' = {
   name: 'ApplicationInsightsDashboard'
   params: {
-    applicationInsightsDashboardName: '${reference(applicationInsightsName.id, '2020-02-02', 'Full').properties.AppId}-dashboard'
-    applicationInsightsName: applicationInsightsName_var
+    applicationInsightsDashboardName: '${ApplicationInsightsName.properties.AppId}-dashboard'
+    applicationInsightsName: applicationInsightsName
     resourceLocation: location
   }
 }
 
-resource appServicePlanName 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: appServicePlanName_var
+resource AppServicePlanName 'Microsoft.Web/serverfarms@2023-12-01' = {
+  name: appServicePlanName
   location: location
   sku: {
     name: 'B1'
@@ -55,25 +54,25 @@ resource appServicePlanName 'Microsoft.Web/serverfarms@2022-03-01' = {
   }
 }
 
-resource appServiceName 'Microsoft.Web/sites@2022-03-01' = {
-  name: appServiceName_var
+resource AppServiceName 'Microsoft.Web/sites@2023-12-01' = {
+  name: appServiceName
   location: location
   kind: 'app'
   properties: {
     enabled: true
     hostNameSslStates: [
       {
-        name: '${appServiceName_var}.azurewebsites.net'
+        name: '${appServiceName}.azurewebsites.net'
         sslState: 'Disabled'
         hostType: 'Standard'
       }
       {
-        name: '${appServiceName_var}.scm.azurewebsites.net'
+        name: '${appServiceName}.scm.azurewebsites.net'
         sslState: 'Disabled'
         hostType: 'Repository'
       }
     ]
-    serverFarmId: appServicePlanName.id
+    serverFarmId: AppServicePlanName.id
     reserved: false
     isXenon: false
     hyperV: false
@@ -92,8 +91,9 @@ resource appServiceName 'Microsoft.Web/sites@2022-03-01' = {
   }
 }
 
-resource appServiceName_web 'Microsoft.Web/sites/config@2022-03-01' = {
-  name: '${appServiceName.name}/web'
+resource appServiceName_web 'Microsoft.Web/sites/config@2023-12-01' = {
+  name: 'web'
+  parent: AppServiceName
   properties: {
     numberOfWorkers: 1
     defaultDocuments: [
@@ -159,11 +159,12 @@ resource appServiceName_web 'Microsoft.Web/sites/config@2022-03-01' = {
   }
 }
 
-resource appServiceName_appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
-  name: '${appServiceName.name}/appsettings'
+resource appServiceName_appsettings 'Microsoft.Web/sites/config@2023-12-01' = {
+  name: 'appsettings'
+  parent: AppServiceName
   properties: {
-    APPINSIGHTS_INSTRUMENTATIONKEY: reference(applicationInsightsName.id, '2020-02-02').InstrumentationKey
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${reference(applicationInsightsName.id, '2020-02-02').InstrumentationKey};IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/'
+    APPINSIGHTS_INSTRUMENTATIONKEY: ApplicationInsightsName.properties.InstrumentationKey
+    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${ApplicationInsightsName.properties.InstrumentationKey};IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/'
     ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
     XDT_MicrosoftApplicationInsights_Mode: 'recommended'
     APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
@@ -178,10 +179,11 @@ resource appServiceName_appsettings 'Microsoft.Web/sites/config@2022-03-01' = {
   }
 }
 
-resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2022-03-01' = {
-  name: '${appServiceName.name}/${appServiceName_var}.azurewebsites.net'
+resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2023-12-01' = {
+  name: '${appServiceName}.azurewebsites.net'
+  parent: AppServiceName
   properties: {
-    siteName: appServiceName_var
+    siteName: appServiceName
     hostNameType: 'Verified'
   }
 }

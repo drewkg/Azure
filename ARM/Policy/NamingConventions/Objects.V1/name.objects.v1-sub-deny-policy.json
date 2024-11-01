@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "name.objects.v1-sub-deny-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Enforce Ov1 Naming Convention for Subscriptions",
         "description": "Checks the name of a Subscription against the Objects (V1) Naming Convention.",
