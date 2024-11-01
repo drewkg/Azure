@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-asa-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Stream Analytic to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Stream Analytic to stream data to a Log Analytics workspace when any Stream Analytic which is missing this diagnostic settings is created or updated.",

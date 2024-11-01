@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "diagnostics-dls-deploy-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Deploy Diagnostics & Metrics for Data Lake Store to a Log Analytics workspace",
         "description": "Apply diagnostic & metric settings for Data Lake Store to stream data to a Log Analytics workspace when any Data Lake Store which is missing this diagnostic settings is created or updated.",

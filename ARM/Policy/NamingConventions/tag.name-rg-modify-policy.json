@@ -5,7 +5,7 @@
     {
       "type": "Microsoft.Authorization/policyDefinitions",
       "name": "tag.name-rg-modify-policy",
-      "apiVersion": "2021-06-01",
+      "apiVersion": "2024-05-01",
       "properties": {
         "displayName": "Add a naming convention tag on resource groups",
         "description": "Adds the naming convention tag and value when any resource group is created or updated. Existing resource groups can be remediated by triggering a remediation task.",

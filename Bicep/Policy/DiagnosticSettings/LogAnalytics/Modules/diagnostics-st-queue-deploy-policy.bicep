@@ -2,7 +2,7 @@ targetScope = 'managementGroup'
 
 output name string = policy.name
 
-resource policy 'Microsoft.Authorization/policyDefinitions@2019-09-01' = {
+resource policy 'Microsoft.Authorization/policyDefinitions@2024-05-01' = {
   name: 'diagnostics-st-queue-deploy-policy'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Storage Account Queue Services to a Log Analytics workspace'
