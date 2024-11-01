@@ -8,3 +8,7 @@ This Bicep template deploys a an Azure application app service and associated ap
 ## Notes
 
 These Bicep templates are meant as a starter resource, to be modified to your own requirements.
+
+```mermaid
+  info
+```
