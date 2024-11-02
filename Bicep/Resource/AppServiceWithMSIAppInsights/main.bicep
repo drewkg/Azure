@@ -11,9 +11,9 @@ var logAnalyticsWorkspace = 'demo-${environment}-${location}-law'
 var applicationInsightsName = 'demo-${environment}-${location}-appi'
 var appServiceName = 'demo-${environment}-${location}-as'
 var appServicePlanName = 'demo-${environment}-${location}-asp'
-var LogAnalyticsWorkspaceResourceId = (logAnalyticsWorkspaceResourceId == '') ? LogAnalyticsWorkspace.id : logAnalyticsWorkspaceResourceId
+var LogAnalyticsWorkspaceResourceId = empty(logAnalyticsWorkspaceResourceId) ? LogAnalyticsWorkspace.id : logAnalyticsWorkspaceResourceId
 
-resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if(logAnalyticsWorkspaceResourceId == '') {
+resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if(empty(logAnalyticsWorkspaceResourceId)) {
   name: logAnalyticsWorkspace
   location: location
   identity: {
@@ -26,7 +26,7 @@ resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09
   }
 }
 
-resource ApplicationInsightsName 'Microsoft.Insights/components@2020-02-02' =  {
+resource ApplicationInsights 'Microsoft.Insights/components@2020-02-02' =  {
   name: applicationInsightsName
   location: location
   kind: 'web'
@@ -42,10 +42,10 @@ resource ApplicationInsightsName 'Microsoft.Insights/components@2020-02-02' =  {
 }
 
 module ApplicationInsightsDashboard './ApplicationInsightsDashboard.bicep' = {
-  name: 'ApplicationInsightsDashboard-${deployment().name}'
+  name: 'ApplicationInsightsDashboard/${deployment().name}'
   params: {
     applicationInsightsDashboardTitle: applicationInsightsName
-    applicationInsightsDashboardName: '${ApplicationInsightsName.properties.AppId}-dashboard'
+    applicationInsightsDashboardName: '${ApplicationInsights.properties.AppId}-dashboard'
     applicationInsightsName: applicationInsightsName
     resourceLocation: location
   }
@@ -55,11 +55,7 @@ resource AppServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
   location: location
   sku: {
-    name: 'B1'
-    tier: 'Basic'
     size: 'B1'
-    family: 'B'
-    capacity: 1
   }
   kind: 'app'
   properties: {
@@ -74,7 +70,7 @@ resource AppServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   }
 }
 
-resource AppServiceName 'Microsoft.Web/sites@2023-12-01' = {
+resource AppService 'Microsoft.Web/sites@2023-12-01' = {
   name: appServiceName
   location: location
   kind: 'app'
@@ -109,97 +105,94 @@ resource AppServiceName 'Microsoft.Web/sites@2023-12-01' = {
   identity: {
     type: 'SystemAssigned'
   }
-}
 
-resource appServiceName_web 'Microsoft.Web/sites/config@2023-12-01' = {
-  name: 'web'
-  parent: AppServiceName
-  properties: {
-    numberOfWorkers: 1
-    defaultDocuments: [
-      'Default.htm'
-      'Default.html'
-      'Default.asp'
-      'index.htm'
-      'index.html'
-      'iisstart.htm'
-      'default.aspx'
-      'index.php'
-      'hostingstart.html'
-    ]
-    netFrameworkVersion: 'v4.0'
-    requestTracingEnabled: false
-    remoteDebuggingEnabled: false
-    remoteDebuggingVersion: 'VS2022'
-    httpLoggingEnabled: false
-    logsDirectorySizeLimit: 35
-    detailedErrorLoggingEnabled: false
-    publishingUsername: '$KeithDrewNet'
-    azureStorageAccounts: {}
-    scmType: 'VSTSRM'
-    use32BitWorkerProcess: true
-    webSocketsEnabled: false
-    alwaysOn: true
-    managedPipelineMode: 'Integrated'
-    virtualApplications: [
-      {
-        virtualPath: '/'
-        physicalPath: 'site\\wwwroot'
-        preloadEnabled: true
-      }
-    ]
-    autoHealEnabled: false
-    localMySqlEnabled: false
-    ipSecurityRestrictions: [
-      {
-        ipAddress: 'Any'
-        action: 'Allow'
-        priority: 1
-        name: 'Allow all'
-        description: 'Allow all access'
-      }
-    ]
-    scmIpSecurityRestrictions: [
-      {
-        ipAddress: 'Any'
-        action: 'Allow'
-        priority: 1
-        name: 'Allow all'
-        description: 'Allow all access'
-      }
-    ]
-    scmIpSecurityRestrictionsUseMain: false
-    http20Enabled: false
-    minTlsVersion: '1.2'
-    ftpsState: 'Disabled'
+  resource Web 'config' = {
+    name: 'web'
+    properties: {
+      numberOfWorkers: 1
+      defaultDocuments: [
+        'Default.htm'
+        'Default.html'
+        'Default.asp'
+        'index.htm'
+        'index.html'
+        'iisstart.htm'
+        'default.aspx'
+        'index.php'
+        'hostingstart.html'
+      ]
+      netFrameworkVersion: 'v4.0'
+      requestTracingEnabled: false
+      remoteDebuggingEnabled: false
+      remoteDebuggingVersion: 'VS2022'
+      httpLoggingEnabled: false
+      logsDirectorySizeLimit: 35
+      detailedErrorLoggingEnabled: false
+      publishingUsername: '$KeithDrewNet'
+      azureStorageAccounts: {}
+      scmType: 'VSTSRM'
+      use32BitWorkerProcess: true
+      webSocketsEnabled: false
+      alwaysOn: true
+      managedPipelineMode: 'Integrated'
+      virtualApplications: [
+        {
+          virtualPath: '/'
+          physicalPath: 'site\\wwwroot'
+          preloadEnabled: true
+        }
+      ]
+      autoHealEnabled: false
+      localMySqlEnabled: false
+      ipSecurityRestrictions: [
+        {
+          ipAddress: 'Any'
+          action: 'Allow'
+          priority: 1
+          name: 'Allow all'
+          description: 'Allow all access'
+        }
+      ]
+      scmIpSecurityRestrictions: [
+        {
+          ipAddress: 'Any'
+          action: 'Allow'
+          priority: 1
+          name: 'Allow all'
+          description: 'Allow all access'
+        }
+      ]
+      scmIpSecurityRestrictionsUseMain: false
+      http20Enabled: false
+      minTlsVersion: '1.2'
+      ftpsState: 'Disabled'
+    }
   }
-}
 
-resource appServiceName_appsettings 'Microsoft.Web/sites/config@2023-12-01' = {
-  name: 'appsettings'
-  parent: AppServiceName
-  properties: {
-    APPINSIGHTS_INSTRUMENTATIONKEY: ApplicationInsightsName.properties.InstrumentationKey
-    APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=${ApplicationInsightsName.properties.InstrumentationKey};IngestionEndpoint=https://uksouth-0.in.applicationinsights.azure.com/'
-    ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
-    XDT_MicrosoftApplicationInsights_Mode: 'recommended'
-    APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
-    DiagnosticServices_EXTENSION_VERSION: '~3'
-    APPINSIGHTS_SNAPSHOTFEATURE_VERSION: '1.0.0'
-    SnapshotDebugger_EXTENSION_VERSION: 'disabled'
-    InstrumentationEngine_EXTENSION_VERSION: 'disabled'
-    XDT_MicrosoftApplicationInsights_BaseExtensions: 'disabled'
-    XDT_MicrosoftApplicationInsights_PreemptSdk: 'disabled'
-    XDT_MicrosoftApplicationInsights_Java: '1'
-    XDT_MicrosoftApplicationInsights_NodeJS: '1'
+  resource AppSettings 'config' = {
+    name: 'appsettings'
+    properties: {
+      APPINSIGHTS_INSTRUMENTATIONKEY: ApplicationInsights.properties.InstrumentationKey
+      APPLICATIONINSIGHTS_CONNECTION_STRING: ApplicationInsights.properties.ConnectionString
+      ApplicationInsightsAgent_EXTENSION_VERSION: '~2'
+      XDT_MicrosoftApplicationInsights_Mode: 'recommended'
+      APPINSIGHTS_PROFILERFEATURE_VERSION: '1.0.0'
+      DiagnosticServices_EXTENSION_VERSION: '~3'
+      APPINSIGHTS_SNAPSHOTFEATURE_VERSION: '1.0.0'
+      SnapshotDebugger_EXTENSION_VERSION: 'disabled'
+      InstrumentationEngine_EXTENSION_VERSION: 'disabled'
+      XDT_MicrosoftApplicationInsights_BaseExtensions: 'disabled'
+      XDT_MicrosoftApplicationInsights_PreemptSdk: 'disabled'
+      XDT_MicrosoftApplicationInsights_Java: '1'
+      XDT_MicrosoftApplicationInsights_NodeJS: '1'
+    }
   }
-}
 
-resource appServiceName_appServiceName_azurewebsites_net 'Microsoft.Web/sites/hostNameBindings@2023-12-01' = {
-  name: '${appServiceName}.azurewebsites.net'
-  parent: AppServiceName
-  properties: {
-    siteName: appServiceName
-    hostNameType: 'Verified'
+  resource HostNameBindings 'hostNameBindings' = {
+    name: '${AppService.name}.azurewebsites.net'
+    properties: {
+      siteName: AppService.name
+      hostNameType: 'Verified'
+    }
   }
 }

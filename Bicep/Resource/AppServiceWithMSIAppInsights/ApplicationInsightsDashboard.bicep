@@ -10,7 +10,7 @@ param applicationInsightsDashboardTitle string
 @description('The location of the resources created excluding \'Global\'.')
 param resourceLocation string
 
-resource applicationInsightsDashboardName_resource 'Microsoft.Portal/dashboards@2022-12-01-preview' = {
+resource ApplicationInsightsDashboard 'Microsoft.Portal/dashboards@2022-12-01-preview' = {
   name: applicationInsightsDashboardName
   location: resourceLocation
   properties: {
