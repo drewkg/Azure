@@ -18,7 +18,7 @@ var automationAccountName = 'demo-${environment}-${location}-aa'
 var add10Minutes = dateTimeAdd(baseTime, 'P10M')
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
-resource automationAccountName_resource 'Microsoft.Automation/automationAccounts@2023-11-01' = {
+resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' = {
   name: automationAccountName
   location: location
   properties: {
@@ -55,7 +55,7 @@ resource automationAccountName_resource 'Microsoft.Automation/automationAccounts
   }
 
   resource jobSchedules 'jobSchedules' = {
-    name: guid('HelloWorldJobSchedule')
+    name: guid(runbookSchedule.id)
     properties: {
       runbook: {
         name: runbookName.name

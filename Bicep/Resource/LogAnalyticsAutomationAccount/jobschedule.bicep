@@ -1,13 +1,9 @@
-
-param name string = newGuid()
 param automationAccount string
 param runbook string
 param schedule string
 
-
 resource UpdateAutomationAzureModulesForAccountJobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2023-11-01' = {
-#disable-next-line use-stable-resource-identifiers
-  name: '${automationAccount}/${name}'
+  name: guid('${automationAccount}/${runbook}/${schedule}')
   properties: {
     parameters: {
       ResourceGroupName: resourceGroup().name
