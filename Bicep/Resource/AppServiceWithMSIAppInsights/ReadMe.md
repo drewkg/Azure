@@ -1,6 +1,7 @@
 # Introduction
 
 This Bicep template deploys a Azure application app service and associated application insights instance.
+The application insights instance can be linked to an existing log analytics workspace or to a pre existing instance.
 
 ## Parameters
 ```
@@ -19,7 +20,7 @@ This Bicep template deploys a Azure application app service and associated appli
 	architecture-beta
 		group api(cloud)[Web App]
 
-		service internet(cloud)
+		service internet(internet)
 		service asp(server)[App Service Plan] in api
 		service server(server)[Web App] in api
 		service appi(server)[Application Insights] in api

@@ -9,13 +9,6 @@
 				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
 			}
 		},
-    "ephemeralKey" : {
-      "type": "string",
-      "defaultValue": "[newGuid()]",
-      "metadata": {
-        "description": "Utilized in Ephemeral Environments to generate a unqiue key for every environment, if performing a redeployment care should be taken to ensure this is unique."
-      }
-    },
 		"application": {
 			"type": "string",
 			"defaultValue": "demo",
@@ -27,23 +20,43 @@
 		},
 		"environment": {
 			"type": "string",
-			"defaultValue": "ObjInt",
+			"defaultValue": "dev",
 			"metadata": {
 				"description": "The environment tag to provide unique resources between test / production and ephemeral environments."
 			}
-		}
+		},
+    "logAnalyticsWorkspaceResourceId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "The external Log Analytics Workspace to connect to, if blank a local workspace will be created, defaults to blank."
+      }
+    }
 	},
 	"variables": {
-    "locationShortCode": {
-      "UK South": "uks"
-    },
-    "ApplicationPrefix": "[toLower(replace(parameters('application'), '.', ''))]",
-    "EnvironmentKey": "[toLower(substring(guid(parameters('ephemeralKey')), 0, 8))]",
-		"applicationInsightsName": "[format('{0}-{1}-{2}-appi', variables('ApplicationPrefix'), variables('EnvironmentKey'), variables('locationShortCode')[parameters('location')])]",
-		"appServiceName": "[format('{0}-{1}-{2}-asp', variables('ApplicationPrefix'), variables('EnvironmentKey'), variables('locationShortCode')[parameters('location')])]",
-		"appServicePlanName": "[format('{0}-{1}-{2}-as', variables('ApplicationPrefix'), variables('EnvironmentKey'), variables('locationShortCode')[parameters('location')])]"
+    "applicationPrefix": "[toLower(replace(parameters('application'), '.', ''))]",
+		"applicationInsightsName": "[format('{0}-{1}-{2}-appi', variables('applicationPrefix'), parameters('environment'), parameters('location'))]",
+		"appServiceName": "[format('{0}-{1}-{2}-asp', variables('applicationPrefix'), parameters('environment'), parameters('location'))]",
+		"appServicePlanName": "[format('{0}-{1}-{2}-as', variables('applicationPrefix'), parameters('environment'), parameters('location'))]",
+    "logAnalyticsWorkspaceName": "[format('{0}-{1}-{2}-law', variables('applicationPrefix'), parameters('environment'), parameters('location'))]",
+    "LogAnalyticsWorkspaceResourceId": "[if(empty(parameters('logAnalyticsWorkspaceResourceId')), resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), parameters('logAnalyticsWorkspaceResourceId'))]"
 	},
 	"resources": [
+    {
+      "name": "[variables('logAnalyticsWorkspaceName')]",
+      "type": "Microsoft.OperationalInsights/workspaces",
+      "apiVersion": "2023-09-01",
+      "location": "[parameters('location')]",
+      "condition": "[empty(parameters('logAnalyticsWorkspaceResourceId'))]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "features": {
+          "disableLocalAuth": true
+        }
+      }
+    },
 		{
 			"name": "[variables('applicationInsightsName')]",
 			"type": "Microsoft.Insights/components",
@@ -55,7 +68,8 @@
 				"Flow_Type": "Bluefield",
 				"Request_Source": "rest",
 				"publicNetworkAccessForIngestion": "Enabled",
-				"publicNetworkAccessForQuery": "Enabled"
+				"publicNetworkAccessForQuery": "Enabled",
+        "WorkspaceResourceId": "[variables('LogAnalyticsWorkspaceResourceId')]"
 			}
 		},
 		{
@@ -273,14 +287,11 @@
                           "colSpan": 3
                         },
                         "metadata": {
-                          "inputs": [],
                           "type": "Extension/HubsExtension/PartType/MarkdownPart",
                           "settings": {
                             "content": {
                               "settings": {
-                                "content": "# Usage",
-                                "title": "",
-                                "subtitle": ""
+                                "content": "# Usage"
                               }
                             }
                           }
@@ -328,14 +339,11 @@
                           "colSpan": 3
                         },
                         "metadata": {
-                          "inputs": [],
                           "type": "Extension/HubsExtension/PartType/MarkdownPart",
                           "settings": {
                             "content": {
                               "settings": {
-                                "content": "# Reliability",
-                                "title": "",
-                                "subtitle": ""
+                                "content": "# Reliability"
                               }
                             }
                           }
@@ -390,14 +398,11 @@
                           "colSpan": 3
                         },
                         "metadata": {
-                          "inputs": [],
                           "type": "Extension/HubsExtension/PartType/MarkdownPart",
                           "settings": {
                             "content": {
                               "settings": {
-                                "content": "# Responsiveness\r\n",
-                                "title": "",
-                                "subtitle": ""
+                                "content": "# Responsiveness\r\n"
                               }
                             }
                           }
@@ -452,14 +457,11 @@
                           "colSpan": 3
                         },
                         "metadata": {
-                          "inputs": [],
                           "type": "Extension/HubsExtension/PartType/MarkdownPart",
                           "settings": {
                             "content": {
                               "settings": {
-                                "content": "# Browser",
-                                "title": "",
-                                "subtitle": ""
+                                "content": "# Browser"
                               }
                             }
                           }
@@ -507,7 +509,6 @@
                                   6,
                                   13
                                 ],
-                                "typeFacets": {},
                                 "isPermissive": false
                               }
                             },

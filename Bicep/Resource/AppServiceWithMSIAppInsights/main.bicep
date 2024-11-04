@@ -1,20 +1,26 @@
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
+@description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
+@minLength(1)
+@maxLength(15)
+param application string = 'demo'
+
 @description('The environment tag to provide unique resources between test / production and ephemeral environments.')
-param environment string = 'ObjInt'
+param environment string = 'dev'
 
 @description('The external Log Analytics Workspace to connect to, if blank a local workspace will be created, defaults to blank.')
 param logAnalyticsWorkspaceResourceId string = ''
 
-var logAnalyticsWorkspace = 'demo-${environment}-${location}-law'
-var applicationInsightsName = 'demo-${environment}-${location}-appi'
-var appServiceName = 'demo-${environment}-${location}-as'
-var appServicePlanName = 'demo-${environment}-${location}-asp'
+var applicationPrefix = toLower(replace(application, '.', ''))
+var logAnalyticsWorkspaceName = '${applicationPrefix}-${environment}-${location}-law'
+var applicationInsightsName = '${applicationPrefix}-${environment}-${location}-appi'
+var appServiceName = '${applicationPrefix}-${environment}-${location}-as'
+var appServicePlanName = '${applicationPrefix}-${environment}-${location}-asp'
 var LogAnalyticsWorkspaceResourceId = empty(logAnalyticsWorkspaceResourceId) ? LogAnalyticsWorkspace.id : logAnalyticsWorkspaceResourceId
 
 resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = if(empty(logAnalyticsWorkspaceResourceId)) {
-  name: logAnalyticsWorkspace
+  name: logAnalyticsWorkspaceName
   location: location
   identity: {
     type: 'SystemAssigned'
