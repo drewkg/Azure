@@ -11,17 +11,17 @@ resource ContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' ex
   scope: tenant()
 }
 
-resource DiagnosticInitiative 'Microsoft.Authorization/policySetDefinitions@2021-06-01' existing = {
+resource DiagnosticInitiative 'Microsoft.Authorization/policySetDefinitions@2024-05-01' existing = {
   name: 'diagnostics-loganalytics-deploy-initiative'
   scope: managementGroup()
 }
 
-resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' existing = {
+resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspace
   scope: resourceGroup(logAnalyticsSubscription, logAnalyticsResourceGroup)
 }
 
-resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@2024-05-01' = {
   name: substring(replace(guid('Diagnostics & Metrics (MG ${managementGroup().name})'), '-', ''), 0, 24)
   location: location
   scope: managementGroup()

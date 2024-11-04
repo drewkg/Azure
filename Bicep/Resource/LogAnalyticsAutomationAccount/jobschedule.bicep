@@ -5,7 +5,7 @@ param runbook string
 param schedule string
 
 
-resource UpdateAutomationAzureModulesForAccountJobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2022-08-08' = {
+resource UpdateAutomationAzureModulesForAccountJobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2023-11-01' = {
 #disable-next-line use-stable-resource-identifiers
   name: '${automationAccount}/${name}'
   properties: {
