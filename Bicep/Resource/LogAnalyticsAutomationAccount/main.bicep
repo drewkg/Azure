@@ -73,7 +73,7 @@ param resourceNameOverride object = {
   automationAccountName: format(namingConvention, environment, (location == 'EastUS') ? locationShortCodeOverride.EastUS2 : (location == 'EastUS2') ? locationShortCodeOverride.EastUS :  locationShortCodeOverride[location], 'aa')
 }
 
-@description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
+@description('Date for Automation Accounts schedules to start on, defaults to the next day, this should be ALWAYS left as the default.')
 param baseTime string = utcNow('u')
 
 var automationAccountName = resourceNameOverride.automationAccountName
