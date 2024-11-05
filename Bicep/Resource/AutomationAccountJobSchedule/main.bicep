@@ -8,13 +8,18 @@ param _artifactsLocationSasToken string = ''
 @description('Base time for all calculations, default is Now() in UTC')
 param baseTime string = utcNow('u')
 
-@description('The environment tag to provide unique resources between test / production and ephemeral environments.')
-param environment string = 'ObjInt'
-
 @description('The location of the resources created, excluding \'Global\', defaults to the resource group location.')
 param location string = resourceGroup().location
 
-var automationAccountName = 'demo-${environment}-${location}-aa'
+@description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
+@minLength(1)
+@maxLength(15)
+param application string = 'demo'
+
+@description('The environment tag to provide unique resources between test / production and ephemeral environments.')
+param environment string = 'ObjInt'
+
+var automationAccountName = '${application}-${environment}-${location}-aa'
 var add10Minutes = dateTimeAdd(baseTime, 'P10M')
 var add3Years = dateTimeAdd(baseTime, 'P3Y')
 
@@ -27,7 +32,7 @@ resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' 
     }
   }
 
-  resource runbookName 'runbooks' = {
+  resource runbook 'runbooks' = {
     name: 'HelloWorldRunbook'
     location: location
     properties: {
@@ -42,7 +47,7 @@ resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' 
     }
   }
 
-  resource runbookSchedule 'schedules' = {
+  resource Schedule 'schedules' = {
     name: 'RunbookSchedule'
     properties: {
       description: 'Basic Schedule'
@@ -54,14 +59,15 @@ resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' 
     }
   }
 
+  // This has to be a guid, and globally unique. Additionally you cannot reuse a guid if the jobSchedule is deleted.
   resource jobSchedules 'jobSchedules' = {
-    name: guid(runbookSchedule.id)
+    name: guid('${AutomationAccount.id}-${Schedule.id}')
     properties: {
       runbook: {
-        name: runbookName.name
+        name: runbook.name
       }
       schedule: {
-        name: runbookSchedule.name
+        name: Schedule.name
       }
     }
   }
