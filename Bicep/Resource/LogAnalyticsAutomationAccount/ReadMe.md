@@ -11,13 +11,14 @@ The management subscription contains the core log analytics workspace, a linked 
 #### Platform Log Analytics
 ```mermaid
 	architecture-beta
-		group solutions(cloud)[Solutions]
-		group automations(cloud)[Automations]
+		group management(cloud)[Managment]
+		group solutions(cloud)[Solutions] in management
+		group automations(cloud)[Automations] in management
 
-		service loganalytics(server)[Log Analytics Workspace]
-		service lawdiagnostics(server)[Diagnostic Settings]
-		service automationaccount(server)[Automation Account]
-		service aadiagnostics(server)[DiagnosticSettings]
+		service loganalytics(server)[Log Analytics Workspace] in management
+		service lawdiagnostics(server)[Diagnostic Settings] in management
+		service automationaccount(server)[Automation Account] in management
+		service aadiagnostics(server)[Diagnostic Settings] in management
 
 		service azureactivity(server)[Azure Activity] in solutions
 		service azureautomation(server)[Azure Automation] in solutions
@@ -32,9 +33,9 @@ The management subscription contains the core log analytics workspace, a linked 
 		loganalytics:R -- L:lawdiagnostics
 		automationaccount:L -- R:aadiagnostics
 
-		loganalytics:B -- T:azureactivity{group}
+		loganalytics:B --> T:azureactivity{group}
 
-		automationaccount:B -- T:runbook{group}
+		automationaccount:B --> T:runbook{group}
 		schedule:R -- L:link
 		runbook:L -- R:link
 ```
