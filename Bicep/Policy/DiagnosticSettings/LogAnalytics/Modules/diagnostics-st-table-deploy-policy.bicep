@@ -3,7 +3,7 @@ targetScope = 'managementGroup'
 output name string = policy.name
 
 resource policy 'Microsoft.Authorization/policyDefinitions@2024-05-01' = {
-  name: 'diagnostics-st-deploy-policy'
+  name: 'diagnostics-st-table-deploy-policy'
   properties: {
     displayName: 'Deploy Diagnostics & Metrics for Storage Account Table Services to a Log Analytics workspace'
     description: 'Apply diagnostic & metric settings for Storage Account Table Services to stream data to a Log Analytics workspace when any Storage Account which is missing this diagnostic settings is created or updated.'

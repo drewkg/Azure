@@ -1,19 +1,19 @@
 targetScope = 'managementGroup'
 
-module AzureDefenderSubDeployPolicy './Modules/azureDefender-sub-deploy-policy.bicep' = {
+module AzureDefenderSubDeployPolicy '../Modules/azureDefender-sub-deploy-policy.bicep' = {
   name: 'azureDefender-sub-deploy-policy'
 }
 
-module AutoProvisioningSubDeployPolicy './Modules/autoprovisioning-sub-deploy-policy.bicep' = {
+module AutoProvisioningSubDeployPolicy '../Modules/autoprovisioning-sub-deploy-policy.bicep' = {
   name: 'autoprovisioning-sub-deploy-policy'
 }
 
-module WorkspaceSubDeployPolicy './Modules/workspace-sub-deploy-policy.bicep' = {
+module WorkspaceSubDeployPolicy '../Modules/workspace-sub-deploy-policy.bicep' = {
   name: 'workspace-sub-deploy-policy'
 }
 
 resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2024-05-01' = {
-  name: 'diagnostics-loganalytics-deploy-initiative'
+  name: 'securitycenter-deploy-initiative'
   properties: {
     displayName: 'Deploy Configurations for Azure Security Center to a Subscription'
     description: 'Apply configurations of Azure Security Center to a Subscription when the settings are missing or incorrect.'
@@ -175,6 +175,7 @@ resource PolicyDefinition 'Microsoft.Authorization/policySetDefinitions@2024-05-
           strongType: 'omsWorkspace'
           assignPermissions: true
         }
+        defaultValue: ''
       }
     }
     policyDefinitions: [

@@ -30,55 +30,23 @@ param _artifactsLocationSasToken string = ''
   'UKSouth'
   'SwitzerlandNorth'
   'UAENorth'
-  'USGovVirginia'
-  'USGovArizona3'
 ])
 param location string = 'UKSouth'
 
+@description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
+@minLength(1)
+@maxLength(15)
+param application string = 'demo'
+
+@description('The environment tag to provide unique resources between test / production and ephemeral environments.')
 param environment string = 'test'
 
-@description('Allows the override of the default naming convention. If specified there are 3 tags that can be utilized, {0} - the environment type, {1} - the location code and {2} - the resource moniker')
-param namingConvention string = 'platform-{0}-{1}-{2}'
-
-param locationShortCodeOverride object = {
-  EastUS: 'eus'
-  EastUS2: 'eus2'
-  WestUS: 'wus'
-  WestUS2: 'wus2'
-  NorthCentralUS: 'ncus'
-  CentralUS: 'cus'
-  SouthCentralUS: 'scus'
-  WestCentralUS: 'wcus'
-  BrazilSouth: 'bso'
-  CanadaCentral: 'cc'
-  EastAsia: 'ea'
-  SouthEastAsia: 'sea'
-  CentralIndia: 'ci'
-  JapanEast: 'je'
-  AustraliaEast: 'aue'
-  AustraliaSouthEast: 'ause'
-  KoreaCentral: 'krc'
-  NorwayEast: 'nwe'
-  NorthEurope: 'neu'
-  WestEurope: 'weu'
-  FranceCentral: 'frc'
-  UKSouth: 'uks'
-  SwitzerlandNorth: 'szn'
-  UAENorth: 'uan'
-}
-
-@description('Object to allow the overriding of the default naming convention, by specifying the name of each individual resources. If used then all resources need to be defined.')
-param resourceNameOverride object = {
-  logAnalyticsWorkspaceName: format(namingConvention, environment, locationShortCodeOverride[location], 'log')
-  automationAccountName: format(namingConvention, environment, (location == 'EastUS') ? locationShortCodeOverride.EastUS2 : (location == 'EastUS2') ? locationShortCodeOverride.EastUS :  locationShortCodeOverride[location], 'aa')
-}
-
-@description('Date for Automation Accounts schedules to start on, defaults to the next days, this should be ALWAYS left as the default.')
+@description('Date for Automation Accounts schedules to start on, defaults to the next day, this should be ALWAYS left as the default.')
 param baseTime string = utcNow('u')
 
-var automationAccountName = resourceNameOverride.automationAccountName
+var automationAccountName = '${application}-${environment}-${automationAccountLocation}-aa'
 var automationAccountLocation = (location == 'EastUS') ? 'EastUS2' : (location == 'EastUS2') ? 'EastUS' : location
-var logAnalyticsWorkspaceName = resourceNameOverride.logAnalyticsWorkspaceName
+var logAnalyticsWorkspaceName = '${application}-${environment}-${location}-log'
 var scheduleStartDate = dateTimeAdd(baseTime, 'P1D', 'yyyy-MM-dd')
 
 output Subscription string = subscription().subscriptionId
@@ -86,7 +54,7 @@ output ResourceGroup string = resourceGroup().name
 output LogAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
 output AutomationAccountName string = automationAccountName
 
-resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
+resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: logAnalyticsWorkspaceName
   location: location
   properties: {
@@ -99,12 +67,12 @@ resource logAnalyticsWorkspace_resource 'Microsoft.OperationalInsights/workspace
   resource automationLinkedService 'linkedServices@2020-08-01' = {
     name: 'Automation'
     properties: {
-      resourceId: automationAccount_resource.id
+      resourceId: AutomationAccount.id
     }
   }
 }
 
-resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+resource AzureActivitySolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: format('AzureActivity({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
@@ -114,14 +82,14 @@ resource solution_AzureActivity_resource 'Microsoft.OperationsManagement/solutio
     promotionCode: ''
   }
   properties: {
-    workspaceResourceId: logAnalyticsWorkspace_resource.id
+    workspaceResourceId: LogAnalyticsWorkspace.id
     containedResources: [
       resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('AzureActivity({0})', logAnalyticsWorkspaceName))
     ]
   }
 }
 
-resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+resource AzureAutomationSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: format('AzureAutomation({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
@@ -131,14 +99,14 @@ resource solution_AzureAutomation_resource 'Microsoft.OperationsManagement/solut
     promotionCode: ''
   }
   properties: {
-    workspaceResourceId: logAnalyticsWorkspace_resource.id
+    workspaceResourceId: LogAnalyticsWorkspace.id
     containedResources: [
       resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('AzureAutomation({0})', logAnalyticsWorkspaceName))
     ]
   }
 }
 
-resource solution_KeyVault_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+resource KeyVaultSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: format('KeyVaultAnalytics({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
@@ -148,14 +116,14 @@ resource solution_KeyVault_resource 'Microsoft.OperationsManagement/solutions@20
     promotionCode: ''
   }
   properties: {
-    workspaceResourceId: logAnalyticsWorkspace_resource.id
+    workspaceResourceId: LogAnalyticsWorkspace.id
     containedResources: [
       resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('KeyVaultAnalytics({0})', logAnalyticsWorkspaceName))
     ]
   }
 }
 
-resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+resource SecurityCenterFreeSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: format('SecurityCenterFree({0})', logAnalyticsWorkspaceName)
   location: location
   plan: {
@@ -165,7 +133,7 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
     promotionCode: ''
   }
   properties: {
-    workspaceResourceId: logAnalyticsWorkspace_resource.id
+    workspaceResourceId: LogAnalyticsWorkspace.id
     containedResources: [
       resourceId('Microsoft.OperationalInsights/workspaces/views/', logAnalyticsWorkspaceName, format('SecurityCenterFree({0})', logAnalyticsWorkspaceName))
     ]
@@ -175,9 +143,9 @@ resource solution_SecurityCenterFree_resource 'Microsoft.OperationsManagement/so
 #disable-next-line use-recent-api-versions
 resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
-  scope: logAnalyticsWorkspace_resource
+  scope: LogAnalyticsWorkspace
   properties: {
-    workspaceId: logAnalyticsWorkspace_resource.id
+    workspaceId: LogAnalyticsWorkspace.id
     metrics: [
       {
         category: 'AllMetrics'
@@ -201,7 +169,7 @@ resource logAnalyticsDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2
   }
 }
 
-resource automationAccount_resource 'Microsoft.Automation/automationAccounts@2023-11-01' = {
+resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' = {
   name: automationAccountName
   location: automationAccountLocation
   identity: {
@@ -215,6 +183,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
 
   resource UpdateAutomationAzureModulesForAccount 'runbooks' = {
     name: 'Update-AutomationAzureModulesForAccount'
+    location: location
     properties: {
       runbookType: 'PowerShell'
       logProgress: false
@@ -229,6 +198,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
 
   resource UpdateAzurePolicyComplianceState 'runbooks' = {
     name: 'Update-AzurePolicyComplianceState'
+    location: location
     properties: {
       runbookType: 'PowerShell'
       logProgress: false
@@ -256,6 +226,7 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
       }
       frequency: 'Month'
       timeZone: 'Europe/London'
+      interval: any(1)
     }
   }
 
@@ -264,28 +235,18 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
     properties: {
       description: 'Update-AzurePolicyComplianceStateSchedule Daily Schedule'
       startTime: format('{0}T01:00:00Z', scheduleStartDate)
-      advancedSchedule: {
-        weekDays: [
-          'monday'
-          'tuesday'
-          'wednesday'
-          'thursday'
-          'friday'
-          'saturday'
-          'sunday'
-        ]
-      }
       frequency: 'Day'
       timeZone: 'Europe/London'
+      interval: any(1)
     }
   }
 
-  /*resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules@2021-04-01' = {
-    name: guid('${resourceGroup().id}/UpdateAutomationAzureModulesForAccountJobSchedule')
+  resource UpdateAutomationAzureModulesForAccountJobSchedule 'jobSchedules' = {
+    name: guid('${UpdateAutomationAzureModulesForAccount.id}-${UpdateAutomationAzureModulesForAccountSchedule.id}')
     properties: {
       parameters: {
         ResourceGroupName: resourceGroup().name
-        AutomationAccountName: automationAccount_resource.name
+        AutomationAccountName: AutomationAccount.name
       }
       runbook: {
         name: UpdateAutomationAzureModulesForAccount.name
@@ -294,15 +255,15 @@ resource automationAccount_resource 'Microsoft.Automation/automationAccounts@202
         name: UpdateAutomationAzureModulesForAccountSchedule.name
       }
     }
-  }*/
+  }
 }
 
 resource AutomationContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(format('{0}{1}', resourceGroup().id, 'AAMSIAutomationContributorAssignment'))
-  scope: automationAccount_resource
+  scope: AutomationAccount
   properties: {
     description: 'MSI granted Automation Contributor on Automation Account, to manage modules.'
-    principalId: automationAccount_resource.identity.principalId
+    principalId: AutomationAccount.identity.principalId
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')
   }
@@ -310,10 +271,10 @@ resource AutomationContributor 'Microsoft.Authorization/roleAssignments@2022-04-
 
 resource LogAnalyticsContributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(format('{0}{1}', resourceGroup().id, 'AAMSILogAnalyticsContributorAssignment'))
-  scope: logAnalyticsWorkspace_resource
+  scope: LogAnalyticsWorkspace
   properties: {
     description: 'MSI granted Log Analytics Contributor on Log Analytics Workspace, to query shared access keys.'
-    principalId: automationAccount_resource.identity.principalId
+    principalId: AutomationAccount.identity.principalId
     principalType: 'ServicePrincipal'
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
   }
@@ -322,9 +283,9 @@ resource LogAnalyticsContributor 'Microsoft.Authorization/roleAssignments@2022-0
 #disable-next-line use-recent-api-versions
 resource AutomationDiagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: 'diagnosticSettings'
-  scope: automationAccount_resource
+  scope: AutomationAccount
   properties: {
-    workspaceId: logAnalyticsWorkspace_resource.id
+    workspaceId: LogAnalyticsWorkspace.id
     metrics: [
       {
         category: 'AllMetrics'

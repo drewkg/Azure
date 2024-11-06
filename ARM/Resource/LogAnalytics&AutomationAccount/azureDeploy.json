@@ -46,55 +46,18 @@
         "UAENorth"
       ]
 		},
+		"application": {
+			"type": "string",
+			"defaultValue": "demo",
+			"minLength": 1,
+			"maxLength": 15,
+			"metadata": {
+				"description": "The application prefix, used within resource naming to ensure grouping of resources within the Azure portal."
+			}
+		},
     "environment": {
       "type": "string",
       "defaultValue": "prod"
-    },
-    "namingConvention": {
-      "type": "string",
-      "defaultValue": "platform-{0}-{1}-{2}",
-      "metadata": {
-        "description": "Allows the override of the default naming convention. If specified there are 3 tags that can be utilized, {0} - the environment type, {1} - the location code and {2} - the resource moniker"
-      }
-    },
-    "locationShortCodeOverride": {
-      "type": "object",
-      "defaultValue": {
-        "EastUS": "eus",
-        "EastUS2": "eus2",
-        "WestUS": "wus",
-        "WestUS2": "wus2",
-        "NorthCentralUS": "ncus",
-        "CentralUS": "cus",
-        "SouthCentralUS": "scus",
-        "WestCentralUS": "wcus",
-        "BrazilSouth": "bso",
-        "CanadaCentral": "cc",
-        "EastAsia": "ea",
-        "SouthEastAsia": "sea",
-        "CentralIndia": "ci",
-        "JapanEast": "je",
-        "AustraliaEast": "aue",
-        "AustraliaSouthEast": "ause",
-        "KoreaCentral": "krc",
-        "NorwayEast": "nwe",
-        "NorthEurope": "neu",
-        "WestEurope": "weu",
-        "FranceCentral": "frc",
-        "UKSouth": "uks",
-        "SwitzerlandNorth": "szn",
-        "UAENorth": "uan"
-      }
-    },
-    "resourceNameOverride": {
-      "type": "object",
-      "defaultValue": {
-        "logAnalyticsWorkspaceName": "[format(parameters('namingConvention'), parameters('environment'), parameters('locationShortCodeOverride')[parameters('location')], 'log')]",
-        "automationAccountName": "[format(parameters('namingConvention'), parameters('environment'), if(equals(parameters('location'), 'EastUS'), parameters('locationShortCodeOverride')['EastUS2'], if(equals(parameters('location'), 'EastUS2'), parameters('locationShortCodeOverride')['EastUS'], parameters('locationShortCodeOverride')[parameters('location')])), 'aa')]"
-      },
-      "metadata": {
-        "description": "Object to allow the overriding of the default naming convention, by specifying the name of each individual resources.  If used then all resources need to be defined."
-      }
     },
     "baseTime": {
       "type": "string",
@@ -105,9 +68,9 @@
     }
   },
   "variables": {
-    "automationAccountName": "[parameters('resourceNameOverride')['automationAccountName']]",
+    "automationAccountName": "[format('{0}-{1}-{2}-{3}', parameters('application'), parameters('environment'), parameters('location'), 'aa')]",
     "automationAccountLocation": "[if(equals(parameters('location'), 'EastUS'), 'EastUS2', if(equals(parameters('location'), 'EastUS2'), 'EastUS', parameters('location')))]",
-    "logAnalyticsWorkspaceName": "[parameters('resourceNameOverride')['logAnalyticsWorkspaceName']]",
+    "logAnalyticsWorkspaceName": "[format('{0}-{1}-{2}-{3}', parameters('application'), parameters('environment'), parameters('location'), 'log')]",
     "scheduleStartDate": "[dateTimeAdd(parameters('baseTime'), 'P1D', 'yyyy-MM-dd')]"
   },
   "resources": [
@@ -351,11 +314,11 @@
             "frequency": "Day",
             "timezone": "Europe/London"
           }
-        }/*,
+        },
         {
-          "name": "[guid(concat(resourceGroup().id, '/UpdateAutomationAzureModulesForAccountJobSchedule1'))]",
+          "name": "[guid(format('{0}-{1}', resourceId('Microsoft.Automation/automationAccounts/runbooks', variables('automationAccountName'), 'Update-AutomationAzureModulesForAccount'), resourceId('Microsoft.Automation/automationAccounts/schedules', variables('automationAccountName'), 'Update-AutomationAzureModulesForAccountSchedule')))]",
           "type": "jobSchedules",
-          "apiVersion": "2019-06-01",
+          "apiVersion": "2023-11-01",
           "dependsOn": [
             "[variables('automationAccountName')]",
             "Update-AutomationAzureModulesForAccount",
@@ -373,7 +336,7 @@
               "name": "Update-AutomationAzureModulesForAccountSchedule"
             }
           }
-        }*/
+        }
       ]
     },
     {

@@ -13,13 +13,6 @@
       "type": "securestring",
       "defaultValue": ""
     },
-    "environment": {
-			"type": "string",
-			"defaultValue": "ObjInt",
-			"metadata": {
-				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
-			}
-		},
 		"location": {
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]",
@@ -27,6 +20,22 @@
 				"description": "The location of the resources created, excluding 'Global', defaults to the resource group location."
 			}
     },
+		"application": {
+			"type": "string",
+			"defaultValue": "demo",
+			"minLength": 1,
+			"maxLength": 15,
+			"metadata": {
+				"description": "The application prefix, used within resource naming to ensure grouping of resources within the Azure portal."
+			}
+		},
+    "environment": {
+			"type": "string",
+			"defaultValue": "ObjInt",
+			"metadata": {
+				"description":  "The environment tag to provide unique resources between test / production and ephemeral environments."
+			}
+		},
     "baseTime": {
       "type": "string",
       "defaultValue": "[utcNow('u')]",
@@ -35,9 +44,8 @@
       }
     }
 	},
-  	"variables": {
-		"environment": "[parameters('environment')]",
-		"automationAccountName": "[format('demo-{0}-{1}-aa', variables('environment'), parameters('location'))]",
+  "variables": {
+		"automationAccountName": "[format('{0}-{1}-{2}-aa', parameters('application'), parameters('environment'), parameters('location'))]",
     "add10Minutes": "[dateTimeAdd(parameters('baseTime'), 'P10M')]",
     "add3Years": "[dateTimeAdd(parameters('baseTime'), 'P3Y')]"
 	},
@@ -91,7 +99,7 @@
         {
           "type": "jobSchedules",
           "apiVersion": "2023-11-01",
-          "name": "[guid('HelloWorldJobSchedule')]",
+          "name": "[guid(format('{0}-{1}', resourceId('Microsoft.Automation/automationAccounts/runbooks', variables('automationAccountName'), 'HelloWorldRunbook'), resourceId('Microsoft.Automation/automationAccounts/schedules', variables('automationAccountName'), 'RunbookSchedule')))]",
           "dependsOn": [
             "[variables('automationAccountName')]",
             "HelloWorldRunbook",

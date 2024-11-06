@@ -6,30 +6,45 @@ param logAnalyticsSubscription string = ''
 param logAnalyticsResourceGroup string = ''
 param logAnalyticsWorkspace string = ''
 
+resource ContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' existing = {
+  name: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+  scope: tenant()
+}
+
+resource DiagnosticInitiative 'Microsoft.Authorization/policySetDefinitions@2024-05-01' existing = {
+  name: 'diagnostics-loganalytics-deploy-initiative'
+  scope: managementGroup()
+}
+
+resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
+  name: logAnalyticsWorkspace
+  scope: resourceGroup(logAnalyticsSubscription, logAnalyticsResourceGroup)
+}
+
 resource diagnosticsAssignmentName 'Microsoft.Authorization/policyAssignments@2024-05-01' = {
-  name: substring(replace(guid(format('Diagnostics & Metrics (MG {0})', managementGroup().name)), '-', ''), 0, 24)
+  name: substring(replace(guid('Diagnostics & Metrics (MG ${managementGroup().name})'), '-', ''), 0, 24)
   location: location
   scope: managementGroup()
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    displayName: format('Diagnostics & Metrics (MG {0})', managementGroup().name)
+    displayName: 'Diagnostics & Metrics (MG ${managementGroup().name})'
     description: 'Apply diagnostic & metric settings for Azure Resources to stream data to a Log Analytics workspace when any Azure Resource which is missing this diagnostic settings is created or updated.'
-    policyDefinitionId: extensionResourceId(managementGroup().id, 'Microsoft.Authorization/policySetDefinitions', 'diagnostics-loganalytics-deploy-initiative')
+    policyDefinitionId: DiagnosticInitiative.id
     parameters: {
       logAnalytics: {
-        value: format('/subscriptions/{0}/resourceGroups/{1}/providers/Microsoft.OperationalInsights/workspaces/{2}', logAnalyticsSubscription, logAnalyticsResourceGroup, logAnalyticsWorkspace)
+        value: LogAnalyticsWorkspace.id
       }
     }
   }
 }
 
 resource diagnosticsContributorRBACName 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(format('Diagnostics & Metrics (MG {0}) Contributor Assignment', managementGroup().id))
+  name: guid('Diagnostics & Metrics (MG ${managementGroup().id}) Contributor Assignment')
   scope: managementGroup()
   properties: {
-    roleDefinitionId: tenantResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+    roleDefinitionId: ContributorRole.id
     principalId: diagnosticsAssignmentName.identity.principalId
     principalType: 'ServicePrincipal'
   }
