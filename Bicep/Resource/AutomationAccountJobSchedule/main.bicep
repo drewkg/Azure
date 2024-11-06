@@ -32,7 +32,7 @@ resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' 
     }
   }
 
-  resource runbook 'runbooks' = {
+  resource Runbook 'runbooks' = {
     name: 'HelloWorldRunbook'
     location: location
     properties: {
@@ -61,10 +61,10 @@ resource AutomationAccount 'Microsoft.Automation/automationAccounts@2023-11-01' 
 
   // This has to be a guid, and globally unique. Additionally you cannot reuse a guid if the jobSchedule is deleted.
   resource jobSchedules 'jobSchedules' = {
-    name: guid('${AutomationAccount.id}-${Schedule.id}')
+    name: guid('${Runbook.id}-${Schedule.id}')
     properties: {
       runbook: {
-        name: runbook.name
+        name: Runbook.name
       }
       schedule: {
         name: Schedule.name
