@@ -20,7 +20,7 @@ param vnetAddressCidr array = ['10.0.0.0/24']
 
 var hubVNetName = '${application}-${environment}-${location}-vnet'
 var azureFirewallRouteTableName = '${application}-${environment}-${location}-azurefirewall-rt'
-var azureBastionSecurityGroupName = '${application}-${environment}-${location}-azurebastion-rt'
+var azureBastionSecurityGroupName = '${application}-${environment}-${location}-azurebastion-nsg'
 var DNSInboundSecurityGroupName = '${application}-${environment}-${location}-dnsinbound-nsg'
 var DNSOutboundSecurityGroupName = '${application}-${environment}-${location}-dnsoutbound-nsg'
 
