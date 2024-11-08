@@ -93,6 +93,14 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
     name: 'DNSInboundSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.DNSInboundSubnet
+      delegations: [
+        {
+          name: 'Microsoft.Network.dnsResolvers'
+          properties: {
+            serviceName: 'Microsoft.Network/dnsResolvers'
+          }
+        }
+      ]
       networkSecurityGroup: {
         id: DNSInboundSecurityGroup.id
       }
@@ -108,6 +116,14 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
     name: 'DNSOutboundSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.DNSOutboundSubnet
+      delegations: [
+        {
+          name: 'Microsoft.Network.dnsResolvers'
+          properties: {
+            serviceName: 'Microsoft.Network/dnsResolvers'
+          }
+        }
+      ]
       networkSecurityGroup: {
         id: DNSOutboundSecurityGroup.id
       }
