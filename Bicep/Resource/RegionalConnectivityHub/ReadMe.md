@@ -10,39 +10,38 @@ Some reasons for selecting the more traditional approach include
 ## Services on Offer
 Some of the services offered in a hub may include
 - STS VPN
+- PTS VPN
 - Azure Firewall
 - Express Route
 - Azure Bastion
 - Custom DNS Implementation
 
-#### Platform Log Analytics
+#### VNet Connected Services
 ```mermaid
 	architecture-beta
-		group management(cloud)[Managment]
-		group solutions(cloud)[Solutions] in management
-		group automations(cloud)[Automations] in management
+		group hub(cloud)[Regional Hub]
+		group dnsgroup(cloud)[DNS Resolver] in hub
 
-		service loganalytics(server)[Log Analytics Workspace] in management
-		service lawdiagnostics(server)[Diagnostic Settings] in management
-		service automationaccount(server)[Automation Account] in management
-		service aadiagnostics(server)[Diagnostic Settings] in management
+		service network(server)[Virtual Network] in hub
+		service bastion(server)[Azure Bastion] in hub
+		service firewall(server)[Azure Firewall] in hub
+		service route(server)[Azure Route Server] in hub
+		service dns(server)[DNS Resolver] in dnsgroup
+		service inbound(server)[Inbound Endpoint] in dnsgroup
+		service outbound(server)[Outbound Endpoint] in dnsgroup
 
-		service azureactivity(server)[Azure Activity] in solutions
-		service azureautomation(server)[Azure Automation] in solutions
-		service keyvault(server)[KeyVault] in solutions
-		service SecurityCenter(server)[Security Centre] in solutions
+		junction vnet1 in hub
+		junction vnet2 in hub
+		junction dns1 in dnsgroup
 
-		service runbook(server)[Runbook] in automations
-		service schedule(server)[Schedule] in automations
-		service link(server)[Job Schedule Link] in automations
+		network:B -- T:vnet1
+		vnet1:L --> R:firewall
+		vnet1:B --> T:bastion
+		vnet1:R -- L:vnet2
+		vnet2:B --> T:route
+		vnet2:R --> L:dns
+		dns:B -- T:dns1
+		dns1:R --> L:inbound
+		dns1:B --> T:outbound
 
-		loganalytics:L <--> R:automationaccount
-		loganalytics:R -- L:lawdiagnostics
-		automationaccount:L -- R:aadiagnostics
-
-		loganalytics:B --> T:azureactivity{group}
-
-		automationaccount:B --> T:runbook{group}
-		schedule:R -- L:link
-		runbook:L -- R:link
 ```
