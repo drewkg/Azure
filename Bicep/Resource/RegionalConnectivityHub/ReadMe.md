@@ -25,10 +25,14 @@ Some of the services offered in a hub may include
 		group dnsgroup(cloud)[DNS Resolver] in hub
 
 		service network(server)[Virtual Network] in hub
+		service ipprefix(server)[IP Prefix] in hub
 		service bastion(server)[Azure Bastion] in hub
 		service firewall(server)[Azure Firewall] in firewallgroup
 		service firewallip(server)[Firewall IP] in firewallgroup
 		service route(server)[Azure Route Server] in hub
+
+		service sts(server)[Azure STS] in gatewaygroup
+		service express(server)[Azure Express Route] in gatewaygroup
 
 		service localpolicy(server)[local Policy] in firewallgroup
 		service globalpolicy(server)[local Policy] in firewallgroup
@@ -41,7 +45,10 @@ Some of the services offered in a hub may include
 		junction vnet2 in hub
 		junction dns1 in dnsgroup
 
+%%		firewallip:T -- B:ipprefix
+
 		network:B -- T:vnet1
+		network:T -- B:sts{group}
 		vnet1:L --> R:firewall
 		firewall:L <-- R:firewallip
 		firewall:B --> T:localpolicy
