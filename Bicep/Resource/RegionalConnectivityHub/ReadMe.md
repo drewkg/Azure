@@ -20,6 +20,7 @@ Some of the services offered in a hub may include
 ```mermaid
 	architecture-beta
 		group hub(cloud)[Regional Hub]
+
 		group firewallgroup(cloud)[Azure Firewall] in hub
 		group gatewaygroup(cloud)[External Gateways] in hub
 		group dnsgroup(cloud)[DNS Resolver] in hub
@@ -27,13 +28,13 @@ Some of the services offered in a hub may include
 		service network(server)[Virtual Network] in hub
 		service ipprefix(server)[IP Prefix] in hub
 		service bastion(server)[Azure Bastion] in hub
-		service firewall(server)[Azure Firewall] in firewallgroup
-		service firewallip(server)[Firewall IP] in firewallgroup
 		service route(server)[Azure Route Server] in hub
 
 		service sts(server)[Azure STS] in gatewaygroup
 		service express(server)[Azure Express Route] in gatewaygroup
 
+		service firewall(server)[Azure Firewall] in firewallgroup
+		service firewallip(server)[Firewall IP] in firewallgroup
 		service localpolicy(server)[local Policy] in firewallgroup
 		service globalpolicy(server)[local Policy] in firewallgroup
 
