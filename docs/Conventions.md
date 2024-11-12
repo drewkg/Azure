@@ -1,6 +1,6 @@
 # Azure Conventions
 
->Microsoft Cloud Adoption proposed naming convention can be found [here](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
+> Microsoft Cloud Adoption proposed naming convention can be found [here](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming)
 
 ## Resource Naming
 

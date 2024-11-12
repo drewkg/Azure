@@ -1,15 +1,8 @@
-# Azure Locations
-
-As part of the Azure naming conventions used within this repository all resources have a location code, an abbreviation of the Azure Resource Location.
-This page can be used to check the current Azure Locations and short code used.  Not all services, or options, are available in all regions.
-
-Only the locations, that you can create resources in have a short code.
-
-## Azure Resources
+# Azure Resources
 
 Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
-### General
+## General
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -22,7 +15,7 @@ Resource group | Microsoft.Resources/resourceGroups| rg
 Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
 Subscription | Microsoft.Subscription/aliases | sub
 
-### Networking
+## Networking
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -66,7 +59,7 @@ Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
 Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
 Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
 
-### Compute and Web
+## Compute and Web
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -91,7 +84,7 @@ Virtual machine scale set | Microsoft.Compute/virtualMachineScaleSets | vmss
 VM storage account | Microsoft.Storage/storageAccounts | stvm
 Web app | Microsoft.Web/sites | app
 
-### Containers
+## Containers
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -100,7 +93,7 @@ Container registry | Microsoft.ContainerRegistry/registries | cr
 Container instance | Microsoft.ContainerInstance/containerGroups | ci
 Service Fabric cluster | Microsoft.ServiceFabric/clusters | sf
 
-### Databases
+## Databases
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -119,14 +112,14 @@ SQL Elastic Pool | Microsoft.Sql/servers/elasticPools | sqlel
 SQL Managed Instance | Microsoft.Sql/managedInstances | sqlmi
 SQL Managed Instance database | Microsoft.Sql/managedInstances/databases | sqlmidb
 
-### Storage
+## Storage
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
 Storage account | Microsoft.Storage/storageAccounts | st
 Azure StorSimple | Microsoft.StorSimple/managers | ssimp
 
-### AI and Machine Learning
+## AI and Machine Learning
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -134,7 +127,7 @@ Azure Cognitive Search | Microsoft.Search/searchServices | srch
 Azure Cognitive Services | Microsoft.CognitiveServices/accounts | cog
 Azure Machine Learning workspace | Microsoft.MachineLearningServices/workspaces | mlw
 
-### Analytics and IoT
+## Analytics and IoT
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -163,7 +156,7 @@ Provisioning services certificate | Microsoft.Devices/provisioningServices/certi
 Power BI Embedded | Microsoft.PowerBIDedicated/capacities | pbi
 Time Series Insights environment | Microsoft.TimeSeriesInsights/environments | tsi
 
-### Developer tools
+## Developer tools
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -171,7 +164,7 @@ App Configuration store | Microsoft.AppConfiguration/configurationStores | appcs
 Azure Static Web Apps | Microsoft.Web/sites | stap
 SignalR | Microsoft.SignalRService/SignalR | sigr
 
-### Integration
+## Integration
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -181,7 +174,7 @@ Service Bus | Microsoft.ServiceBus/namespaces | sb
 Service Bus queue | Microsoft.ServiceBus/namespaces/queues | sbq
 Service Bus topic | Microsoft.ServiceBus/namespaces/topics | sbt
 
-### Management and governance
+## Management and governance
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -196,7 +189,7 @@ Log Analytics workspace | Microsoft.OperationalInsights/workspaces | log
 Metric Alerts | Microsoft.Insights/metricAlerts | ma
 Web Availability Request | Microsoft.Insights/webtests | wt
 
-### Migration
+## Migration
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
@@ -204,7 +197,7 @@ Azure Migrate project | Microsoft.Migrate/assessmentProjects | migr
 Database Migration Service instance | Microsoft.DataMigration/services | dms
 Recovery Services vault | Microsoft.RecoveryServices/vaults | rsv
 
-### Deprecated product names
+## Deprecated product names
 
 Asset type | Resource provider namespace/Entity | Abbreviation
 ---------- | ---------------------------------- | ------------
