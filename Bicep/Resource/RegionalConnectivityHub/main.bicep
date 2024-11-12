@@ -19,10 +19,10 @@ param environment string = 'test'
 param vnetAddressCidr array = ['10.0.0.0/24']
 
 var hubVNetName = '${application}-${environment}-${location}-vnet'
-var azureFirewallRouteTableName = '${application}-${environment}-${location}-azurefirewall-rt'
-var azureBastionSecurityGroupName = '${application}-${environment}-${location}-azurebastion-nsg'
-var DNSInboundSecurityGroupName = '${application}-${environment}-${location}-dnsinbound-nsg'
-var DNSOutboundSecurityGroupName = '${application}-${environment}-${location}-dnsoutbound-nsg'
+var azureFirewallRouteTableName = '${application}-${environment}-${location}-rt-azurefirewall'
+var azureBastionSecurityGroupName = '${application}-${environment}-${location}-nsg-azurebastion'
+var DNSInboundSecurityGroupName = '${application}-${environment}-${location}-nsg-dnsinbound'
+var DNSOutboundSecurityGroupName = '${application}-${environment}-${location}-nsg-dnsoutbound'
 
 var vnetCidrRanges = {
   AzureFirewallSubnet: cidrSubnet(hubVNet.properties.addressSpace.addressPrefixes[0], 26, 0)
