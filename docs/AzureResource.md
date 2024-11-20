@@ -25,8 +25,9 @@ Bastion | Microsoft.Network/bastionHosts | bas
 CDN profile | Microsoft.Cdn/profiles | cdnp
 CDN endpoint | Microsoft.Cdn/profiles/endpoints | cdne
 Connections | Microsoft.Network/connections | con
-DNS | Microsoft.Network/dnsZones | dnsz
-DNS zone | Microsoft.Network/privateDnsZones | pdnsz
+DNS private resolver | Microsoft.Network/dnsResolvers | dnspr
+Public DNS zone | Microsoft.Network/dnsZones | \<DNS domain name>
+Private DNS zone | Microsoft.Network/privateDnsZones | \<DNS domain name>
 Firewall | Microsoft.Network/azureFirewalls | afw
 ExpressRoute circuit | Microsoft.Network/expressRouteCircuits | erc
 Front Door instance | Microsoft.Network/frontDoors | fd
