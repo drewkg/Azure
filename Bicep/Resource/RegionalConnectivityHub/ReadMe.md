@@ -26,12 +26,13 @@ Some of the services offered in a hub may include
   architecture-beta
     group hub(cloud)[Regional Hub]
 
+    group vnetgroup(cloud)[VNet] in hub
     group firewallgroup(cloud)[Azure Firewall] in hub
     group gatewaygroup(cloud)[External Gateways] in hub
     group dnsgroup(cloud)[DNS Resolver] in hub
 
-    service network(server)[Virtual Network] in hub
-    service ipprefix(server)[IP Prefix] in hub
+    service network(server)[Virtual Network] in vnetgroup
+    service ipprefix(server)[IP Prefix] in vnetgroup
     service bastion(server)[Azure Bastion] in hub
     service route(server)[Azure Route Server] in hub
 
@@ -51,7 +52,7 @@ Some of the services offered in a hub may include
     junction vnet2 in hub
     junction dns1 in dnsgroup
 
-%%    firewallip:T -- B:ipprefix
+ %%   firewallip:T -- B:ipprefix
 
     network:B -- T:vnet1
     network:T -- B:sts{group}
