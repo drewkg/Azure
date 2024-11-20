@@ -41,8 +41,8 @@ Some of the services offered in a hub may include
 
     service firewall(server)[Azure Firewall] in firewallgroup
     service firewallip(server)[Firewall IP] in firewallgroup
-    service localpolicy(server)[local Policy] in firewallgroup
-    service globalpolicy(server)[local Policy] in firewallgroup
+    service localpolicy(server)[Local Policy] in firewallgroup
+    service globalpolicy(server)[Global Policy] in firewallgroup
 
     service dns(server)[DNS Resolver] in dnsgroup
     service inbound(server)[Inbound Endpoint] in dnsgroup
