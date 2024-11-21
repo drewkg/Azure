@@ -15,7 +15,7 @@ Placing the resource extension at the end of the naming convention, which is dif
 [Networking](#networking)\
 [Security](#security)\
 [Storage](#storage)\
-[Virtual desktop infrastructure](#virtual-desktop-infrastructure)
+[Virtual Desktop Infrastructure](#virtual-desktop-infrastructure)
 
 ## AI + Machine Learning
 
@@ -290,7 +290,7 @@ File share | Microsoft.Storage/storageAccounts/fileServices/shares | share
 Storage account | Microsoft.Storage/storageAccounts | st
 Storage Sync Service name | Microsoft.StorageSync/storageSyncServices | sss
 
-## Virtual desktop infrastructure
+## Virtual Desktop Infrastructure
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
