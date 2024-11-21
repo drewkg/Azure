@@ -2,12 +2,16 @@
 
 Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
-[AI + machine learning](#AI)\
-[Analytics and IoT](#Analytics)\
+<!-- markdownlint-disable MD051 -->
+[AI + machine learning](#user-content-ai--machine-learning)\
+[Analytics and IoT](#user-content-analytics)\
 [Compute and web](#user-content-compute-and-web)\
-[Networking](#Networking)
-
-<a id="AI" />
+[Containers](#user-content-containers)\
+[Databases](#user-content-databases)\
+[Developer Tools](user-content-developer-tools)\
+[Integration](#integration)
+[Networking](#user-content-networking)
+<!-- markdownlint-enable MD051 -->
 
 ## AI + machine learning
 
@@ -33,8 +37,6 @@ Immersive reader | Microsoft.CognitiveServices/accounts (kind: ImmersiveReader) 
 Language service | Microsoft.CognitiveServices/accounts (kind: TextAnalytics) | lang
 Speech service | Microsoft.CognitiveServices/accounts (kind: SpeechServices) | spch
 Translator | Microsoft.CognitiveServices/accounts (kind: TextTranslation) | trsl
-
-<a id="Analytics" />
 
 ## Analytics and IoT
 
@@ -84,7 +86,99 @@ Resource group | Microsoft.Resources/resourceGroups| rg
 Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
 Subscription | Microsoft.Subscription/aliases | sub
 
-<a id="Networking" />
+## Compute and Web
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+App Service environment | Microsoft.Web/sites | ase
+App Service plan | Microsoft.Web/serverFarms | asp
+Azure Load Testing instance | Microsoft.LoadTestService/loadTests | lt
+Availability set | Microsoft.Compute/availabilitySets | avail
+Azure Arc enabled server | Microsoft.HybridCompute/machines | arcs
+Azure Arc enabled Kubernetes cluster | Microsoft.Kubernetes/connectedClusters | arck
+Azure Arc private link scope | Microsoft.HybridCompute/privateLinkScopes | pls
+Batch Account | Microsoft.Batch/batchAccounts | batch
+Cloud service | Microsoft.Compute/cloudServices | cld
+Communication Services | Microsoft.Communication/communicationServices | acs
+Disk encryption set | Microsoft.Compute/diskEncryptionSets | des
+Function app | Microsoft.Web/sites | func
+Gallery | Microsoft.Compute/galleries | gal
+Hosting environment | Microsoft.Web/hostingEnvironments | host
+Image template | Microsoft.VirtualMachineImages/imageTemplates | it
+Managed disk (OS) | Microsoft.Compute/disks | osdisk
+Managed disk (data) | Microsoft.Compute/disks | disk
+Notification Hubs | Microsoft.NotificationHubs/namespaces/notificationHubs | ntf
+Notification Hubs namespace | Microsoft.NotificationHubs/namespaces | ntfns
+Proximity placement group | Microsoft.Compute/proximityPlacementGroups | ppg
+Restore point collection | Microsoft.Compute/restorePointCollections | rpc
+Snapshot | Microsoft.Compute/snapshots | snap
+Static web app | Microsoft.Web/sites | stapp
+Virtual machine | Microsoft.Compute/virtualMachines | vm
+Virtual machine scale set | Microsoft.Compute/virtualMachineScaleSets | vmss
+VM storage account | Microsoft.Storage/storageAccounts | stvm
+Web app | Microsoft.Web/sites | app
+
+## Containers
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+AKS cluster | Microsoft.ContainerService/managedClusters | aks
+AKS system node pool | Microsoft.ContainerService/managedClusters/agentPools (mode: System) | npsystem
+AKS user node pool | Microsoft.ContainerService/managedClusters/agentPools (mode: User) | np
+Container apps | Microsoft.App/containerApps | ca
+Container apps environment | Microsoft.App/managedEnvironments | cae
+Container registry | Microsoft.ContainerRegistry/registries | cr
+Container instance | Microsoft.ContainerInstance/containerGroups | ci
+Service Fabric cluster | Microsoft.ServiceFabric/clusters | sf
+Service Fabric managed cluster | Microsoft.ServiceFabric/managedClusters | sfmc
+
+## Databases
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Azure Cosmos DB database | Microsoft.DocumentDB/databaseAccounts/sqlDatabases | cosmos
+Azure Cosmos DB for Apache Cassandra account | Microsoft.DocumentDB/databaseAccounts | coscas
+Azure Cosmos DB for MongoDB account | Microsoft.DocumentDB/databaseAccounts | cosmon
+Azure Cosmos DB for NoSQL account | Microsoft.DocumentDb/databaseAccounts | cosno
+Azure Cosmos DB for Table account | Microsoft.DocumentDb/databaseAccounts | costab
+Azure Cosmos DB for Apache Gremlin account | Microsoft.DocumentDb/databaseAccounts | cosgrm
+Azure Cosmos DB PostgreSQL cluster | Microsoft.DBforPostgreSQL/serverGroupsv2 | cospos
+Azure Cache for Redis instance | Microsoft.Cache/Redis | redis
+Azure SQL Database server | Microsoft.Sql/servers | sql
+Azure SQL database | Microsoft.Sql/servers/databases | sqldb
+Azure SQL Elastic Job agent | Microsoft.Sql/servers/jobAgents | sqlja
+Azure SQL Elastic Pool | Microsoft.Sql/servers/elasticpool | sqlep
+MariaDB server | Microsoft.DBforMariaDB/servers | maria
+MariaDB database | Microsoft.DBforMariaDB/servers/databases | mariadb
+MySQL database | Microsoft.DBforMySQL/servers | mysql
+PostgreSQL database | Microsoft.DBforPostgreSQL/servers | psql
+SQL Server Stretch Database | Microsoft.Sql/servers/databases | sqlstrdb
+SQL Managed Instance | Microsoft.Sql/managedInstances | sqlmi
+
+## Developer Tools
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+App Configuration store | Microsoft.AppConfiguration/configurationStores | appcs
+Maps account | Microsoft.Maps/accounts | map
+SignalR | Microsoft.SignalRService/SignalR | sigr
+WebPubSub | Microsoft.SignalRService/webPubSub | wps
+
+## DevOps
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Azure Managed Grafana | Microsoft.Dashboard/grafana | amg
+
+## Integration
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Integration account | Microsoft.Logic/integrationAccounts | ia
+Logic apps | Microsoft.Logic/workflows | logic
+Service Bus | Microsoft.ServiceBus/namespaces | sb
+Service Bus queue | Microsoft.ServiceBus/namespaces/queues | sbq
+Service Bus topic | Microsoft.ServiceBus/namespaces/topics | sbt
 
 ## Networking
 
@@ -131,120 +225,12 @@ Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
 Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
 Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
 
-## Compute and Web
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-App Service environment | Microsoft.Web/sites | ase
-App Service plan | Microsoft.Web/serverFarms | plan
-Availability set | Microsoft.Compute/availabilitySets | avail
-Azure Arc enabled server | Microsoft.HybridCompute/machines | arcs
-Azure Arc enabled Kubernetes cluster | Microsoft.Kubernetes/connectedClusters | arck
-Batch Account | Microsoft.Batch/batchAccounts | batch
-Cloud service | Microsoft.Compute/cloudServices | cld
-Disk encryption set | Microsoft.Compute/diskEncryptionSets | des
-Function app | Microsoft.Web/sites | func
-Gallery | Microsoft.Compute/galleries | gal
-Managed disk (OS) | Microsoft.Compute/disks | osdisk
-Managed disk (data) | Microsoft.Compute/disks | disk
-Notification Hubs | Microsoft.NotificationHubs/namespaces/notificationHubs | ntf
-Notification Hubs namespace | Microsoft.NotificationHubs/namespaces | ntfns
-Snapshot | Microsoft.Compute/snapshots | snap
-Static web app | Microsoft.Web/sites | stapp
-Virtual machine | Microsoft.Compute/virtualMachines | vm
-Virtual machine scale set | Microsoft.Compute/virtualMachineScaleSets | vmss
-VM storage account | Microsoft.Storage/storageAccounts | stvm
-Web app | Microsoft.Web/sites | app
-
-## Containers
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-AKS cluster | Microsoft.ContainerService/managedClusters | aks
-Container registry | Microsoft.ContainerRegistry/registries | cr
-Container instance | Microsoft.ContainerInstance/containerGroups | ci
-Service Fabric cluster | Microsoft.ServiceFabric/clusters | sf
-
-## Databases
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Azure Cosmos DB database | Microsoft.DocumentDB/databaseAccounts/sqlDatabases | cosmos
-Azure Cache for Redis instance | Microsoft.Cache/Redis | redis
-Azure SQL Database server | Microsoft.Sql/servers | sql
-Azure SQL database | Microsoft.Sql/servers/databases | sqldb
-Azure Synapse Analytics | Microsoft.Synapse/workspaces | syn
-Azure Synapse Analytics Workspaces | Microsoft.Synapse/workspaces | syn
-Azure Synapse Analytics SQL Dedicated Pool | Microsoft.Synapse/workspaces/sqlPools | syndw
-Azure Synapse Analytics Spark Pool | Microsoft.Synapse/workspaces/sqlPools | synspark
-MySQL database | Microsoft.DBforMySQL/servers | mysql
-PostgreSQL database | Microsoft.DBforPostgreSQL/servers | psql
-SQL Server Stretch Database | Microsoft.Sql/servers/databases | sqlstrdb
-SQL Elastic Pool | Microsoft.Sql/servers/elasticPools | sqlel
-SQL Managed Instance | Microsoft.Sql/managedInstances | sqlmi
-SQL Managed Instance database | Microsoft.Sql/managedInstances/databases | sqlmidb
-
 ## Storage
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
 Storage account | Microsoft.Storage/storageAccounts | st
 Azure StorSimple | Microsoft.StorSimple/managers | ssimp
-
-## AI and Machine Learning
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Azure Cognitive Search | Microsoft.Search/searchServices | srch
-Azure Cognitive Services | Microsoft.CognitiveServices/accounts | cog
-Azure Machine Learning workspace | Microsoft.MachineLearningServices/workspaces | mlw
-
-## Analytics and IoT
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Azure Analysis Services server | Microsoft.AnalysisServices/servers | as
-Azure Databricks workspace | Microsoft.Databricks/workspaces | dbw
-Azure Stream Analytics | Microsoft.StreamAnalytics/cluster | asa
-Azure Data Explorer cluster | Microsoft.Kusto/clusters | dec
-Azure Data Explorer cluster database | Microsoft.Kusto/clusters/databases | dedb
-Azure Data Factory | Microsoft.DataFactory/factories | adf
-Data Lake Store account | Microsoft.DataLakeStore/accounts | dls
-Data Lake Analytics account | Microsoft.DataLakeAnalytics/accounts | dla
-Event Hubs namespace | Microsoft.EventHub/namespaces | evhns
-Event hub | Microsoft.EventHub/namespaces/eventHubs | evh
-Event Grid domain | Microsoft.EventGrid/domains | evgd
-Event Grid topic | Microsoft.EventGrid/domains/topics | evgt
-Event Grig subscription | Microsoft.EventGrid/eventSubscriptions | esub
-HDInsight - Hadoop cluster | Microsoft.HDInsight/clusters | hadoop
-HDInsight - HBase cluster | Microsoft.HDInsight/clusters | hbase
-HDInsight - Kafka cluster | Microsoft.HDInsight/clusters | kafka
-HDInsight - Spark cluster | Microsoft.HDInsight/clusters | spark
-HDInsight - Storm cluster | Microsoft.HDInsight/clusters | storm
-HDInsight - ML Services cluster | Microsoft.HDInsight/clusters | mls
-IoT hub | Microsoft.Devices/IotHubs | iot
-Provisioning services | Microsoft.Devices/provisioningServices | provs
-Provisioning services certificate | Microsoft.Devices/provisioningServices/certificates | pcert
-Power BI Embedded | Microsoft.PowerBIDedicated/capacities | pbi
-Time Series Insights environment | Microsoft.TimeSeriesInsights/environments | tsi
-
-## Developer tools
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-App Configuration store | Microsoft.AppConfiguration/configurationStores | appcs
-Azure Static Web Apps | Microsoft.Web/sites | stap
-SignalR | Microsoft.SignalRService/SignalR | sigr
-
-## Integration
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Integration account | Microsoft.Logic/integrationAccounts | ia
-Logic apps | Microsoft.Logic/workflows | logic
-Service Bus | Microsoft.ServiceBus/namespaces | sb
-Service Bus queue | Microsoft.ServiceBus/namespaces/queues | sbq
-Service Bus topic | Microsoft.ServiceBus/namespaces/topics | sbt
 
 ## Management and governance
 
