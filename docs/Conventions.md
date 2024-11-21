@@ -31,7 +31,7 @@ Azure Policies use a separate convention as they not only affect a resouce type 
 
 Except for the resources listed in the exclusions, all Azure resources should use the following naming convention.
 
-> \<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<* Usage>-\<* Instance>\
+> \<Application>-\<Environment>-\<AzureRegion>-\<ResourceType>-\<\* Usage>-\<\* Instance>\
 > \* - denotes an optional field
 
 \<Application> - A short code for the application.\
@@ -42,13 +42,19 @@ Except for the resources listed in the exclusions, all Azure resources should us
 \<Instance> - Optional, a 3 or 4 digit instance number where there might be multiple resources e.g. multiple App Services.\
 
 #### Exclusions
+
 * Storage Accounts,
   * limitation only AlphaNumeric characters in the name
   * maximum length of 24 characters
+
+## Azure Resources
+
+Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
 ## Locations
 
 See [Azure Locations](./Locations.md) for more information, and a list of known locations plus their short codes.
 
 ## Azure Resource
+
 See [Azure Resources](./AzureResource.md) for more informaiton, and a list of resource short code's.

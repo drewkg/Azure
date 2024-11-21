@@ -1,7 +1,5 @@
 # Azure Resources
 
-Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
-
 [AI + Machine Learning](#ai--machine-learning)\
 [Analytics and IoT](#analytics-and-iot)\
 [Compute and Web](#compute-and-web)\
@@ -16,6 +14,8 @@ Placing the resource extension at the end of the naming convention, which is dif
 [Security](#security)\
 [Storage](#storage)\
 [Virtual Desktop Infrastructure](#virtual-desktop-infrastructure)
+
+Based on [Abbreviation recommendations for Azure resources](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations)
 
 ## AI + Machine Learning
 
@@ -212,12 +212,12 @@ Application security group (ASG) | Microsoft.Network/applicationSecurityGroups |
 CDN profile | Microsoft.Cdn/profiles | cdnp
 CDN endpoint | Microsoft.Cdn/profiles/endpoints | cdne
 Connections | Microsoft.Network/connections | con
-DNS | Microsoft.Network/dnsZones | <DNS domain name>
+DNS | Microsoft.Network/dnsZones | \<DNS domain name>
 DNS forwarding ruleset | Microsoft.Network/dnsForwardingRulesets | dnsfrs
 DNS private resolver | Microsoft.Network/dnsResolvers | dnspr
 DNS private resolver inbound endpoint | Microsoft.Network/dnsResolvers/inboundEndpoints | in
 DNS private resolver outbound endpoint | Microsoft.Network/dnsResolvers/outboundEndpoints | out
-DNS zone | Microsoft.Network/privateDnsZones | <DNS domain name>
+DNS zone | Microsoft.Network/privateDnsZones | \<DNS domain name>
 Firewall | Microsoft.Network/azureFirewalls | afw
 Firewall policy | Microsoft.Network/firewallPolicies | afwp
 ExpressRoute circuit | Microsoft.Network/expressRouteCircuits | erc
