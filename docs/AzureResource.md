@@ -2,16 +2,14 @@
 
 Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
-<!-- markdownlint-disable MD051 -->
-[AI + machine learning](#user-content-ai--machine-learning)\
-[Analytics and IoT](#user-content-analytics)\
-[Compute and web](#user-content-compute-and-web)\
-[Containers](#user-content-containers)\
-[Databases](#user-content-databases)\
-[Developer Tools](user-content-developer-tools)\
-[Integration](#integration)
-[Networking](#user-content-networking)
-<!-- markdownlint-enable MD051 -->
+[AI + machine learning](#ai--machine-learning)\
+[Analytics and IoT](#analytics-and-iot)\
+[Compute and web](#compute-and-web)\
+[Containers](#containers)\
+[Databases](#databases)\
+[Developer Tools](#developer-tools)\
+[Integration](#integration)\
+[Networking](#networking)
 
 ## AI + machine learning
 
