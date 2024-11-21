@@ -214,6 +214,7 @@ CDN endpoint | Microsoft.Cdn/profiles/endpoints | cdne
 Connections | Microsoft.Network/connections | con
 DNS | Microsoft.Network/dnsZones | \<DNS domain name>
 DNS forwarding ruleset | Microsoft.Network/dnsForwardingRulesets | dnsfrs
+DNS forwarding ruleset network link | Microsoft.Network/dnsForwardingRulesets/virtualNetworkLinks | dnsfrslnk
 DNS private resolver | Microsoft.Network/dnsResolvers | dnspr
 DNS private resolver inbound endpoint | Microsoft.Network/dnsResolvers/inboundEndpoints | in
 DNS private resolver outbound endpoint | Microsoft.Network/dnsResolvers/outboundEndpoints | out
