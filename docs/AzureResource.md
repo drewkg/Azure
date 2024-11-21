@@ -2,16 +2,22 @@
 
 Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
-[AI + machine learning](#ai--machine-learning)\
+[AI + Machine Learning](#ai--machine-learning)\
 [Analytics and IoT](#analytics-and-iot)\
-[Compute and web](#compute-and-web)\
+[Compute and Web](#compute-and-web)\
 [Containers](#containers)\
 [Databases](#databases)\
 [Developer Tools](#developer-tools)\
+[DevOps](#devops)\
 [Integration](#integration)\
-[Networking](#networking)
+[Management and Governance](#management-and-governance)\
+[Migration](#migration)\
+[Networking](#networking)\
+[Security](#security)\
+[Storage](#storage)\
+[Virtual desktop infrastructure](#virtual-desktop-infrastructure)
 
-## AI + machine learning
+## AI + Machine Learning
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
@@ -178,72 +184,25 @@ Service Bus | Microsoft.ServiceBus/namespaces | sb
 Service Bus queue | Microsoft.ServiceBus/namespaces/queues | sbq
 Service Bus topic | Microsoft.ServiceBus/namespaces/topics | sbt
 
-## Networking
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Application gateway | Microsoft.Network/applicationGateways | agw
-Application security group (ASG) | Microsoft.Network/applicationSecurityGroups | asg
-Bastion | Microsoft.Network/bastionHosts | bas
-CDN profile | Microsoft.Cdn/profiles | cdnp
-CDN endpoint | Microsoft.Cdn/profiles/endpoints | cdne
-Connections | Microsoft.Network/connections | con
-DNS private resolver | Microsoft.Network/dnsResolvers | dnspr
-Public DNS zone | Microsoft.Network/dnsZones | \<DNS domain name>
-Private DNS zone | Microsoft.Network/privateDnsZones | \<DNS domain name>
-Firewall | Microsoft.Network/azureFirewalls | afw
-ExpressRoute circuit | Microsoft.Network/expressRouteCircuits | erc
-Front Door instance | Microsoft.Network/frontDoors | fd
-Front Door firewall policy | Microsoft.Network/frontdoorWebApplicationFirewallPolicies | fdfp
-Load balancer (internal) | Microsoft.Network/loadBalancers | lbi
-Load balancer (external) | Microsoft.Network/loadBalancers | lbe
-Load balancer rule | Microsoft.Network/loadBalancers/inboundNatRules | rule
-Local network gateway | Microsoft.Network/localNetworkGateways | lgw
-Network interface (NIC) | Microsoft.Network/networkInterfaces | nic
-Network security group (NSG) | Microsoft.Network/networkSecurityGroups | nsg
-Network security group (NSG) security rules | Microsoft.Network/networkSecurityGroups/securityRules | nsgsr
-Network Watcher | Microsoft.Network/networkWatchers | nw
-Private Link | "Microsoft.Network/privateLinkServices | pl
-Public IP address | Microsoft.Network/publicIPAddresses | pip
-Public IP address prefix | Microsoft.Network/publicIPPrefixes | ippre
-Relay | Microsoft.Relay/namespaces | relay
-Route filter | Microsoft.Network/routeFilters | rf
-Route table | Microsoft.Network/routeTables | rt
-Service endpoint | Microsoft.serviceEndPointPolicies | se
-Traffic Manager profile | Microsoft.Network/trafficManagerProfiles | traf
-User defined route (UDR) | Microsoft.Network/routeTables/routes | udr
-Virtual network | Microsoft.Network/virtualNetworks | vnet
-Virtual network peering | Microsoft.Network/virtualNetworks/virtualNetworkPeerings | peer
-Virtual network subnet | Microsoft.Network/virtualNetworks/subnets | snet
-Virtual WAN | Microsoft.Network/virtualWans | vwan
-VPN Gateway | Microsoft.Network/vpnGateways | vpng
-VPN connection | Microsoft.Network/vpnGateways/vpnConnections | cn
-VPN site | Microsoft.Network/vpnGateways/vpnSites | st
-Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
-Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
-Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
-
-## Storage
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-Storage account | Microsoft.Storage/storageAccounts | st
-Azure StorSimple | Microsoft.StorSimple/managers | ssimp
-
-## Management and governance
+## Management and Governance
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
 Automation account | Microsoft.Automation/automationAccounts | aa
+Azure Policy definition | Microsoft.Authorization/policyDefinitions | \<descriptive>
 Application Insights | Microsoft.Insights/components | appi
 Azure Monitor action group | Microsoft.Insights/actionGroups | ag
-Azure Purview instance | Microsoft.Purview/accounts | pview
-Blueprint | Microsoft.Blueprint/blueprints | bp
-Blueprint assignment | Microsoft.Blueprint/blueprints/artifacts | bpa
-Key vault | Microsoft.KeyVault/vaults | kv
+Azure Monitor data collection rule | Microsoft.Insights/dataCollectionRules | dcr
+Azure Monitor alert processing rule | Microsoft.AlertsManagement/actionRules | apr
+Blueprint (planned for deprecation) | Microsoft.Blueprint/blueprints | bp
+Blueprint assignment (planned for deprecation) | Microsoft.Blueprint/blueprints/artifacts | bpa
+Data collection endpoint | Microsoft.Insights/dataCollectionEndpoints | dce
 Log Analytics workspace | Microsoft.OperationalInsights/workspaces | log
-Metric Alerts | Microsoft.Insights/metricAlerts | ma
-Web Availability Request | Microsoft.Insights/webtests | wt
+Log Analytics query packs | Microsoft.OperationalInsights/querypacks | pack
+Management group | Microsoft.Management/managementGroups | mg
+Microsoft Purview instance | Microsoft.Purview/accounts | pview
+Resource group | Microsoft.Resources/resourceGroups | rg
+Template specs name | Microsoft.Resources/templateSpecs | ts
 
 ## Migration
 
@@ -253,8 +212,96 @@ Azure Migrate project | Microsoft.Migrate/assessmentProjects | migr
 Database Migration Service instance | Microsoft.DataMigration/services | dms
 Recovery Services vault | Microsoft.RecoveryServices/vaults | rsv
 
+## Networking
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Application gateway | Microsoft.Network/applicationGateways | agw
+Application security group (ASG) | Microsoft.Network/applicationSecurityGroups | asg
+CDN profile | Microsoft.Cdn/profiles | cdnp
+CDN endpoint | Microsoft.Cdn/profiles/endpoints | cdne
+Connections | Microsoft.Network/connections | con
+DNS | Microsoft.Network/dnsZones | <DNS domain name>
+DNS forwarding ruleset | Microsoft.Network/dnsForwardingRulesets | dnsfrs
+DNS private resolver | Microsoft.Network/dnsResolvers | dnspr
+DNS private resolver inbound endpoint | Microsoft.Network/dnsResolvers/inboundEndpoints | in
+DNS private resolver outbound endpoint | Microsoft.Network/dnsResolvers/outboundEndpoints | out
+DNS zone | Microsoft.Network/privateDnsZones | <DNS domain name>
+Firewall | Microsoft.Network/azureFirewalls | afw
+Firewall policy | Microsoft.Network/firewallPolicies | afwp
+ExpressRoute circuit | Microsoft.Network/expressRouteCircuits | erc
+ExpressRoute direct | Microsoft.Network/expressRoutePorts | erd
+ExpressRoute gateway | Microsoft.Network/virtualNetworkGateways | ergw
+Front Door (Standard/Premium) profile | Microsoft.Cdn/profiles | afd
+Front Door (Standard/Premium) endpoint | Microsoft.Cdn/profiles/afdEndpoints | fde
+Front Door firewall policy | Microsoft.Network/frontdoorWebApplicationFirewallPolicies | fdfp
+Front Door (classic) | Microsoft.Network/frontDoors | afd
+IP group | Microsoft.Network/ipGroups | ipg
+Load balancer (internal) | Microsoft.Network/loadBalancers | lbi
+Load balancer (external) | Microsoft.Network/loadBalancers | lbe
+Load balancer rule | Microsoft.Network/loadBalancers/inboundNatRules | rule
+Local network gateway | Microsoft.Network/localNetworkGateways | lgw
+NAT gateway | Microsoft.Network/natGateways | ng
+Network interface (NIC) | Microsoft.Network/networkInterfaces | nic
+Network security group (NSG) | Microsoft.Network/networkSecurityGroups | nsg
+Network security group (NSG) security rules | Microsoft.Network/networkSecurityGroups/securityRules | nsgsr
+Network Watcher | Microsoft.Network/networkWatchers | nw
+Private Link | Microsoft.Network/privateLinkServices | pl
+Private endpoint | Microsoft.Network/privateEndpoints | pep
+Public IP address | Microsoft.Network/publicIPAddresses | pip
+Public IP address prefix | Microsoft.Network/publicIPPrefixes | ippre
+Route filter | Microsoft.Network/routeFilters | rf
+Route server | Microsoft.Network/virtualHubs | rtserv
+Route table | Microsoft.Network/routeTables | rt
+Service endpoint policy | Microsoft.serviceEndPointPolicies | se
+Traffic Manager profile | Microsoft.Network/trafficManagerProfiles | traf
+User defined route (UDR) | Microsoft.Network/routeTables/routes | udr
+Virtual network | Microsoft.Network/virtualNetworks | vnet
+Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
+Virtual network manager | Microsoft.Network/networkManagers | vnm
+Virtual network peering | Microsoft.Network/virtualNetworks/virtualNetworkPeerings | peer
+Virtual network subnet | Microsoft.Network/virtualNetworks/subnets | snet
+Virtual WAN | Microsoft.Network/virtualWans | vwan
+Virtual WAN Hub | Microsoft.Network/virtualHubs | vhub
+
+## Security
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Azure Bastion | Microsoft.Network/bastionHosts | bas
+Key vault | Microsoft.KeyVault/vaults | kv
+Key Vault Managed HSM | Microsoft.KeyVault/managedHSMs | kvmhsm
+Managed identity | Microsoft.ManagedIdentity/userAssignedIdentities | id
+SSH key | Microsoft.Compute/sshPublicKeys | sshkey
+VPN Gateway | Microsoft.Network/vpnGateways | vpng
+VPN connection | Microsoft.Network/vpnGateways/vpnConnections | vcn
+VPN site | Microsoft.Network/vpnGateways/vpnSites | vst
+Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
+Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
+
+## Storage
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Azure StorSimple | Microsoft.StorSimple/managers | ssimp
+Backup Vault name | Microsoft.DataProtection/backupVaults | bvault
+Backup Vault policy | Microsoft.DataProtection/backupVaults/backupPolicies | bkpol
+File share | Microsoft.Storage/storageAccounts/fileServices/shares | share
+Storage account | Microsoft.Storage/storageAccounts | st
+Storage Sync Service name | Microsoft.StorageSync/storageSyncServices | sss
+
+## Virtual desktop infrastructure
+
+Resource | Resource provider namespace | Abbreviation
+-------- | --------------------------- | ------------
+Virtual desktop host pool | Microsoft.DesktopVirtualization/hostPools | vdpool
+Virtual desktop application group | Microsoft.DesktopVirtualization/applicationGroups | vdag
+Virtual desktop workspace | Microsoft.DesktopVirtualization/workspaces | vdws
+Virtual desktop scaling plan | Microsoft.DesktopVirtualization/scalingPlans | vdscaling
+
 ## Deprecated product names
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
 Azure SQL Data Warehouse | Microsoft.Sql/servers | sqldw
+Web Availability Request | Microsoft.Insights/webtests | wt
