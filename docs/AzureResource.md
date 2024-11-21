@@ -63,6 +63,7 @@ Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
 Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
 
 <a name="some-id" />
+
 ## Compute and Web
 
 Asset type | Resource provider namespace/Entity | Abbreviation
