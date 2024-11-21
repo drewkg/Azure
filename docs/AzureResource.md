@@ -2,6 +2,8 @@
 
 Placing the resource extension at the end of the naming convention, which is different to the Microsoft best practice, means resources are grouped by name when viewing a complete list and not by the extension. I have found in practice this makes a big difference when viewing a large estate.
 
+[Jump to a section with custom ID](#some-id)
+
 ## General
 
 Asset type | Resource provider namespace/Entity | Abbreviation
@@ -60,6 +62,7 @@ Virtual network gateway | Microsoft.Network/virtualNetworkGateways | vgw
 Web Application Firewall (WAF) policy | Microsoft.Network/firewallPolicies | waf
 Web Application Firewall (WAF) policy rule group | Microsoft.Network/firewallPolicies/ruleGroups | wafrg
 
+<a name="some-id" />
 ## Compute and Web
 
 Asset type | Resource provider namespace/Entity | Abbreviation
