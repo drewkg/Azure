@@ -77,19 +77,6 @@ Provisioning services certificate | Microsoft.Devices/provisioningServices/certi
 Power BI Embedded | Microsoft.PowerBIDedicated/capacities | pbi
 Time Series Insights environment | Microsoft.TimeSeriesInsights/environments | tsi
 
-## General
-
-Resource | Resource provider namespace | Abbreviation
--------- | --------------------------- | ------------
-API management service instance | Microsoft.ApiManagement/service | apim
-Managed Identity | Microsoft.ManagedIdentity/userAssignedIdentities | id
-Management group | Microsoft.Management/managementGroups | mg
-Policy definition | Microsoft.Authorization/policyDefinitions | policy
-Policy initiative | Microsoft.Authorization/policySetDefinitions | initiative
-Resource group | Microsoft.Resources/resourceGroups| rg
-Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
-Subscription | Microsoft.Subscription/aliases | sub
-
 ## Compute and Web
 
 Resource | Resource provider namespace | Abbreviation
@@ -178,6 +165,7 @@ Azure Managed Grafana | Microsoft.Dashboard/grafana | amg
 
 Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
+API management service instance | Microsoft.ApiManagement/service | apim
 Integration account | Microsoft.Logic/integrationAccounts | ia
 Logic apps | Microsoft.Logic/workflows | logic
 Service Bus | Microsoft.ServiceBus/namespaces | sb
@@ -190,6 +178,7 @@ Resource | Resource provider namespace | Abbreviation
 -------- | --------------------------- | ------------
 Automation account | Microsoft.Automation/automationAccounts | aa
 Azure Policy definition | Microsoft.Authorization/policyDefinitions | \<descriptive>
+Azure Policy initiative | Microsoft.Authorization/policySetDefinitions | initiative
 Application Insights | Microsoft.Insights/components | appi
 Azure Monitor action group | Microsoft.Insights/actionGroups | ag
 Azure Monitor data collection rule | Microsoft.Insights/dataCollectionRules | dcr
@@ -197,11 +186,13 @@ Azure Monitor alert processing rule | Microsoft.AlertsManagement/actionRules | a
 Blueprint (planned for deprecation) | Microsoft.Blueprint/blueprints | bp
 Blueprint assignment (planned for deprecation) | Microsoft.Blueprint/blueprints/artifacts | bpa
 Data collection endpoint | Microsoft.Insights/dataCollectionEndpoints | dce
+Diagnostic Setting | Microsoft.*/*/providers/diagnosticSettings | diagset
 Log Analytics workspace | Microsoft.OperationalInsights/workspaces | log
 Log Analytics query packs | Microsoft.OperationalInsights/querypacks | pack
 Management group | Microsoft.Management/managementGroups | mg
 Microsoft Purview instance | Microsoft.Purview/accounts | pview
 Resource group | Microsoft.Resources/resourceGroups | rg
+Subscription | Microsoft.Subscription/aliases | sub
 Template specs name | Microsoft.Resources/templateSpecs | ts
 
 ## Migration
