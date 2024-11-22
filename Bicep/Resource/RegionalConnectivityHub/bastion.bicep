@@ -9,14 +9,17 @@ param application string = 'demo'
 @description('The environment tag to provide unique resources between test / production and ephemeral environments.')
 param environment string = 'test'
 
+@description('The resource group containing the virtual network resource, defaults to the current resource group.')
+param vnetResourceGroup string = resourceGroup().name
+
 @description('The name of the virtual network resource to link the Bastion to, no default.')
 param vnetName string
 
 @description('The name of the IP Prefix resource to link the Bastion VIP to, defaults to empty.')
 param ipPrefixName string = ''
 
-var firewallName = '${application}-${environment}-${location}-afw'
-var publicIpName = '${application}-${environment}-${location}-pip-firewall'
+var bastionHostName = '${application}-${environment}-${location}-bas'
+var publicIpName = '${application}-${environment}-${location}-pip-bastion'
 
 resource IpPrefix 'Microsoft.Network/publicIPPrefixes@2024-03-01' existing = if(!empty(ipPrefixName)) {
   name: ipPrefixName
@@ -24,9 +27,10 @@ resource IpPrefix 'Microsoft.Network/publicIPPrefixes@2024-03-01' existing = if(
 
 resource VNet 'Microsoft.Network/virtualNetworks@2024-03-01' existing = {
   name: vnetName
+  scope: resourceGroup(vnetResourceGroup)
 
-  resource AzureFirewallSubnet 'subnets' existing = {
-    name: 'AzureFirewallSubnet'
+  resource AzureBastionSubnet 'subnets' existing = {
+    name: 'AzureBastionSubnet'
   }
 }
 
@@ -40,19 +44,19 @@ resource PublicIpAddress 'Microsoft.Network/publicIPAddresses@2024-03-01' = {
   }
 }
 
-resource Firewall 'Microsoft.Network/azureFirewalls@2024-03-01' = {
-  name: firewallName
+resource BastionHost 'Microsoft.Network/bastionHosts@2024-03-01' = {
+  name: bastionHostName
   location: location
   properties: {
     ipConfigurations: [
       {
-        name: 'IpConfig'
+        name: 'IpConf'
         properties: {
+          subnet: {
+            id: VNet::AzureBastionSubnet.id
+          }
           publicIPAddress: {
             id: PublicIpAddress.id
-          }
-          subnet: {
-            id: VNet::AzureFirewallSubnet.id
           }
         }
       }
