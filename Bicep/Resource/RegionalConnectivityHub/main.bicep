@@ -43,7 +43,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /26 minimum - https://learn.microsoft.com/en-us/azure/firewall/tutorial-firewall-deploy-portal
-  resource AzureFirewallSubnet 'subnets@2024-03-01' = {
+  resource AzureFirewallSubnet 'subnets' = {
     name: 'AzureFirewallSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.AzureFirewallSubnet
@@ -54,7 +54,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /26 minimum - https://learn.microsoft.com/en-us/azure/bastion/bastion-faq
-  resource AzureBastionSubnet 'subnets@2024-03-01' = {
+  resource AzureBastionSubnet 'subnets' = {
     name: 'AzureBastionSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.AzureBastionSubnet
@@ -69,7 +69,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /27 recommended - https://learn.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-about-vpn-gateway-settings
-  resource GatewaySubnet 'subnets@2024-03-01' = {
+  resource GatewaySubnet 'subnets' = {
     name: 'GatewaySubnet'
     properties: {
       addressPrefix: vnetCidrRanges.GatewaySubnet
@@ -81,7 +81,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /27 recommended - https://learn.microsoft.com/en-us/azure/route-server/quickstart-create-route-server-portal
-  resource RouteServerSubnet 'subnets@2024-03-01' = {
+  resource RouteServerSubnet 'subnets' = {
     name: 'RouteServerSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.RouteServerSubnet
@@ -93,7 +93,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /28 recommended - https://learn.microsoft.com/en-us/azure/dns/private-resolver-architecture
-  resource DNSInboundSubnet 'subnets@2024-03-01' = {
+  resource DNSInboundSubnet 'subnets' = {
     name: 'DNSInboundSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.DNSInboundSubnet
@@ -116,7 +116,7 @@ resource hubVNet 'Microsoft.Network/virtualNetworks@2024-03-01' = {
   }
 
   // CIDR /28 recommended - https://learn.microsoft.com/en-us/azure/dns/private-resolver-architecture
-  resource DNSOutboundSubnet 'subnets@2024-03-01' = {
+  resource DNSOutboundSubnet 'subnets' = {
     name: 'DNSOutboundSubnet'
     properties: {
       addressPrefix: vnetCidrRanges.DNSOutboundSubnet
