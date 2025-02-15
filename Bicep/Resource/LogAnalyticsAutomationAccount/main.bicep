@@ -64,7 +64,7 @@ resource LogAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2023-09
     retentionInDays: 30
   }
 
-  resource automationLinkedService 'linkedServices@2020-08-01' = {
+  resource automationLinkedService 'linkedServices' = {
     name: 'Automation'
     properties: {
       resourceId: AutomationAccount.id
