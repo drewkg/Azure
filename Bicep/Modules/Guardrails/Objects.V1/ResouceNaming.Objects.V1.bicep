@@ -1,3 +1,10 @@
+metadata info = {
+  title: 'ResourceNaming.Objects.V1'
+  description: 'Implements a central control point for applying to the Objects V1 Azure Resource Naming Convention, see https://github.com/drewkg/Azure/blob/main/docs/Conventions.md'
+  version: '0.1.0'
+  author: 'Keith Drew'
+}
+
 @description('The application prefix, used within resource naming to ensure grouping of resources within the Azure portal.')
 @minLength(1)
 @maxLength(10)
@@ -8,12 +15,13 @@ param application string
   'ephemeral'
   'development'
   'test'
-  'pre-production'
+  'useracceptance'
+  'preproduction'
   'production'
 ])
 param environment string
 
-@description('Utilized in Ephemeral Environments to generate a unqiue key for every environment, if performing a redeployment care should be taken to ensure this is unique.')
+@description('Utilized in ephemeral environments to generate a unqiue key for every deployment, if performing a redeployment care should be taken to ensure this is unique.')
 param ephemeralKey string = newGuid()
 
 @description('The location of the resources to be created or modified.')
@@ -65,10 +73,16 @@ param ephemeralKey string = newGuid()
   'UAENorth'
   'UnitedArabEmirates'
 ])
-param location string = 'UKSouth'
+param location string
 
-@description('Generates a unique key for the environment, if ephemeral environment is selected this will be a substring of the ephemeralKey.')
-var EnvironmentKey = (environment == 'ephemeral' ? substring(guid(ephemeralKey), 0, 8) : environment)
+var EnvironmentAbbreviation = {
+  ephemeral: substring(guid(ephemeralKey), 0, 6)
+  development: 'dev'
+  test: 'tst'
+  useracceptance: 'uat'
+  preproduction: 'pre'
+  production: 'prd'
+}
 
 var LocationAbbreviation = {
   Global: 'gbl'
@@ -120,15 +134,22 @@ var LocationAbbreviation = {
   UnitedArabEmirates: 'uae'
 }
 
-output EphemeralKey string = EnvironmentKey
+@description('The unique key for the environment, if ephemeral environment is selected this will be generated from the ephemeralKey parameter.')
+output EnvironmentKey string = EnvironmentAbbreviation[environment]
+
+@description('The location of the Azure resource.')
 output Location string = toLower(location)
 output LocationAbbreviation object = LocationAbbreviation
 
 output ResourceName object = {
-  resourceGroup: '${application}-${EnvironmentKey}-${LocationAbbreviation[location]}-rg'
-  automationAccount: '${application}-${EnvironmentKey}-${LocationAbbreviation[location]}-aa'
-  logAnalyticsWorkspace: '${application}-${EnvironmentKey}-${LocationAbbreviation[location]}-law'
-  appServicePlan: '${application}-${EnvironmentKey}-${LocationAbbreviation[location]}-asp'
-  appService: '${application}-${EnvironmentKey}-${LocationAbbreviation[location]}-as'
-  storageAccount: '${application}${EnvironmentKey}${LocationAbbreviation[location]}sa'
+  ResourceGroup: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-rg'
+
+  AppService: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-as'
+  AppServicePlan: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-asp'
+  AutomationAccount: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-aa'
+  KeyVault: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-kv'
+  LogAnalyticsWorkspace: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-log'
+  StorageAccount: '${application}${EnvironmentAbbreviation[environment]}${LocationAbbreviation[location]}sa'
+  SqlServer: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-sql'
+  VirtualNetwork: '${application}-${EnvironmentAbbreviation[environment]}-${LocationAbbreviation[location]}-vnet'
 }

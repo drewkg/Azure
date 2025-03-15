@@ -42,6 +42,7 @@ Except for the resources listed in the exclusions, all Azure resources should us
 \<Instance> - Optional, a 3 or 4 digit instance number where there might be multiple resources e.g. multiple App Services.\
 
 #### Exclusions
+
 * Storage Accounts,
   * limitation only AlphaNumeric characters in the name
   * maximum length of 24 characters
@@ -51,4 +52,5 @@ Except for the resources listed in the exclusions, all Azure resources should us
 See [Azure Locations](./Locations.md) for more information, and a list of known locations plus their short codes.
 
 ## Azure Resource
+
 See [Azure Resources](./AzureResource.md) for more informaiton, and a list of resource short code's.
